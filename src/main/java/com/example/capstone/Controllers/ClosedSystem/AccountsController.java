@@ -12,6 +12,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -49,6 +53,8 @@ public class AccountsController implements Initializable {
 
     ObservableList<Integer> maxProcesses = FXCollections.observableArrayList(1, 2, 3, 4, 5);
 
+    private ObservableList<String> chartOptions = FXCollections.observableArrayList("P-v", "T-v", "T-s", "P-h");
+
     int [] state1Indexes = {1,2,3,4,5};
     int [] state2Indexes = {2,3,4,5,6};
     private int maxVal;
@@ -57,12 +63,17 @@ public class AccountsController implements Initializable {
 
     private List<ProcessHolderController> processControllers = new ArrayList<>();
 
-    int c = 0;
-    int x = 1;
+    private LineChart<Number, Number> chart;
+    List<Double> pressureOverTime = new ArrayList<>();
+    List<Double> volumeOverTime = new ArrayList<>();
+    List<Double> tempOverTime = new ArrayList<>();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         numProcessesChoice.setItems(maxProcesses);
+
+        visualTypeChoiceBox.setItems(chartOptions);
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -129,11 +140,18 @@ public class AccountsController implements Initializable {
                 List<Process> processes = new ArrayList<>();
                 Map<String, State> states = new HashMap<>();
 
+
                 for (int i = 0; i < processControllers.size(); i++) {
                     ProcessHolderController controller = processControllers.get(i);
                     Map<String, List<Double>> stateData = controller.getData();
                     List<Double> stateLeftData = stateData.get("StateLeft");
                     List<Double> stateRightData = stateData.get("StateRight");
+                    pressureOverTime.add(stateLeftData.get(0));
+                    pressureOverTime.add(stateRightData.get(0));
+                    volumeOverTime.add(stateLeftData.get(1));
+                    volumeOverTime.add(stateRightData.get(1));
+                    tempOverTime.add(stateLeftData.get(2));
+                    tempOverTime.add(stateRightData.get(2));
                     State stateLeft = new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), controller.getFirstStateLabelString());
                     State stateRight = new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), controller.getSecondStateLabelString());
                     states.put(controller.getFirstStateLabelString(), stateLeft);
@@ -145,6 +163,11 @@ public class AccountsController implements Initializable {
 
                     processes.add(process);
                 }
+
+                Collections.sort(pressureOverTime);
+                Collections.sort(tempOverTime);
+                Collections.sort(volumeOverTime);
+
 
                 List<Process> processes2 = processesList();
                 Solver solver = new Solver(processes);
@@ -165,6 +188,54 @@ public class AccountsController implements Initializable {
                 ProcessLayout.getChildren().clear();
             }
         });
+
+        // Create the chart
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        chart = new LineChart<>(xAxis, yAxis);
+        chart.setTitle("Line Chart Example");
+
+
+
+
+
+//        visualScrollPane.setContent(chart);
+//        visualScrollPane.setFitToWidth(true);
+//        visualScrollPane.setFitToHeight(true);
+
+        visualTypeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue.equals("P-v")) {
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName("Data Series");
+                for (int i = 0; i < pressureOverTime.size(); i++) {
+                    Double pressure = pressureOverTime.get(i);
+                    Double volume = volumeOverTime.get(i);
+                    series.getData().add(new XYChart.Data<>(pressure, volume));
+                }
+                chart.getData().add(series);
+                visualScrollPane.setContent(chart);
+            } else if (newValue.equals("T-v")) {
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName("Data Series");
+                for (int i = 0; i < tempOverTime.size(); i++) {
+                    Double temp = tempOverTime.get(i);
+                    Double volume = volumeOverTime.get(i);
+                    series.getData().add(new XYChart.Data<>(temp, volume));
+                }
+                chart.getData().add(series);
+                visualScrollPane.setContent(chart);
+            } else if (newValue.equals("T-s")) {
+                // Change the content of the scroll pane to another visualization
+                // preset based on option 3
+                // ...
+            } else if (newValue.equals("P-h")) {
+                // Change the content of the scroll pane to another visualization
+                // preset based on option 4
+                // ...
+            }
+        });
+
 
 
     }

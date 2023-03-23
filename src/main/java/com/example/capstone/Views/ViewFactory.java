@@ -1,8 +1,6 @@
 package com.example.capstone.Views;
 
-import com.example.capstone.Controllers.ClosedSystem.AccountsController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
-import com.example.capstone.Models.Logic.Process;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -97,7 +95,7 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/Icon.png")))); // returns observable list of images, how we add an icon as well to the top
         // border part of the application
-        stage.setResizable(false); // LATER ON WE WILL NEED TO DELETE this and make all the css resizeable
+        stage.setResizable(true); // LATER ON WE WILL NEED TO DELETE this and make all the css resizeable
         stage.setScene(scene);
         stage.setTitle("Capstone H.E.A.T.S.");
         stage.show();
