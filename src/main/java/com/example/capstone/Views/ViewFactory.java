@@ -1,6 +1,8 @@
 package com.example.capstone.Views;
 
+import com.example.capstone.Controllers.ClosedSystem.AccountsController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
+import com.example.capstone.Models.Logic.Process;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,7 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 // combines the dashboard and the menu displayed side by side
 public class ViewFactory {
@@ -21,7 +26,7 @@ public class ViewFactory {
     private final ObjectProperty<ClosedSystemMenuOptions> closedSystemSelectedMenuItem;
     private AnchorPane dashboardView;
     private AnchorPane viewReportsView;
-    private AnchorPane accountsView;
+    private BorderPane accountsView;
 
     // open system views
     private final StringProperty openSystemSelectedMenuItem;
@@ -68,10 +73,12 @@ public class ViewFactory {
         return  viewReportsView;
     }
 
-    public AnchorPane getAccountsView(){ // opens the view reports fxml page in a pseudo singleton way
+    public BorderPane getAccountsView(){ // opens the view reports fxml page in a pseudo singleton way
+
         if(accountsView == null){
             try{
                 accountsView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Accounts.fxml")).load();
+
             } catch (Exception e){
                 e.printStackTrace();
             }

@@ -22,6 +22,7 @@ pane when we switch scenes through the menu-->
 
     <center>
         <fx:include source="Dashboard.fxml"/>
+<!--        <fx:include source="ProcessHolder.fxml"/>-->
     </center>
 
 

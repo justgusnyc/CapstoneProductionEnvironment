@@ -13,4 +13,5 @@ module com.example.capstone {
     exports com.example.capstone.Controllers.OpenSystem;
     exports com.example.capstone.Models;
     exports com.example.capstone.Views;
+    exports com.example.capstone.Models.Logic;
 }

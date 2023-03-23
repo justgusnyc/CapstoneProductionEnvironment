@@ -5,54 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67647a5c-d74e-4c5e-847c-9631402e580e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemMenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/DashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportsCellController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ViewReportsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/OpenSystem/OpenSystemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/OpenSystem/OpenSystemMenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Account.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/CheckingAccount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/ClosedSystem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/DatabaseDriver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Model.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Reports.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/SavingsAccount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ClosedSystemMenuOptions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ReportsCellFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/SystemType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystemMenu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ReportsCell.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ViewReports.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/Login.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/OpenSystem/OpenSystem.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/OpenSystem/OpenSystemMenu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/Accounts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/ClosedSystemMenu.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/Dashboard.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/ReportsCell.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/ViewReports.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ProcessHolderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACProcess.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACSolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Process.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Solver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/State.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +72,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\justg\IdeaProjects\Capstone\src\main\resources\Fxml\ClosedSystem" />
       <recent name="C:\Users\justg\IdeaProjects\Capstone\src\main\resources\Fxml" />
     </key>
   </component>
@@ -136,6 +104,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.IllegalArgumentException" package="java.lang" />
           <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalStateException" package="java.lang" />
+          <option name="timeStamp" value="2" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>

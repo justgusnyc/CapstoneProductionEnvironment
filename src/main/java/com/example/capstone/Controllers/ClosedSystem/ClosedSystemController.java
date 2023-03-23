@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 public class ClosedSystemController implements Initializable {
 
+    private BorderPane accountsView;
     public BorderPane closedSystemParent; // this is the same as the fx id in the corresponding fxml
     // the id in the fxml with this definition in the controller will allow us to reference different
     // parts of the borderpane and change them as needed, however in order to actually know when we should
@@ -29,5 +30,7 @@ public class ClosedSystemController implements Initializable {
                 default -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getDashboardView());
             }
         });
+
     }
+
 }

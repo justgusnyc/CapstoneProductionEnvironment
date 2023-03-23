@@ -36,7 +36,7 @@
             <String fx:value="account" />
             <String fx:value="account_gradient" />
          </styleClass>
-         <Label fx:id="savings_val" layoutX="23.0" layoutY="25.0" styleClass="account_balance" text="1400" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0" />
+         <Label fx:id="savings_val" layoutX="23.0" layoutY="25.0" styleClass="account_balance" text="1300" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0" />
          <Label layoutX="26.0" layoutY="82.0" styleClass="account_number" text="Process 1" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="14.0" />
          <Label fx:id="savings_acc_num" layoutX="108.0" layoutY="110.0" styleClass="account_number" text="Polytropic" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="138.0" />
          <VBox layoutX="181.0" layoutY="-10.0" prefHeight="81.0" prefWidth="35.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="14.0" />
