@@ -218,6 +218,8 @@ public class ProcessHolderController implements Initializable {
         this.firstStateLabel.setText(firstStateLabel);
     }
 
+
+
     public String getFirstStateLabelString() {
         return firstStateLabel.getText();
     }
@@ -228,5 +230,29 @@ public class ProcessHolderController implements Initializable {
 
     public String getSecondStateLabelString() {
         return secondStateLabel.getText();
+    }
+
+    public void setS1pressure(TextField s1pressure) {
+        S1pressure = s1pressure;
+    }
+
+    public void setS1temperature(TextField s1temperature) {
+        S1temperature = s1temperature;
+    }
+
+    public void setS1Volume(TextField s1Volume) {
+        S1Volume = s1Volume;
+    }
+
+    public void setS2pressure(TextField s2pressure) {
+        S2pressure = s2pressure;
+    }
+
+    public void setS2temperature(TextField s2temperature) {
+        S2temperature = s2temperature;
+    }
+
+    public void setS2volume(TextField s2volume) {
+        S2volume = s2volume;
     }
 }

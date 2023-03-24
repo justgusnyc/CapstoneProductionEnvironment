@@ -12,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -50,6 +49,8 @@ public class AccountsController implements Initializable {
     public VBox visualScrollPaneVBox;
 
     private List<Process> processesList;
+
+    private List<HBox> hboxParents = new ArrayList<>();
 
     ObservableList<Integer> maxProcesses = FXCollections.observableArrayList(1, 2, 3, 4, 5);
 
@@ -105,6 +106,9 @@ public class AccountsController implements Initializable {
                         FXMLLoader fxmlLoader = new FXMLLoader();
                         fxmlLoader.setLocation(getClass().getResource("/Fxml/ClosedSystem/ProcessHolder.fxml"));
                         HBox box = fxmlLoader.load();
+
+                        hboxParents.add(box);
+
 
                         ProcessHolderController processHolderController = fxmlLoader.getController();
                         processControllers.add(processHolderController);
@@ -186,14 +190,15 @@ public class AccountsController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 ProcessLayout.getChildren().clear();
+                visualScrollPane.setContent(null);
             }
         });
 
-        // Create the chart
+// Create the chart
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         chart = new LineChart<>(xAxis, yAxis);
-        chart.setTitle("Line Chart Example");
+        chart.setTitle("Visualization Presets");
 
 
 
@@ -207,7 +212,7 @@ public class AccountsController implements Initializable {
 
             if (newValue.equals("P-v")) {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                series.setName("Data Series");
+                series.setName("P-v");
                 for (int i = 0; i < pressureOverTime.size(); i++) {
                     Double pressure = pressureOverTime.get(i);
                     Double volume = volumeOverTime.get(i);
@@ -215,9 +220,11 @@ public class AccountsController implements Initializable {
                 }
                 chart.getData().add(series);
                 visualScrollPane.setContent(chart);
+//                visualScrollPane.setFitToWidth(true);
+//                visualScrollPane.setFitToHeight(true);
             } else if (newValue.equals("T-v")) {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                series.setName("Data Series");
+                series.setName("T-v");
                 for (int i = 0; i < tempOverTime.size(); i++) {
                     Double temp = tempOverTime.get(i);
                     Double volume = volumeOverTime.get(i);
@@ -225,6 +232,8 @@ public class AccountsController implements Initializable {
                 }
                 chart.getData().add(series);
                 visualScrollPane.setContent(chart);
+//                visualScrollPane.setFitToWidth(true);
+//                visualScrollPane.setFitToHeight(true);
             } else if (newValue.equals("T-s")) {
                 // Change the content of the scroll pane to another visualization
                 // preset based on option 3

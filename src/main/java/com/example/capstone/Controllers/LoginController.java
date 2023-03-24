@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -20,6 +22,7 @@ public class LoginController implements Initializable {
     public TextField password_field;
     public Button login_btn;
     public Label error_lbl;
+    public ImageView IconLoginImageView;
 
 
     // we want to make a singleton of the view factory so the entire app uses only one object
@@ -27,6 +30,8 @@ public class LoginController implements Initializable {
     // controllers and Fxml file
     @Override // so once this fxml is initialized, if you click the login button then you access the singleton view factory instantiation
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        IconLoginImageView.setImage(new Image(String.valueOf(getClass().getResource("/Images/Icon.png"))));
         system_selector.setItems(FXCollections.observableArrayList(SystemType.CLOSED_SYSTEM,SystemType.OPEN_SYSTEM)); // now we are actually setting the choice box with these options with an observable array list which is exactly what it sounds like
         system_selector.setValue(Model.getInstance().getViewFactory().getLoginSystemType()); // this sets the actual account type to whatever it has been set to in the view factory, and we
         //have it set to closed systems by default in the view factory constructor

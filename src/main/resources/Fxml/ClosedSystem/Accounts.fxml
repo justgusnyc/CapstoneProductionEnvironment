@@ -68,7 +68,7 @@
       </HBox>
    </top>
    <bottom>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="300.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <HBox prefHeight="100.0" prefWidth="200.0">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Visualizations:">
                <HBox.margin>
@@ -93,7 +93,7 @@
                <ChoiceBox fx:id="visualTypeChoiceBox" prefWidth="150.0" />
             </VBox>
          </HBox>
-         <ScrollPane fx:id="visualScrollPane" prefHeight="200.0" prefWidth="200.0">
+         <ScrollPane fx:id="visualScrollPane">
             <content>
                <VBox fx:id="visualScrollPaneVBox" prefHeight="276.0" prefWidth="831.0" />
             </content>
