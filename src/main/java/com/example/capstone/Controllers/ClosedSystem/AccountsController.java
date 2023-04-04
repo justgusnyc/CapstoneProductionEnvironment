@@ -47,6 +47,7 @@ public class AccountsController implements Initializable {
     public ChoiceBox visualTypeChoiceBox;
     public ScrollPane visualScrollPane;
     public VBox visualScrollPaneVBox;
+    public Button FormatButton;
 
     private List<Process> processesList;
 
@@ -69,6 +70,9 @@ public class AccountsController implements Initializable {
     List<Double> volumeOverTime = new ArrayList<>();
     List<Double> tempOverTime = new ArrayList<>();
 
+    List<List<TextField>> textFields = new ArrayList<>();
+    List<String> textFieldsStatesNames = new ArrayList<>();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,52 +80,73 @@ public class AccountsController implements Initializable {
 
         visualTypeChoiceBox.setItems(chartOptions);
 
+        Map<String, List<List<TextField>>> connectedTextField = new HashMap<>();
+
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number value, Number newValue) {
                 int max = maxProcesses.get(newValue.intValue());
-                switch(max){
-                    case(1):
+                switch(max) {
+                    case 1:
                         maxVal = 1;
                         break;
-                    case(2):
+                    case 2:
                         maxVal = 2;
                         break;
-                    case(3):
+                    case 3:
                         maxVal = 3;
                         break;
-                    case(4):
+                    case 4:
                         maxVal = 4;
                         break;
-                    case(5):
+                    case 5:
                         maxVal = 5;
                         break;
-
                     default:
                         System.out.println("Something was wrong in pretty");
                 }
                 try {
 
-                    for (int i = 0; i < maxVal; i++){
+
+                    for (int i = 0; i < maxVal; i++) {
                         FXMLLoader fxmlLoader = new FXMLLoader();
                         fxmlLoader.setLocation(getClass().getResource("/Fxml/ClosedSystem/ProcessHolder.fxml"));
                         HBox box = fxmlLoader.load();
-
                         hboxParents.add(box);
-
 
                         ProcessHolderController processHolderController = fxmlLoader.getController();
                         processControllers.add(processHolderController);
                         processHolderController.setBlank(maxVal);
+                        processHolderController.setFirstStateLabel("State" + state1Indexes[i]);
+                        processHolderController.setSecondStateLabel("State" + state2Indexes[i]);
 
-                        processHolderController.setFirstStateLabel("State"+state1Indexes[i]);
-                        processHolderController.setSecondStateLabel("State"+state2Indexes[i]);
-
-
-
-
+                        String stateLabel1 = processHolderController.getFirstStateLabelString();
+                        String stateLabel2 = processHolderController.getSecondStateLabelString();
+                        List<List<TextField>> textFields1 = connectedTextField.getOrDefault(stateLabel1, new ArrayList<>());
+                        List<List<TextField>> textFields2 = connectedTextField.getOrDefault(stateLabel2, new ArrayList<>());
+                        List<TextField> stateLeftTextFields = processHolderController.getStateLeftTextFields();
+                        List<TextField> stateRightTextFields = processHolderController.getStateRightTextFields();
+                        textFields1.add(stateLeftTextFields);
+                        textFields2.add(stateRightTextFields);
+                        connectedTextField.put(stateLabel1, textFields1);
+                        connectedTextField.put(stateLabel2, textFields2);
 
                         ProcessLayout.getChildren().add(box);
+                    }
+
+// Connect text fields based on state label
+                    for (List<List<TextField>> textFieldsList : connectedTextField.values()) {
+                        for (int i = 0; i < textFieldsList.size(); i++) {
+                            List<TextField> textFields1 = textFieldsList.get(i);
+                            for (int j = i + 1; j < textFieldsList.size(); j++) {
+                                List<TextField> textFields2 = textFieldsList.get(j);
+                                for (int k = 0; k < textFields1.size(); k++) {
+                                    TextField textField1 = textFields1.get(k);
+                                    TextField textField2 = textFields2.get(k);
+                                    textField1.textProperty().bindBidirectional(textField2.textProperty());
+                                }
+                            }
+                        }
                     }
                 } catch (Exception e){
                     e.printStackTrace();
@@ -129,12 +154,93 @@ public class AccountsController implements Initializable {
             }
         });
 
+
+
         cycleYesButton.setOnAction(e -> {
-            if(cycleYesButton.isSelected()){
-                processControllers.get(maxVal-1).setSecondStateLabel("State"+state1Indexes[0]);
+            if(cycleYesButton.isSelected()) {
+                // Get the text fields list for the left most state
+                List<List<TextField>> textFieldsList = connectedTextField.get("State1");
+                List<TextField> stateLeftTextFields = textFieldsList.get(0);
+
+                // Get the text fields list for the right most state
+                int lastIndex = maxVal - 1;
+                String stateLabel2 = "State" + state2Indexes[lastIndex];
+                textFieldsList = connectedTextField.get(stateLabel2);
+                List<TextField> stateRightTextFields = textFieldsList.get(textFieldsList.size() - 1);
+
+                // Connect the text fields
+                for (int k = 0; k < stateLeftTextFields.size(); k++) {
+                    TextField textField1 = stateLeftTextFields.get(k);
+                    TextField textField2 = stateRightTextFields.get(k);
+                    textField1.textProperty().bindBidirectional(textField2.textProperty());
+                }
+
+                // Update the second state label of the last process controller
+                processControllers.get(lastIndex).setSecondStateLabel("State1");
+            } else {
+                // Get the text fields list for the left most state
+                List<List<TextField>> textFieldsList = connectedTextField.get("State1");
+                List<TextField> stateLeftTextFields = textFieldsList.get(0);
+
+                // Get the text fields list for the right most state
+                int lastIndex = maxVal - 1;
+                String stateLabel2 = "State" + state2Indexes[lastIndex];
+                textFieldsList = connectedTextField.get(stateLabel2);
+                List<TextField> stateRightTextFields = textFieldsList.get(textFieldsList.size() - 1);
+
+                // Connect the text fields
+                for (int k = 0; k < stateLeftTextFields.size(); k++) {
+                    TextField textField1 = stateLeftTextFields.get(k);
+                    TextField textField2 = stateRightTextFields.get(k);
+                    textField1.textProperty().unbindBidirectional(textField2.textProperty());
+                }
+
+                // Update the second state label of the last process controller
+
+                processControllers.get(lastIndex).setSecondStateLabel("State"+state2Indexes[maxVal-1]);
             }
-            else{
-                processControllers.get(maxVal-1).setSecondStateLabel("State"+state2Indexes[maxVal-1]);
+        });
+
+        FormatButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                getTextFields();
+
+                for(int i = 0; i < textFieldsStatesNames.size(); i++){
+                    int controllerIndexOuter = (int) Math.ceil((i+1)/2);
+                    String name = textFieldsStatesNames.get(i);
+                    for (int j = 0; j < textFields.size(); j++){
+                        if((i != j) && (name == textFieldsStatesNames.get(j))){
+                            int controllerIndexInner = (int) Math.ceil((j+1)/2);
+                            int leftOrRightState = j%2;
+                            ProcessHolderController outerController = processControllers.get(controllerIndexOuter);
+                            ProcessHolderController innerController = processControllers.get(controllerIndexInner);
+                            if(leftOrRightState == 0){
+                                outerController.setS2pressure(textFields.get(i).get(0));
+                                innerController.setS1pressure(textFields.get(i).get(0));
+
+                                outerController.setS2volume(textFields.get(i).get(1));
+                                innerController.setS1Volume(textFields.get(i).get(1));
+
+                                outerController.setS2temperature(textFields.get(i).get(2));
+                                innerController.setS1temperature(textFields.get(i).get(2));
+                            }
+                            else{
+                                outerController.setS1pressure(textFields.get(i).get(0));
+                                innerController.setS2pressure(textFields.get(i).get(0));
+
+                                outerController.setS1Volume(textFields.get(i).get(1));
+                                innerController.setS2volume(textFields.get(i).get(1));
+
+                                outerController.setS1temperature(textFields.get(i).get(2));
+                                innerController.setS2temperature(textFields.get(i).get(2));
+                            }
+
+
+                        }
+                    }
+                }
+
             }
         });
 
@@ -191,6 +297,7 @@ public class AccountsController implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 ProcessLayout.getChildren().clear();
                 visualScrollPane.setContent(null);
+                
             }
         });
 
@@ -276,6 +383,40 @@ public class AccountsController implements Initializable {
         return ls;
     }
 
+    private void getTextFields(){
+
+        for(int i = 0; i < hboxParents.size(); i++){
+            List<TextField> textsLeft = new ArrayList<>();
+            List<TextField> textsRight = new ArrayList<>();
+            String leftStateName = processControllers.get(i).getFirstStateLabelString();
+            String rightStateName = processControllers.get(i).getSecondStateLabelString();
+
+            HBox box = hboxParents.get(i);
+            TextField S1Pressure = (TextField) box.lookup("#S1pressure");
+            TextField S1Volume = (TextField) box.lookup("#S1Volume");
+            TextField S1Temp = (TextField) box.lookup("#S1temperature");
+            textsLeft.add(S1Pressure);
+            textsLeft.add(S1Volume);
+            textsLeft.add(S1Temp);
+            textFields.add(textsLeft);
+            textFieldsStatesNames.add(leftStateName);
+
+            TextField S2Pressure = (TextField) box.lookup("#S2pressure");
+            TextField S2Volume = (TextField) box.lookup("#S2volume");
+            TextField S2Temp = (TextField) box.lookup("#S2temperature");
+            textsRight.add(S2Pressure);
+            textsRight.add(S2Volume);
+            textsRight.add(S2Temp);
+            textFields.add(textsRight);
+            textFieldsStatesNames.add(rightStateName);
+        }
+
+
+//        return textFields;
+    }
+
+
+
     public List<HBox> getHBoxes(HBox hbox){
         List<HBox> hboxList = new ArrayList<>();
         for (Node child : hbox.getChildren()) {
@@ -304,5 +445,15 @@ public class AccountsController implements Initializable {
 
     public BorderPane getAccountsView() {
         return accountsView;
+    }
+
+    private void connectTextFields(List<TextField> source, List<TextField> target) {
+        for (TextField field : source) {
+            for (TextField otherField : target) {
+                if (field != otherField) {
+                    field.textProperty().bindBidirectional(otherField.textProperty());
+                }
+            }
+        }
     }
 }

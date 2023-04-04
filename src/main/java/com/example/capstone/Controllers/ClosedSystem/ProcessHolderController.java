@@ -255,4 +255,56 @@ public class ProcessHolderController implements Initializable {
     public void setS2volume(TextField s2volume) {
         S2volume = s2volume;
     }
+
+    public TextField getS1pressure() {
+        return S1pressure;
+    }
+
+    public TextField getS1temperature() {
+        return S1temperature;
+    }
+
+    public TextField getS1Volume() {
+        return S1Volume;
+    }
+
+    public TextField getS2pressure() {
+        return S2pressure;
+    }
+
+    public TextField getS2temperature() {
+        return S2temperature;
+    }
+
+    public TextField getS2volume() {
+        return S2volume;
+    }
+
+    public VBox getState1Container() {
+        return State1Container;
+    }
+
+    public VBox getState2Container() {
+        return State2Container;
+    }
+
+    public VBox getProcessConfigurations() {
+        return ProcessConfigurations;
+    }
+
+    public List<TextField> getStateLeftTextFields(){
+        List<TextField> leftTextFields = new ArrayList<>();
+        leftTextFields.add(S1pressure);
+        leftTextFields.add(S1temperature);
+        leftTextFields.add(S1Volume);
+        return leftTextFields;
+    }
+
+    public List<TextField> getStateRightTextFields(){
+        List<TextField> rightTextFields = new ArrayList<>();
+        rightTextFields.add(S2pressure);
+        rightTextFields.add(S2temperature);
+        rightTextFields.add(S2volume);
+        return rightTextFields;
+    }
 }
