@@ -32,5 +32,5 @@ public class Reports {
         return this.date;
     }
 
-    StringProperty messageProperty(){return this.message;} // this would be the message attached to the transaction for the bank shell
+    public StringProperty messageProperty(){return this.message;} // this would be the message attached to the transaction for the bank shell
 }

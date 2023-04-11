@@ -11,12 +11,12 @@ public class ReportsCellFactory extends ListCell<Reports> {
     @Override
     protected void updateItem(Reports reports, boolean empty) { // this is a built in method for the ListCell class
         super.updateItem(reports, empty); // that is why we are passing this to the super class here, it is a prebuilt one that allows us to update our list cells
-        if(empty){
+        if(empty || reports == null){
             setText(null);
             setGraphic(null);
         }
         else{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Fxml/ClosedSystem/ReportsCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/ReportsCell.fxml"));
             ReportsCellController controller = new ReportsCellController(reports);
             loader.setController(controller);
             setText(null);

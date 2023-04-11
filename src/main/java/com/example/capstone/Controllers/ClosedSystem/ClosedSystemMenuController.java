@@ -4,6 +4,7 @@ import com.example.capstone.Models.Model;
 import com.example.capstone.Views.ClosedSystemMenuOptions;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,6 +37,7 @@ public class ClosedSystemMenuController implements Initializable {
         dashboard_btn.setOnAction(event -> onDashboard());
         view_reports_button.setOnAction(event -> onViewReports());
         accounts_button.setOnAction(event -> onAccounts());
+        logout_button.setOnAction(event -> onLogout());
     }
 
     private void onDashboard(){ // this sets the flag for which item we have selected in the factory to dashboard essentially
@@ -49,5 +51,16 @@ public class ClosedSystemMenuController implements Initializable {
 
     private void onAccounts(){
         Model.getInstance().getViewFactory().getClosedSystemSelectedMenuItem().set(ClosedSystemMenuOptions.ACCOUNTS);
+    }
+
+    private void onLogout(){
+        // get stage
+        Stage stage = (Stage) dashboard_btn.getScene().getWindow();
+        // close the closed system window
+        Model.getInstance().getViewFactory().closeStage(stage);
+        // show login window
+        Model.getInstance().getViewFactory().showLoginWindow();
+        // set the login credentials flag to false to prevent logging in with bad credentials
+        Model.getInstance().setClosedSystemLoginSuccessFlag(false);
     }
 }

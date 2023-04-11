@@ -47,7 +47,8 @@ public class AccountsController implements Initializable {
     public ChoiceBox visualTypeChoiceBox;
     public ScrollPane visualScrollPane;
     public VBox visualScrollPaneVBox;
-    public Button FormatButton;
+    public Button SaveReportButton;
+    public TextField SaveReportNameTextField;
 
     private List<Process> processesList;
 
@@ -201,48 +202,7 @@ public class AccountsController implements Initializable {
             }
         });
 
-        FormatButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                getTextFields();
 
-                for(int i = 0; i < textFieldsStatesNames.size(); i++){
-                    int controllerIndexOuter = (int) Math.ceil((i+1)/2);
-                    String name = textFieldsStatesNames.get(i);
-                    for (int j = 0; j < textFields.size(); j++){
-                        if((i != j) && (name == textFieldsStatesNames.get(j))){
-                            int controllerIndexInner = (int) Math.ceil((j+1)/2);
-                            int leftOrRightState = j%2;
-                            ProcessHolderController outerController = processControllers.get(controllerIndexOuter);
-                            ProcessHolderController innerController = processControllers.get(controllerIndexInner);
-                            if(leftOrRightState == 0){
-                                outerController.setS2pressure(textFields.get(i).get(0));
-                                innerController.setS1pressure(textFields.get(i).get(0));
-
-                                outerController.setS2volume(textFields.get(i).get(1));
-                                innerController.setS1Volume(textFields.get(i).get(1));
-
-                                outerController.setS2temperature(textFields.get(i).get(2));
-                                innerController.setS1temperature(textFields.get(i).get(2));
-                            }
-                            else{
-                                outerController.setS1pressure(textFields.get(i).get(0));
-                                innerController.setS2pressure(textFields.get(i).get(0));
-
-                                outerController.setS1Volume(textFields.get(i).get(1));
-                                innerController.setS2volume(textFields.get(i).get(1));
-
-                                outerController.setS1temperature(textFields.get(i).get(2));
-                                innerController.setS2temperature(textFields.get(i).get(2));
-                            }
-
-
-                        }
-                    }
-                }
-
-            }
-        });
 
         computeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

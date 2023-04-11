@@ -23,7 +23,19 @@ public class DatabaseDriver {
         ResultSet resultSet = null;
         try {
             statement = this.conn.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM Clients WHERE PayeeAddress = '"+ pAddress + "' AND Password = '"+ password+"';");
+            resultSet = statement.executeQuery("SELECT * FROM Clients WHERE PayeeAddress ='"+ pAddress + "' AND Password ='"+ password+"';");
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet getReportData(String pAddress, int limit){
+        Statement statement;
+        ResultSet resultSet = null;
+        try {
+            statement = this.conn.createStatement();
+            resultSet = statement.executeQuery("select * from Transactions where Sender ='"+pAddress+"' or Receiver ='"+pAddress+"' limit "+limit+";");
         } catch (SQLException e){
             e.printStackTrace();
         }

@@ -2,8 +2,11 @@ package com.example.capstone.Models;
 
 import com.example.capstone.Views.SystemType;
 import com.example.capstone.Views.ViewFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Model {
@@ -15,8 +18,10 @@ public class Model {
     private SystemType loginAccountType = SystemType.CLOSED_SYSTEM; // we auto set the system type to closed system when the user logs in
 
     // Closed System Data Section
-    private ClosedSystem closedSystem;
+    private final ClosedSystem closedSystem;
     private boolean closedSystemLoginSuccessFlag; // this is true if the closedSystem user passes the credentials check
+    private final ObservableList<Reports> latestReports;
+    private final ObservableList<Reports> allReports;
 
     // Open System Data Section
 
@@ -28,7 +33,8 @@ public class Model {
         // Closed System Data Section
         this.closedSystemLoginSuccessFlag = false;
         this.closedSystem = new ClosedSystem("", "", "", null, null, null);
-
+        this.latestReports = FXCollections.observableArrayList();
+        this.allReports = FXCollections.observableArrayList();
         // Open System Data Section
     }
 
@@ -95,6 +101,8 @@ public class Model {
                 LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
                 this.closedSystem.dateCreatedProperty().set(date);
 
+
+
                 this.closedSystemLoginSuccessFlag = true; // if we get this far and we know the database returned soemthing, then we know they were a valid user
             }
 
@@ -103,5 +111,43 @@ public class Model {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void prepareReports(ObservableList<Reports> report, int limit){
+        ResultSet resultSet = databaseDriver.getReportData(this.closedSystem.payeeAddressProperty().get(), limit);
+        try{
+            while (resultSet.next()){
+                String sender = resultSet.getString("Sender");
+                System.out.println(sender);
+                String receiver = resultSet.getString("Receiver");
+                System.out.println(receiver);
+                double amount = resultSet.getDouble("Amount");
+                System.out.println(amount);
+                String[] dateParts = resultSet.getString("Date").split("-");
+                LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
+                System.out.println(date);
+                String message = resultSet.getString("Message");
+                System.out.println(message);
+                report.add(new Reports(sender, receiver, amount, date, message));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLatestReports(){
+        prepareReports(this.latestReports, 4);
+    }
+
+    public ObservableList<Reports> getLatestReports(){
+        return latestReports;
+    }
+
+    public void setAllReports(){
+        prepareReports(this.allReports, -1); //making limit -1 returns all transactions
+    }
+
+    public ObservableList<Reports> getAllReports() {
+        return allReports;
     }
 }

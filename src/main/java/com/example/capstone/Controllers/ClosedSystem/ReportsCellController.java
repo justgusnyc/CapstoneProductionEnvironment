@@ -27,6 +27,12 @@ public class ReportsCellController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        sender_label.textProperty().bind(report.senderProperty());
+        receiver_label.textProperty().bind(report.receiveProperty());
+        amount_label.textProperty().bind(report.amountProperty().asString());
+        report_date_label.textProperty().bind(report.dateProperty().asString());
 
     }
+
+
 }
