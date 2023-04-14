@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -34,6 +35,8 @@ public class DashboardController implements Initializable {
         initLatestReportsList();
         transaction_listview.setItems(Model.getInstance().getLatestReports());
         transaction_listview.setCellFactory(e -> new ReportsCellFactory());
+
+        sendMoney_button.setOnAction(event -> onSendMoney());
     }
 
     public void bindData(){
@@ -51,4 +54,32 @@ public class DashboardController implements Initializable {
             Model.getInstance().setLatestReports(); // we are trying to avoid this list being appended every time we load the page, repeating many times
         }
     }
+
+    private void onSendMoney(){
+        String receiver = payee_field.getText(); // pAddress everywhere else
+        double amount = Double.parseDouble(amount_field.getText());
+        String message = message_field.getText();
+        String sender = Model.getInstance().getClosedSystem().payeeAddressProperty().get();
+        ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchClient(receiver);
+        try {
+            if(resultSet.isBeforeFirst()){
+                Model.getInstance().getDatabaseDriver().updateReport(receiver, amount, "ADD");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        // subtracting from senders savings account
+        Model.getInstance().getDatabaseDriver().updateReport(sender, amount, "SUB");
+        // update the savings account
+        Model.getInstance().getClosedSystem().savingsAccountProperty().get().setBalance(Model.getInstance().getDatabaseDriver().getSavingsAccountBalance(sender));
+        // record new transaction
+        Model.getInstance().getDatabaseDriver().newReport(sender, receiver, amount, message);
+        // clear the fields
+        payee_field.setText("");
+        amount_field.setText("");
+        message_field.setText("");
+
+    }
+
+
 }

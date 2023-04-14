@@ -28,4 +28,8 @@ public abstract class Account {
     public DoubleProperty balanceProperty() {
         return balance;
     }
+
+    public void setBalance(double balance){
+        this.balance.set(balance);
+    }
 }

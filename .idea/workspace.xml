@@ -7,19 +7,10 @@
     <list default="true" id="67647a5c-d74e-4c5e-847c-9631402e580e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mazebank.db" beforeDir="false" afterPath="$PROJECT_DIR$/mazebank.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemMenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportsCellController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportsCellController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ViewReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ViewReportsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/DatabaseDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/DatabaseDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Reports.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ReportsCellFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ReportsCellFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystemMenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystemMenu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
