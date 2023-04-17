@@ -1,11 +1,22 @@
 package com.example.capstone.Views;
 
-import com.example.capstone.Controllers.ClosedSystem.ReportsCellController;
+import com.example.capstone.Controllers.ClosedSystem.ReportCellController;
 import com.example.capstone.Models.Reports;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 
 public class ReportsCellFactory extends ListCell<Reports> {
+
+    private ListView<Reports> listView;
+
+    public ReportsCellFactory(){
+
+    }
+
+    public ReportsCellFactory(ListView<Reports> listView){
+        this.listView = listView;
+    }
 
 
     @Override
@@ -16,8 +27,8 @@ public class ReportsCellFactory extends ListCell<Reports> {
             setGraphic(null);
         }
         else{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/ReportsCell.fxml"));
-            ReportsCellController controller = new ReportsCellController(reports);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/ReportCell.fxml"));
+            ReportCellController controller = new ReportCellController(reports);
             loader.setController(controller);
             setText(null);
 

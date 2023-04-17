@@ -3,6 +3,7 @@ package com.example.capstone.Models;
 import com.example.capstone.Views.SystemType;
 import com.example.capstone.Views.ViewFactory;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
@@ -94,7 +95,7 @@ public class Model {
             if(resultSet.isBeforeFirst()){ // checks if the cursor at first row is at the last, if not empty then there is data
                 this.closedSystem.firstNameProperty().set(resultSet.getString("FirstName")); // getting the value with this column name
                 this.closedSystem.lastNameProperty().set(resultSet.getString("LastName"));
-                this.closedSystem.payeeAddressProperty().set(resultSet.getString("PayeeAddress"));
+                this.closedSystem.usernameAddressProperty().set(resultSet.getString("UsernameAddress"));
 
                 // below we are getting the date which we need to convert from a SQL format to a Java date object
                 String[] dateParts = resultSet.getString("Date").split("-");
@@ -114,21 +115,25 @@ public class Model {
     }
 
     private void prepareReports(ObservableList<Reports> report, int limit){
-        ResultSet resultSet = databaseDriver.getReportData(this.closedSystem.payeeAddressProperty().get(), limit);
+        ResultSet resultSet = databaseDriver.getReportData(limit);
         try{
             while (resultSet.next()){
-                String sender = resultSet.getString("Sender");
-                System.out.println(sender);
-                String receiver = resultSet.getString("Receiver");
-                System.out.println(receiver);
-                double amount = resultSet.getDouble("Amount");
-                System.out.println(amount);
-                String[] dateParts = resultSet.getString("Date").split("-");
-                LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
-                System.out.println(date);
-                String message = resultSet.getString("Message");
-                System.out.println(message);
-                report.add(new Reports(sender, receiver, amount, date, message));
+                int userID = databaseDriver.getCurrentUserId();
+                String reportName = resultSet.getString("report_name");
+                String cycle = resultSet.getString("cycle");
+                int numStates = resultSet.getInt("num_states");
+                double heat = resultSet.getDouble("heat");
+                double work = resultSet.getDouble("work");
+
+                report.add(new Reports(userID, reportName, cycle, numStates, heat, work));
+                report.addListener(new ListChangeListener<Reports>() {
+                    @Override
+                    public void onChanged(Change<? extends Reports> change) {
+//                        while (change.next()){
+//
+//                        }
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();

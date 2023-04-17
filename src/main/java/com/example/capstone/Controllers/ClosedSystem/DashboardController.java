@@ -59,7 +59,7 @@ public class DashboardController implements Initializable {
         String receiver = payee_field.getText(); // pAddress everywhere else
         double amount = Double.parseDouble(amount_field.getText());
         String message = message_field.getText();
-        String sender = Model.getInstance().getClosedSystem().payeeAddressProperty().get();
+        String sender = Model.getInstance().getClosedSystem().usernameAddressProperty().get();
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchClient(receiver);
         try {
             if(resultSet.isBeforeFirst()){
@@ -73,7 +73,7 @@ public class DashboardController implements Initializable {
         // update the savings account
         Model.getInstance().getClosedSystem().savingsAccountProperty().get().setBalance(Model.getInstance().getDatabaseDriver().getSavingsAccountBalance(sender));
         // record new transaction
-        Model.getInstance().getDatabaseDriver().newReport(sender, receiver, amount, message);
+//        Model.getInstance().getDatabaseDriver().newReport(sender, receiver, amount, message);
         // clear the fields
         payee_field.setText("");
         amount_field.setText("");

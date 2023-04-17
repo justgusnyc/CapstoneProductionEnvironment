@@ -3,6 +3,7 @@ package com.example.capstone.Controllers.ClosedSystem;
 import com.example.capstone.Models.Logic.Process;
 import com.example.capstone.Models.Logic.Solver;
 import com.example.capstone.Models.Logic.State;
+import com.example.capstone.Models.Model;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,6 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class AccountsController implements Initializable {
@@ -74,14 +77,17 @@ public class AccountsController implements Initializable {
     List<List<TextField>> textFields = new ArrayList<>();
     List<String> textFieldsStatesNames = new ArrayList<>();
 
+    private boolean cycleFlag;
+
+    private Map<String, List<List<TextField>>> connectedTextField = new HashMap<>();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         numProcessesChoice.setItems(maxProcesses);
 
         visualTypeChoiceBox.setItems(chartOptions);
-
-        Map<String, List<List<TextField>>> connectedTextField = new HashMap<>();
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -159,6 +165,7 @@ public class AccountsController implements Initializable {
 
         cycleYesButton.setOnAction(e -> {
             if(cycleYesButton.isSelected()) {
+                cycleFlag = true;
                 // Get the text fields list for the left most state
                 List<List<TextField>> textFieldsList = connectedTextField.get("State1");
                 List<TextField> stateLeftTextFields = textFieldsList.get(0);
@@ -179,6 +186,7 @@ public class AccountsController implements Initializable {
                 // Update the second state label of the last process controller
                 processControllers.get(lastIndex).setSecondStateLabel("State1");
             } else {
+                cycleFlag = false;
                 // Get the text fields list for the left most state
                 List<List<TextField>> textFieldsList = connectedTextField.get("State1");
                 List<TextField> stateLeftTextFields = textFieldsList.get(0);
@@ -258,6 +266,18 @@ public class AccountsController implements Initializable {
                 ProcessLayout.getChildren().clear();
                 visualScrollPane.setContent(null);
                 
+            }
+        });
+
+        SaveReportButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    onSaveReports();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
 
@@ -415,5 +435,46 @@ public class AccountsController implements Initializable {
                 }
             }
         }
+    }
+
+    private void onSaveReports() throws SQLException {
+        String reportName = this.SaveReportNameTextField.getText();
+        int numStates = connectedTextField.size();
+        double work = 0;
+        double heat = 0;
+
+        ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchReport(reportName);
+        if(cycleFlag){
+            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State 1");
+            try{
+                work = state1Data.getDouble("work"); // this should be changed to get it from the connectedTextField at some point
+                heat = state1Data.getDouble("heat");
+                if(resultSet.isBeforeFirst()){ // basically if the query looking for this report name already has a value, then we are gonna update it instead
+//                    Model.getInstance().getDatabaseDriver().updateReport();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // otherwise, if there are no results in that query, then we make a new report
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", heat, work);
+
+        }
+        else{
+            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State "+maxVal+1);
+            try{
+                work = state1Data.getDouble("work");
+                heat = state1Data.getDouble("heat");
+                if(resultSet.isBeforeFirst()){ // basically if the query looking for this report name already has a value, then we are gonna update it instead
+//                    Model.getInstance().getDatabaseDriver().updateReport();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // otherwise, if there are no results in that query, then we make a new report
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "No", heat, work);
+
+        }
+
+
     }
 }

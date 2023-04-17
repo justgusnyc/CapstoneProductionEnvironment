@@ -15,7 +15,7 @@ public class ViewReportsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initAllReportsList();
         viewReports_listview.setItems(Model.getInstance().getAllReports());
-        viewReports_listview.setCellFactory(e -> new ReportsCellFactory());
+        viewReports_listview.setCellFactory(e -> new ReportsCellFactory()); // just pass in the listview with the reportcellfactory constructor
     }
 
     private void initAllReportsList(){

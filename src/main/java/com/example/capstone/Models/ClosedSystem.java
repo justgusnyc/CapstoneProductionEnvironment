@@ -11,15 +11,15 @@ public class ClosedSystem {
 
     private final StringProperty firstName;
     private final StringProperty lastName;
-    private final StringProperty payeeAddress;
+    private final StringProperty usernameAddress;
     private final ObjectProperty<Account> checkingAccount;
     private final ObjectProperty<Account> savingsAccount;
     private final ObjectProperty<LocalDate> dateCreated;
 
-    public ClosedSystem(String fname, String lname, String paddress, Account cAccount, Account sAcount, LocalDate date){
+    public ClosedSystem(String fname, String lname, String username, Account cAccount, Account sAcount, LocalDate date){
         this.firstName = new SimpleStringProperty(this, "FirstName", fname);
         this.lastName = new SimpleStringProperty(this, "LastName", lname);
-        this.payeeAddress = new SimpleStringProperty(this, "PayeeAddress", paddress);
+        this.usernameAddress = new SimpleStringProperty(this, "UsernameAddress", username);
         this.savingsAccount = new SimpleObjectProperty<>(this, "SavingsAccount", sAcount);
         this.checkingAccount = new SimpleObjectProperty<>(this, "CheckingAccount", cAccount);
         this.dateCreated = new SimpleObjectProperty<>(this, "Date", date);
@@ -31,8 +31,8 @@ public class ClosedSystem {
         return lastName;
     }
 
-    public StringProperty payeeAddressProperty() {
-        return payeeAddress;
+    public StringProperty usernameAddressProperty() {
+        return usernameAddress;
     }
 
     public ObjectProperty<Account> checkingAccountProperty() {
