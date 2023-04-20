@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class AccountsController implements Initializable {
-//    public Label checking_account_number;
+    //    public Label checking_account_number;
 //    public Label transaction_limit;
 //    public Label checking_account_date;
 //    public Label checking_account_balance;
@@ -61,8 +61,8 @@ public class AccountsController implements Initializable {
 
     private ObservableList<String> chartOptions = FXCollections.observableArrayList("P-v", "T-v", "T-s", "P-h");
 
-    int [] state1Indexes = {1,2,3,4,5};
-    int [] state2Indexes = {2,3,4,5,6};
+    int[] state1Indexes = {1, 2, 3, 4, 5};
+    int[] state2Indexes = {2, 3, 4, 5, 6};
     private int maxVal;
 
     private BorderPane accountsView;
@@ -78,8 +78,11 @@ public class AccountsController implements Initializable {
     List<String> textFieldsStatesNames = new ArrayList<>();
 
     private boolean cycleFlag;
+    Map<String, List<TextField>> stateValuesMap = new HashMap<>();
 
     private Map<String, List<List<TextField>>> connectedTextField = new HashMap<>();
+
+    private Map<String, List<Double>> stateDataMap = new HashMap<>();
 
 
     @Override
@@ -93,7 +96,7 @@ public class AccountsController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number value, Number newValue) {
                 int max = maxProcesses.get(newValue.intValue());
-                switch(max) {
+                switch (max) {
                     case 1:
                         maxVal = 1;
                         break;
@@ -155,16 +158,16 @@ public class AccountsController implements Initializable {
                             }
                         }
                     }
-                } catch (Exception e){
+                    makeStateValuesMap();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
 
-
         cycleYesButton.setOnAction(e -> {
-            if(cycleYesButton.isSelected()) {
+            if (cycleYesButton.isSelected()) {
                 cycleFlag = true;
                 // Get the text fields list for the left most state
                 List<List<TextField>> textFieldsList = connectedTextField.get("State1");
@@ -206,10 +209,9 @@ public class AccountsController implements Initializable {
 
                 // Update the second state label of the last process controller
 
-                processControllers.get(lastIndex).setSecondStateLabel("State"+state2Indexes[maxVal-1]);
+                processControllers.get(lastIndex).setSecondStateLabel("State" + state2Indexes[maxVal - 1]);
             }
         });
-
 
 
         computeButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -234,8 +236,8 @@ public class AccountsController implements Initializable {
                     State stateRight = new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), controller.getSecondStateLabelString());
                     states.put(controller.getFirstStateLabelString(), stateLeft);
                     states.put(controller.getSecondStateLabelString(), stateRight);
-                    System.out.println("left "+stateLeft);
-                    System.out.println("right" +stateRight);
+                    System.out.println("left " + stateLeft);
+                    System.out.println("right " + stateRight);
 //                    System.out.println(stateLeft.getPressure());
                     Process process = new Process(states.get(controller.getSecondStateLabelString()), states.get(controller.getFirstStateLabelString()), controller.getProcessType());
 
@@ -265,7 +267,7 @@ public class AccountsController implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 ProcessLayout.getChildren().clear();
                 visualScrollPane.setContent(null);
-                
+
             }
         });
 
@@ -286,9 +288,6 @@ public class AccountsController implements Initializable {
         NumberAxis yAxis = new NumberAxis();
         chart = new LineChart<>(xAxis, yAxis);
         chart.setTitle("Visualization Presets");
-
-
-
 
 
 //        visualScrollPane.setContent(chart);
@@ -333,10 +332,9 @@ public class AccountsController implements Initializable {
         });
 
 
-
     }
 
-    public List<Process> processesList(){
+    public List<Process> processesList() {
         List<Process> ls = new ArrayList<>();
 
 
@@ -363,9 +361,9 @@ public class AccountsController implements Initializable {
         return ls;
     }
 
-    private void getTextFields(){
+    private void getTextFields() {
 
-        for(int i = 0; i < hboxParents.size(); i++){
+        for (int i = 0; i < hboxParents.size(); i++) {
             List<TextField> textsLeft = new ArrayList<>();
             List<TextField> textsRight = new ArrayList<>();
             String leftStateName = processControllers.get(i).getFirstStateLabelString();
@@ -396,8 +394,7 @@ public class AccountsController implements Initializable {
     }
 
 
-
-    public List<HBox> getHBoxes(HBox hbox){
+    public List<HBox> getHBoxes(HBox hbox) {
         List<HBox> hboxList = new ArrayList<>();
         for (Node child : hbox.getChildren()) {
             if (child instanceof HBox) {
@@ -407,7 +404,7 @@ public class AccountsController implements Initializable {
         return hboxList;
     }
 
-    public void compute(){
+    public void compute() {
 
     }
 
@@ -438,36 +435,48 @@ public class AccountsController implements Initializable {
     }
 
     private void onSaveReports() throws SQLException {
+        int currentReportID;
+//        if(Model.getInstance().getDatabaseDriver().getCurrentReportID() == 0){
+//            currentReportID = 1;
+//        }
+//        else{
+            currentReportID = Model.getInstance().getDatabaseDriver().getCurrentReportID();
+//        }
+        System.out.println("in accounts: "+currentReportID);
         String reportName = this.SaveReportNameTextField.getText();
-        int numStates = connectedTextField.size();
+        int numStates = stateValuesMap.size();
         double work = 0;
         double heat = 0;
+        double S = 0;
+        double H = 0;
+        double U = 0;
+
+
 
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchReport(reportName);
-        if(cycleFlag){
+        if (cycleFlag) {
             ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State 1");
-            try{
-                work = state1Data.getDouble("work"); // this should be changed to get it from the connectedTextField at some point
+            try {
+                work = state1Data.getDouble("work"); // this should be changed to get it from the connectedTextField at some point, there just isn't heat and work in there yet
                 heat = state1Data.getDouble("heat");
-                if(resultSet.isBeforeFirst()){ // basically if the query looking for this report name already has a value, then we are gonna update it instead
+                if (resultSet.isBeforeFirst()) { // basically if the query looking for this report name already has a value, then we are gonna update it instead
 //                    Model.getInstance().getDatabaseDriver().updateReport();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
             Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", heat, work);
 
-        }
-        else{
-            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State "+maxVal+1);
-            try{
+        } else {
+            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State " + maxVal + 1);
+            try {
                 work = state1Data.getDouble("work");
                 heat = state1Data.getDouble("heat");
-                if(resultSet.isBeforeFirst()){ // basically if the query looking for this report name already has a value, then we are gonna update it instead
+                if (resultSet.isBeforeFirst()) { // basically if the query looking for this report name already has a value, then we are gonna update it instead
 //                    Model.getInstance().getDatabaseDriver().updateReport();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
@@ -475,6 +484,64 @@ public class AccountsController implements Initializable {
 
         }
 
+        ResultSet statesInReport = Model.getInstance().getDatabaseDriver().getStateDataByReportID(currentReportID);
+//        if(statesInReport.isBeforeFirst()){
+//            Model.getInstance().getDatabaseDriver().updateStates();
+//        }
+//        else{
+            for (Map.Entry<String, List<TextField>> entry : stateValuesMap.entrySet()) {
+                String stateName = entry.getKey();
+                List<TextField> textFieldList = entry.getValue();
+
+                double currentPressure = Double.parseDouble(textFieldList.get(0).getText());
+                double currentVolume = Double.parseDouble(textFieldList.get(1).getText());
+                double currentTemp = Double.parseDouble(textFieldList.get(2).getText());
+
+//                System.out.println("State: " + stateName);
+//                System.out.println("Current Pressure: " + currentPressure);
+//                System.out.println("Current Volume: " + currentVolume);
+//                System.out.println("Current Temperature: " + currentTemp);
+
+                Model.getInstance().getDatabaseDriver().saveStateToDB(currentReportID, stateName, currentPressure, currentVolume, currentTemp, heat, work, S, H, U);
+            }
+//        }
+        }
+
+
+    public void makeStateValuesMap () {
+
+        for (Map.Entry<String, List<List<TextField>>> entry : connectedTextField.entrySet()) {
+            String key = entry.getKey();
+            List<List<TextField>> value = entry.getValue();
+            List<TextField> updatedValue = new ArrayList<>();
+
+            if (!value.isEmpty()) {
+                List<TextField> innerList = value.get(0);
+                updatedValue.addAll(innerList);
+            }
+            this.stateValuesMap.put(key, updatedValue);
+        }
 
     }
+
+
+
+    public void populateTextFields() {
+
+        for (int i = 0; i < processControllers.size(); i++) {
+            ProcessHolderController controller = processControllers.get(i);
+
+            controller.setDataByMap(this.stateDataMap);
+            System.out.println("Controller first label: "+controller.getFirstStateLabelString());
+        }
+    }
+
+    public Map<String, List<TextField>> getStateValuesMap() {
+        return this.stateValuesMap;
+    }
+
+    public void setStateDataMap(Map<String, List<Double>> stateDataMap) {
+        this.stateDataMap = stateDataMap;
+    }
 }
+

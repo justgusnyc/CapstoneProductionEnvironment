@@ -21,7 +21,7 @@
         <Label text="Pressure" />
         <TextField fx:id="S1pressure" />
         <Label text="Volume" />
-        <TextField fx:id="S1Volume" />
+        <TextField fx:id="S1volume" />
         <Label text="Temperature" />
         <TextField fx:id="S1temperature" />
         <Label text="S" />

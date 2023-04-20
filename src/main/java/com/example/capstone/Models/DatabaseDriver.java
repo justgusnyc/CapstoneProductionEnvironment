@@ -125,6 +125,21 @@ public class DatabaseDriver {
         return resultSet;
     }
 
+    public ResultSet getStatesByReportName(String reportName){
+        ResultSet reports = searchReport(reportName);
+        Statement statement;
+        ResultSet resultSet = null;
+        try {
+            int reportID = reports.getInt("report_id");
+            statement = this.conn.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM States where report_id="+reportID+";");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
     public ResultSet getStateDataByName(String stateLabel){
         Statement statement;
         ResultSet resultSet = null;
@@ -137,7 +152,19 @@ public class DatabaseDriver {
         return resultSet;
     }
 
-    public int getCurrentReportID() {
+    public ResultSet getStateDataByReportID(int reportId) {
+        Statement statement;
+        ResultSet resultSet = null;
+        try {
+            statement = this.conn.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM States WHERE report_id = " + reportId + ";");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public int makeCurrentReportID() {
         if (currentReportID == 0) {
             Statement statement;
             ResultSet resultSet = null;
@@ -153,14 +180,37 @@ public class DatabaseDriver {
         return currentReportID;
     }
 
-    public void saveStateToDB(int reportID, String stateName, double pressure, double temp, double volume, double heat, double work, double S, double H, double U){
+    public void saveStateToDB(int reportID, String stateName, double pressure, double volume, double temp, double heat, double work, double S, double H, double U){
         Statement statement;
         try{
             statement = this.conn.createStatement();
             LocalDate date = LocalDate.now();
             statement.executeUpdate("INSERT INTO "+
-                    "States(report_id, state_name, pressure, temp, volume, heat, work, S, H, U) "+
-                    "VALUES ("+currentReportID+", '"+stateName+"', "+pressure+", "+temp+", "+heat+", "+work+")");
+                    "States(state_name, pressure, volume, temp, heat, work, S, H, U) "+
+                    "VALUES ('"+stateName+"', "+pressure+", "+volume+", "+temp+", "+heat+", "+work+", "+S+", "+H+", "+U+")");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public void newReport(String reportName, int numStates, String cycleYesNo, double heat, double work){
+//        Statement statement;
+//        try{
+//            statement = this.conn.createStatement();
+//            LocalDate date = LocalDate.now();
+//            statement.executeUpdate("INSERT INTO "+
+//                    "Reports(user_id, report_name, cycle, num_states, heat, work) "+
+//                    "VALUES ("+currentUserId+", '"+reportName+"', '"+cycleYesNo+"', "+numStates+", "+heat+", "+work+")");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void deleteStateValuesByReportID(int reportID) {
+        Statement statement;
+        try {
+            statement = this.conn.createStatement();
+            statement.executeUpdate("DELETE FROM States WHERE report_id = " + reportID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -168,6 +218,14 @@ public class DatabaseDriver {
 
     public int getCurrentUserId() {
         return currentUserId;
+    }
+
+    public int getCurrentReportID(){
+        this.currentReportID = makeCurrentReportID();
+        System.out.println(makeCurrentReportID());
+        System.out.println(this.currentReportID);
+
+        return this.currentReportID;
     }
 }
 

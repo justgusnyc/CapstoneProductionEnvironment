@@ -34,7 +34,7 @@ public class ProcessHolderController implements Initializable {
     @FXML
     public TextField S1pressure;
     @FXML
-    public TextField S1Volume;
+    public TextField S1volume;
     @FXML
     public TextField S1temperature;
     @FXML
@@ -91,8 +91,6 @@ public class ProcessHolderController implements Initializable {
 //        firstStateLabel.setText(state1.getStateName());
 //        secondStateLabel.setText(state2.getStateName());
 
-
-
 //        S2U.setText("");
 //        S2S.setText("");
 //        S2H.setText("");
@@ -100,7 +98,7 @@ public class ProcessHolderController implements Initializable {
 //        S1S.setText("");
 //        S1U.setText("");
         S1pressure.setText(""+state1.getPressure());
-        S1Volume.setText(""+state1.getVolume());
+        S1volume.setText(""+state1.getVolume());
         S1temperature.setText(""+state1.getTemp());
         S2pressure.setText(""+state2.getPressure());
         S2volume.setText(""+state2.getVolume());
@@ -111,9 +109,35 @@ public class ProcessHolderController implements Initializable {
 //        System.out.println(statesSolved);
 //        System.out.println(statesSolved.get(0).getPressure());
 //        System.out.println(statesSolved.get(1).getPressure());
+    }
 
+    public void setDataByMap(Map<String, List<Double>> stateDataMap){
+        for (Map.Entry<String, List<Double>> stateData : stateDataMap.entrySet()) {
+            String stateName = stateData.getKey();
+            List<Double> stateValues = stateData.getValue();
 
+            System.out.println("Statename before match: " + stateName);
+            System.out.println("first label phc: " + this.getFirstStateLabelString());
+            System.out.println("second label: " + this.getSecondStateLabelString());
 
+            if (stateName.equals(this.getFirstStateLabelString())) {
+                // Do something when the state name matches the input
+                System.out.println("Match found for state name: " + stateName);
+                System.out.println("Values for " + stateName + ": " + stateValues);
+
+                S1pressure.setText(""+stateValues.get(0));
+                S1volume.setText(""+stateValues.get(1));
+                S1temperature.setText(""+stateValues.get(2));
+
+            } else if(stateName.equals(this.getSecondStateLabelString())){
+                // Do something else when the state name does not match the input
+                System.out.println("No match found for state name: " + stateName);
+
+                S2pressure.setText(""+stateValues.get(0));
+                S2volume.setText(""+stateValues.get(1));
+                S2temperature.setText(""+stateValues.get(2));
+            }
+        }
 
 
     }
@@ -127,7 +151,7 @@ public class ProcessHolderController implements Initializable {
         S1S.setText("");
         S1U.setText("");
         S1pressure.setText("");
-        S1Volume.setText("");
+        S1volume.setText("");
         S1temperature.setText("");
         S2pressure.setText("");
         S2volume.setText("");
@@ -164,7 +188,7 @@ public class ProcessHolderController implements Initializable {
 //        double S1uIn = makeDouble(S1U);
         double S1pressureIn = makeDouble(S1pressure);
         System.out.println(S1pressureIn);
-        double S1volumeIn = makeDouble(S1Volume);
+        double S1volumeIn = makeDouble(S1volume);
         double S1temperatureIn = makeDouble(S1temperature);
         double S2pressureIn = makeDouble(S2pressure);
         double S2volumeIn = makeDouble(S2volume);
@@ -240,8 +264,8 @@ public class ProcessHolderController implements Initializable {
         S1temperature = s1temperature;
     }
 
-    public void setS1Volume(TextField s1Volume) {
-        S1Volume = s1Volume;
+    public void setS1volume(TextField s1volume) {
+        S1volume = s1volume;
     }
 
     public void setS2pressure(TextField s2pressure) {
@@ -264,8 +288,8 @@ public class ProcessHolderController implements Initializable {
         return S1temperature;
     }
 
-    public TextField getS1Volume() {
-        return S1Volume;
+    public TextField getS1volume() {
+        return S1volume;
     }
 
     public TextField getS2pressure() {
@@ -295,16 +319,20 @@ public class ProcessHolderController implements Initializable {
     public List<TextField> getStateLeftTextFields(){
         List<TextField> leftTextFields = new ArrayList<>();
         leftTextFields.add(S1pressure);
+        leftTextFields.add(S1volume);
         leftTextFields.add(S1temperature);
-        leftTextFields.add(S1Volume);
         return leftTextFields;
     }
 
     public List<TextField> getStateRightTextFields(){
         List<TextField> rightTextFields = new ArrayList<>();
         rightTextFields.add(S2pressure);
-        rightTextFields.add(S2temperature);
         rightTextFields.add(S2volume);
+        rightTextFields.add(S2temperature);
         return rightTextFields;
     }
+
+//    public void clearStateValues() {
+//
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.capstone.Views;
 
+import com.example.capstone.Controllers.ClosedSystem.AccountsController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,6 +31,7 @@ public class ViewFactory {
     private AnchorPane dashboardView;
     private AnchorPane viewReportsView;
     private BorderPane accountsView;
+    private AccountsController accountsController;
 
     // open system views
     private final StringProperty openSystemSelectedMenuItem;
@@ -80,7 +82,10 @@ public class ViewFactory {
 
         if(accountsView == null){
             try{
-                accountsView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Accounts.fxml")).load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Accounts.fxml"));
+                accountsView = loader.load();
+                accountsController = loader.getController();
+
 
             } catch (Exception e){
                 e.printStackTrace();
@@ -142,5 +147,9 @@ public class ViewFactory {
 
     public void closeStage(Stage stage){ // closes a stage (window) for us as a utility function
         stage.close();
+    }
+
+    public AccountsController getAccountsController() {
+        return this.accountsController;
     }
 }
