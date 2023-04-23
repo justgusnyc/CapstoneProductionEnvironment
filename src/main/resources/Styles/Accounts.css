@@ -1,13 +1,13 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');*/
 
-
-.accounts_view_container{
-    -fx-background-color: #EEEEEE;
+.accounts_view_container {
+    -fx-background-color: #FFFFFF;
 }
 
-.accounts_view_container Text{
-    -fx-fill: #888888;
+.accounts_view_container Text {
+    -fx-fill: #132A13;
     -fx-font-size: 1.4em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
 }
 
 .accounts_view_container VBox {
@@ -30,18 +30,20 @@
     -fx-pref-width: 230;
     -fx-pref-height: 35;
     -fx-background-color: #FFFFFF;
-    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 0, 3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
 }
 
 .accounts_view_container Button {
-    -fx-background-color: linear-gradient(to right, #132A13, #253F25);
+    -fx-background-color: linear-gradient(to right, #2C5364, #203A43);
     -fx-pref-width: 230;
-    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 0, 3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
     -fx-font-size: 1.5em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
     -fx-text-fill: #FFFFFF;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 .accounts_view_container Button:hover {
+    -fx-background-color: linear-gradient(to right, #203A43, #2C5364);
     -fx-cursor: hand;
 }

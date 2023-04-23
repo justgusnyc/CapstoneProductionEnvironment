@@ -26,8 +26,8 @@ public class ClosedSystemController implements Initializable {
         Model.getInstance().getViewFactory().getClosedSystemSelectedMenuItem().addListener((observableValue, oldVal, newVal) -> {
             switch (newVal){
                 case DASHBOARD -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getDashboardView());
-                case ACCOUNTS -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getAccountsView());
-                default -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getViewReportsView());
+                case VIEWREPORTS -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getViewReportsView());
+                default -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getAccountsView());
             }
         });
 

@@ -25,6 +25,8 @@ public class State {
 
     private double tOriginal;
 
+    private double n;
+
     private String stateName;
 
     //private double heat;
@@ -55,7 +57,9 @@ public class State {
         this.tOriginal = T;
     }
 
-    public synchronized List<Double> solve() {
+
+
+    public synchronized List<Double> solve(){
         // throw an exception for one more than one value is 0, because that is not solvable
         // This is for a ideal gas with cold air
 
@@ -89,7 +93,7 @@ public class State {
 
         }
 
-        else {
+        else if(v==0){
 
             v = (R * T) / P;
 
@@ -112,46 +116,31 @@ public class State {
 
     }
 
-    public boolean assertState() { // main purpose of the method is to assert that the users input matches our calculated result, if there are any
-        // discrepancies, AKA if it does not match what they inputted (our values), then we should return false, if it does match return true
+    public boolean assertState() {
+        double tolerance = 1e-6;
 
-        boolean pFlag = this.getPFlag();
-        boolean tFlag = this.getTFlag();
-        boolean vFlag = this.getVFlag();
-
-//        System.out.println("Pflag: " + pFlag);
-//        System.out.println("tflag: " + tFlag);
-//        System.out.println("vflag: " + vFlag);
-
-        if (pFlag == false) {
-//            System.out.println(this.toString()+" state temp: " + this.getTemp() + " Temp original: " + this.getTOriginal());
-//            System.out.println(this.toString()+" state volume: " + this.getVolume() + " volume original: " + this.getVOriginal());
-//            System.out.println(this.toString()+" pressure: " + this.getPressure() + " pressure original: " + this.getPOriginal());
-            if (this.getTemp() != this.getTOriginal() || this.getVolume() != this.getVOriginal()) {
+        if (!pGiven) {
+            if (Math.abs(this.getTemp() - this.getTOriginal()) > tolerance ||
+                    Math.abs(this.getVolume() - this.getVOriginal()) > tolerance) {
                 return false;
             }
-        }
-
-        else if (tFlag == false) {
-//            System.out.println(this.toString()+" state temp: " + this.getTemp() + " Temp original: " + this.getTOriginal());
-//            System.out.println(this.toString()+" state volume: " + this.getVolume() + " volume original: " + this.getVOriginal());
-//            System.out.println(this.toString()+" pressure: " + this.getPressure() + " pressure original: " + this.getPOriginal());
-            if (this.getPressure() != this.getPOriginal() || this.getVolume() != this.getVOriginal()) {
+        } else if (!tGiven) {
+            if (Math.abs(this.getPressure() - this.getPOriginal()) > tolerance ||
+                    Math.abs(this.getVolume() - this.getVOriginal()) > tolerance) {
                 return false;
             }
-        }
-
-        else {
-//            System.out.println(this.toString()+" state temp: " + this.getTemp() + " Temp original: " + this.getTOriginal());
-//            System.out.println(this.toString()+" state volume: " + this.getVolume() + " volume original: " + this.getVOriginal());
-//            System.out.println(this.toString()+" pressure: " + this.getPressure() + " pressure original: " + this.getPOriginal());
-            if (this.getTemp() != this.getTOriginal() || this.getPressure() != this.getPOriginal()) {
+        } else {
+            if (Math.abs(this.getTemp() - this.getTOriginal()) > tolerance ||
+                    Math.abs(this.getPressure() - this.getPOriginal()) > tolerance) {
                 return false;
             }
         }
 
         return true;
     }
+
+
+
 
     @Override
     public String toString(){
@@ -171,22 +160,29 @@ public class State {
 
         // should any single number ever be 0?
         boolean flag = true;
-        if(this.getTemp() == 0 || this.getTemp() == Double.NaN){
+        if (this.getTemp() == 0 || Double.isNaN(this.getTemp())) {
             flag = false;
-        }
-        else if(this.getPressure() == 0 || this.getPressure() == Double.NaN){
+        } else if (this.getPressure() == 0 || Double.isNaN(this.getPressure())) {
             flag = false;
-        }
-        else if(this.getPressure() == 0 || this.getPressure() == Double.NaN){
+        } else if (this.getVolume() == 0 || Double.isNaN(this.getVolume())) {
             flag = false;
-        }
-        else if(this.assertState() == false){
+        } else if (!this.assertState()) {
             flag = false;
         }
         return flag;
     }
 
+    public int countKnownProperties() {
+        int count = 0;
+        if (P != 0) count++;
+        if (T != 0) count++;
+        if (v != 0) count++;
+        return count;
+    }
+
+
     // setters
+
     public synchronized void setPressure(double P) {
 
         this.P = P;
@@ -232,6 +228,7 @@ public class State {
     }
 
 
+
     // getters
 
     public List<Double> getValues(){
@@ -243,6 +240,15 @@ public class State {
         return vals;
 
     }
+    public boolean hasAllValues() {
+        int count = 0;
+        for (double element : this.getValues())
+            if (element != 0) { //because in our program 0 is "null"
+                count++;
+            }
+        return count == this.getValues().size();
+    }
+
     public double getPressure() {
 
         return this.P;
@@ -289,7 +295,4 @@ public class State {
         return this.vOriginal;
     }
 
-    public String getStateName() {
-        return stateName;
-    }
 }

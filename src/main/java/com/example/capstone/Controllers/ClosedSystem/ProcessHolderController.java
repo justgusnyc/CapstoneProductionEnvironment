@@ -65,6 +65,13 @@ public class ProcessHolderController implements Initializable {
 
     private char processType;
 
+//    private ProcessHolderController processHolderController;
+
+
+//    public void injectIntoMainController(AccountsController mainController) { // what does all of this do?
+//        mainController.setProcessHolderController(this);
+//    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -81,11 +88,14 @@ public class ProcessHolderController implements Initializable {
                 processType = processTypes.get(newChoiceIndex.intValue());
             }
         });
-
-
     }
 
+//    public void setProcessHolderController(ProcessHolderController processHolderController) {
+//        this.processHolderController = processHolderController;
+//    } // why do we need this method here?
+
     public void setData(Process process){
+//        S1pressure.requestLayout(); what would this do here?
         State state1 = process.getState1();
         State state2 = process.getState2();
 //        firstStateLabel.setText(state1.getStateName());
@@ -136,6 +146,37 @@ public class ProcessHolderController implements Initializable {
                 S2pressure.setText(""+stateValues.get(0));
                 S2volume.setText(""+stateValues.get(1));
                 S2temperature.setText(""+stateValues.get(2));
+            }
+        }
+
+
+    }
+
+    public void setValuesAfterCompleteSolve(Map<String, List<Double>> completeSolve){
+        for (Map.Entry<String, List<Double>> stateData : completeSolve.entrySet()) {
+            String stateName = stateData.getKey();
+            List<Double> stateValues = stateData.getValue();
+
+            System.out.println("Statename before match: " + stateName);
+            System.out.println("first label phc: " + this.getFirstStateLabelString());
+            System.out.println("second label: " + this.getSecondStateLabelString());
+
+            if (stateName.equals(this.getFirstStateLabelString())) {
+                // Do something when the state name matches the input
+                System.out.println("Match found for state name: " + stateName);
+                System.out.println("Values for " + stateName + ": " + stateValues);
+
+                S1pressure.setText(""+stateValues.get(1));
+                S1volume.setText(""+stateValues.get(2));
+                S1temperature.setText(""+stateValues.get(0));
+
+            } else if(stateName.equals(this.getSecondStateLabelString())){
+                // Do something else when the state name does not match the input
+                System.out.println("No match found for state name: " + stateName);
+
+                S2pressure.setText(""+stateValues.get(1));
+                S2volume.setText(""+stateValues.get(2));
+                S2temperature.setText(""+stateValues.get(0));
             }
         }
 

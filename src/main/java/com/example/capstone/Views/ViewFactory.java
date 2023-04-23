@@ -28,7 +28,7 @@ public class ViewFactory {
 
     // Closed System views
     private final ObjectProperty<ClosedSystemMenuOptions> closedSystemSelectedMenuItem;
-    private AnchorPane dashboardView;
+    private StackPane dashboardView; // why was this changed from AnchorPane to StackPane?
     private AnchorPane viewReportsView;
     private BorderPane accountsView;
     private AccountsController accountsController;
@@ -55,7 +55,7 @@ public class ViewFactory {
         return closedSystemSelectedMenuItem;
     }
 
-    public AnchorPane getDashboardView(){
+    public StackPane getDashboardView(){
         if(dashboardView == null){ // if we do not have the view then we load the correct fxml
             try{ // we first check is dashboard is equal to null, every time that the user goes from dashboard to somewhere else and comes back, we should be able to use this instantiation without loading it again to save computation
                 // basically if the object has already been created then we use it, makes app faster
@@ -103,7 +103,7 @@ public class ViewFactory {
         }
 
         Stage stage = new Stage();
-        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/Icon.png")))); // returns observable list of images, how we add an icon as well to the top
+        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/slu-logomark-blue-rgb.png")))); // returns observable list of images, how we add an icon as well to the top
         // border part of the application
         stage.setResizable(true); // LATER ON WE WILL NEED TO DELETE this and make all the css resizeable
         stage.setScene(scene);
@@ -121,7 +121,7 @@ public class ViewFactory {
         pane.getChildren().add(hBox);
         Scene scene = new Scene(pane, 300, 100);
         Stage stage = new Stage();
-        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/Icon.png")))); // returns observable list of images, how we add an icon as well to the top
+        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/slu-logomark-blue-rgb.png")))); // returns observable list of images, how we add an icon as well to the top
         stage.setResizable(true);
         stage.initModality(Modality.APPLICATION_MODAL); // makes it so you cannot click away when it opens
         stage.setTitle("Expanded Report");
@@ -134,6 +134,13 @@ public class ViewFactory {
     public void showLoginWindow(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Login.fxml"));
         createStage(loader); // we just call this function to load each individual fxml file when we need it
+    }
+
+    public void showRegisterWindow(){
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Register.fxml"));
+        createStage(loader); // we just call this function to load each individual fxml file when we need it
+
     }
 
 

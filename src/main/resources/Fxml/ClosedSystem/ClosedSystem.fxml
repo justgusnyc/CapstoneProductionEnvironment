@@ -13,17 +13,20 @@ using premade functions within the ViewFactory class section that has to do with
 we added a fx id to this borden pane so that we can reference it when we need to change the middle section of the border
 pane when we switch scenes through the menu-->
 
-<BorderPane fx:id="closedSystemParent" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml">
-
+<BorderPane fx:id="closedSystemParent" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <left>
-        <fx:include source="ClosedSystemMenu.fxml"/>
+        <AnchorPane BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER_LEFT" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="150" prefWidth="200" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="ClosedSystemMenu.fxml" VBox.vgrow="ALWAYS" />
+            </VBox>
+        </AnchorPane>
     </left>
 
     <center>
-        <fx:include source="Dashboard.fxml"/>
-<!--        <fx:include source="ProcessHolder.fxml"/>-->
+        <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="Accounts.fxml" HBox.hgrow="ALWAYS" />
+            </HBox>
+        </AnchorPane>
     </center>
-
-
 </BorderPane>

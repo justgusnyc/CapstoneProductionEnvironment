@@ -34,6 +34,22 @@ public class DatabaseDriver {
         return resultSet;
     }
 
+    public boolean addUser(String firstName, String lastName, String user, String password) {
+        try {
+            String sql = "INSERT INTO Clients (FirstName, LastName, PayeeAddress, Password, Date) VALUES (?, ?, ?, ?, strftime('%Y-%m-%d', 'now'))";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, user);
+            pstmt.setString(4, password);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public ResultSet getReportData(int limit){
         Statement statement;
         ResultSet resultSet = null;

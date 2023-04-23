@@ -36,9 +36,9 @@
         <ChoiceBox fx:id="ProcessPicker" />
         <Label prefHeight="50.0" text="N value" />
         <TextField fx:id="NValue" />
-      <padding>
-         <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
-      </padding>
+        <padding>
+            <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+        </padding>
     </VBox>
     <VBox fx:id="State2Container" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
         <padding>

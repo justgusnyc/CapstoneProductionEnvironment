@@ -21,8 +21,11 @@ public class LoginController implements Initializable {
     public TextField username_address_field;
     public TextField password_field;
     public Button login_btn;
+
+    public Button register_btn;
     public Label error_lbl;
     public ImageView IconLoginImageView;
+    public Label username_address_label1;
 
 
     // we want to make a singleton of the view factory so the entire app uses only one object
@@ -31,7 +34,7 @@ public class LoginController implements Initializable {
     @Override // so once this fxml is initialized, if you click the login button then you access the singleton view factory instantiation
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        IconLoginImageView.setImage(new Image(String.valueOf(getClass().getResource("/Images/Icon.png"))));
+        IconLoginImageView.setImage(new Image(String.valueOf(getClass().getResource("/Images/newlogoclean.png"))));
         system_selector.setItems(FXCollections.observableArrayList(SystemType.CLOSED_SYSTEM,SystemType.OPEN_SYSTEM)); // now we are actually setting the choice box with these options with an observable array list which is exactly what it sounds like
         system_selector.setValue(Model.getInstance().getViewFactory().getLoginSystemType()); // this sets the actual account type to whatever it has been set to in the view factory, and we
         //have it set to closed systems by default in the view factory constructor
@@ -40,6 +43,7 @@ public class LoginController implements Initializable {
         // set the observable (what choice you made) to whatever it's value is that is has been given
 
         login_btn.setOnAction(event -> onLogin()); // now we reference the onLogin method when the login button is clicked
+        register_btn.setOnAction(event -> Model.getInstance().getViewFactory().showRegisterWindow());
     }
 
 
@@ -47,7 +51,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) error_lbl.getScene().getWindow(); // what we are doing because of this issue below, not having access to the stage
         // what we do is grab any id/controller, then get the scene it is in, then get it's current window, although this leaves us with a window type object
         // , this is why we cast to a type of Stage, because they are practically the same object a window and a stage, contains the same data so we just cast to solve our problem
-         // this would all work out so simply if we could pass in the specific
+        // this would all work out so simply if we could pass in the specific
         // stage that the login page is using, however it is not so simple to get the stage that is actually being used by the login window
         if(Model.getInstance().getViewFactory().getLoginSystemType() == SystemType.CLOSED_SYSTEM){
             // Evaluate Closed System Login Credentials

@@ -1,87 +1,118 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');*/
 
-
-.login_container{
-    -fx-background-color: #EEEEEE;
+/* Add keyframe animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-/* Logo Container Styles*/
+@keyframes slideIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-.login_logo_container{
-    -fx-background-color: #132A13;
+.login_container {
+    -fx-background-color: #F1F1F1;
+    -fx-pref-height: 100%;
+    -fx-pref-width: 100%;
+    animation: fadeIn 1s;
+}
+
+/* Logo Container Styles */
+
+.login_logo_container {
+    -fx-background-color: #003da5;
     -fx-alignment: center;
+    animation: slideIn 1s;
 }
 
-.login_logo_container Text{
+.login_logo_container Text {
     -fx-font-size: 2em;
     -fx-fill: #FFFFFF;
+    animation: fadeIn 1s;
 }
-/* If it is defined under shapes in SceneBuilder,
-then we use the CSS command fill, if it is in containers, or controls then you use a background color effect*/
 
-.login_logo_container FontAwesomeIconView{
-    -fx-fill: #ECF39E;
+.login_logo_container FontAwesomeIconView {
+    -fx-fill: #003da5;
+    animation: fadeIn 1s;
 }
 
 /* Account selector Choicebox Styles */
-.account_selector{
+.account_selector {
     -fx-background-color: #ECF39E;
+    transition: background-color 0.3s;
 }
 
+.account_selector:hover {
+    -fx-background-color: #D9E063;
+}
 
-/* Label contained within the account selector*/
-.account_selector .label{
-    -fx-text-fill: #132A13;
+/* Label contained within the account selector */
+.account_selector .label {
+    -fx-text-fill: #2C5364;
     -fx-font-size: 1.1em;
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-.account_selector .arrow{
-    -fx-background-color: #132A13;
+.account_selector .arrow {
+    -fx-background-color: #2C5364;
 }
 
-/* we used an id here in stead of the classes (.) to impact all choiceboxes*/
-#choice-box-popup-menu{
+/* we used an id here instead of the classes (.) to impact all choiceboxes */
+#choice-box-popup-menu {
     -fx-background-color: #ECF39E;
 }
 
 /* Login form styles */
 
-#choice-prompt-text{
+#choice-prompt-text {
     -fx-font-weight: 400;
 }
 
-.login_form_container{
+.login_form_container {
     -fx-spacing: 15;
     -fx-alignment: top_left;
+    animation: slideIn 1s;
 }
 
-/* here just saying Label is actually the same as .label for javafx css*/
-.login_form_container Label{
+.login_form_container Label {
     -fx-font-size: 1.1em;
     -fx-font-weight: bold;
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-.input_field{
+.input_field {
     -fx-background-color: white;
     -fx-pref-height: 35;
     -fx-font-size: 1.2em;
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-.login_form_container Button{
-    -fx-background-color: #132A13;
+.login_form_container Button {
+    -fx-background-color: #003da5;
     -fx-text-fill: #FFFFFF;
-    -fx-pref-width: 350;
-    -fx-pref-height: 30;
+    -fx-pref-width: 5000000%;
+    -fx-pref-height: 40%;
     -fx-font-size: 1.2em;
+    -fx-font-family: "Poppins", sans-serif;
+    transition: background-color 0.3s;
 }
 
-.login_form_container Button:hover{
-    -fx-cursor: hand; /* in normal css this would usually be pointer*/
+.login_form_container Button:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #0063D8;
 }
 
 .error_lbl {
     -fx-text-fill: #FF0000;
 }
-
-
-
-

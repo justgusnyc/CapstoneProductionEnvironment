@@ -84,6 +84,13 @@ public class AccountsController implements Initializable {
 
     private Map<String, List<Double>> stateDataMap = new HashMap<>();
 
+    private ProcessHolderController processHolderController;
+
+//    public void setProcessHolderController(ProcessHolderController processHolderController) {
+//        this.processHolderController = processHolderController;
+//    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,23 +104,12 @@ public class AccountsController implements Initializable {
             public void changed(ObservableValue<? extends Number> ov, Number value, Number newValue) {
                 int max = maxProcesses.get(newValue.intValue());
                 switch (max) {
-                    case 1:
-                        maxVal = 1;
-                        break;
-                    case 2:
-                        maxVal = 2;
-                        break;
-                    case 3:
-                        maxVal = 3;
-                        break;
-                    case 4:
-                        maxVal = 4;
-                        break;
-                    case 5:
-                        maxVal = 5;
-                        break;
-                    default:
-                        System.out.println("Something was wrong in pretty");
+                    case 1 -> maxVal = 1;
+                    case 2 -> maxVal = 2;
+                    case 3 -> maxVal = 3;
+                    case 4 -> maxVal = 4;
+                    case 5 -> maxVal = 5;
+                    default -> System.out.println("Something was wrong in pretty");
                 }
                 try {
 
@@ -232,16 +228,60 @@ public class AccountsController implements Initializable {
                     volumeOverTime.add(stateRightData.get(1));
                     tempOverTime.add(stateLeftData.get(2));
                     tempOverTime.add(stateRightData.get(2));
-                    State stateLeft = new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), controller.getFirstStateLabelString());
-                    State stateRight = new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), controller.getSecondStateLabelString());
-                    states.put(controller.getFirstStateLabelString(), stateLeft);
-                    states.put(controller.getSecondStateLabelString(), stateRight);
-                    System.out.println("left " + stateLeft);
-                    System.out.println("right " + stateRight);
-//                    System.out.println(stateLeft.getPressure());
-                    Process process = new Process(states.get(controller.getSecondStateLabelString()), states.get(controller.getFirstStateLabelString()), controller.getProcessType());
 
-                    processes.add(process);
+                    String leftStateLabel = controller.getFirstStateLabelString();
+                    String rightStateLabel = controller.getSecondStateLabelString();
+
+                    // Create or retrieve existing states
+                    State stateLeft = states.computeIfAbsent(leftStateLabel, label -> new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), label));
+                    State stateRight = states.computeIfAbsent(rightStateLabel, label -> new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), label));
+
+                    char processType = controller.getProcessType();
+
+                    double nValue = 0; // Initialize nValue with a default value (e.g., 0)
+                    boolean isValidNValue = true;
+                    if (processType == 'x' || processType == 'y') {
+                        if (processType == 'y') {
+                            nValue = 1.005/0.718;
+                        } else {
+                            if (!controller.NValue.getText().isEmpty()) {
+                                try {
+                                    nValue = Double.parseDouble(controller.NValue.getText());
+                                } catch (NumberFormatException e) {
+                                    // Show an error message if the entered text is not a valid number
+                                    showErrorAlert("Invalid n value entered. Please enter a valid number.");
+                                    isValidNValue = false;
+                                }
+                            } else {
+                                showErrorAlert("Please enter an n value for process type " + processType + ".");
+                                isValidNValue = false;
+                            }
+                        }
+                    }
+
+                    if (isValidNValue) {
+                        Process process;
+                        if (processType == 'x' || processType == 'y') {
+                            // if the process type is polytropic or isentropic, create process with n
+                            process = new Process(stateRight, stateLeft, nValue, processType);
+                        } else {
+                            // else use the constructor without the n value
+                            process = new Process(stateRight, stateLeft, processType);
+                        }
+                        processes.add(process);
+                    }
+
+
+//                    State stateLeft = new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), controller.getFirstStateLabelString());
+//                    State stateRight = new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), controller.getSecondStateLabelString());
+//                    states.put(controller.getFirstStateLabelString(), stateLeft);
+//                    states.put(controller.getSecondStateLabelString(), stateRight);
+//                    System.out.println("left " + stateLeft);
+//                    System.out.println("right " + stateRight);
+//                    System.out.println(stateLeft.getPressure());
+//                    Process process = new Process(states.get(controller.getSecondStateLabelString()), states.get(controller.getFirstStateLabelString()), controller.getProcessType());
+
+//                    processes.add(process);
                 }
 
                 Collections.sort(pressureOverTime);
@@ -249,13 +289,20 @@ public class AccountsController implements Initializable {
                 Collections.sort(volumeOverTime);
 
 
-                List<Process> processes2 = processesList();
+//                List<Process> processes2 = processesList();
                 Solver solver = new Solver(processes);
                 System.out.println(solver.CompleteSolve());
+                Map<String, List<Double>> m = solver.CompleteSolve();
+
                 for (int i = 0; i < processControllers.size(); i++) {
                     ProcessHolderController controller = processControllers.get(i);
-                    controller.setData(processes.get(i));
-                    System.out.println(processes.get(i));
+                    try {
+                        controller.setValuesAfterCompleteSolve(m);
+//                        updateTextFields(solver.CompleteSolve());
+                    } catch (IllegalArgumentException e) {
+                        showErrorAlert(e.getMessage());
+                    }
+//                    System.out.println(processes.get(i));
                 }
 
 
@@ -336,27 +383,62 @@ public class AccountsController implements Initializable {
 
     public List<Process> processesList() {
         List<Process> ls = new ArrayList<>();
+        Map<String, State> states = new HashMap<>();
+        for (int i = 0; i < processControllers.size(); i++) {
+            ProcessHolderController controller = processControllers.get(i);
+            Map<String, List<Double>> stateData = controller.getData();
+            //System.out.println("Controller " + i + " state data: " + stateData);
+            List<Double> stateLeftData = stateData.get("StateLeft");
+            List<Double> stateRightData = stateData.get("StateRight");
+            pressureOverTime.add(stateLeftData.get(0));
+            pressureOverTime.add(stateRightData.get(0));
+            volumeOverTime.add(stateLeftData.get(1));
+            volumeOverTime.add(stateRightData.get(1));
+            tempOverTime.add(stateLeftData.get(2));
+            tempOverTime.add(stateRightData.get(2));
+            String leftStateLabel = controller.getFirstStateLabelString();
+            String rightStateLabel = controller.getSecondStateLabelString();
 
+            // Create or retrieve existing states
+            State stateLeft = states.computeIfAbsent(leftStateLabel, label -> new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), label));
+            State stateRight = states.computeIfAbsent(rightStateLabel, label -> new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), label));
 
-        State state1 = new State(0, 1000, 0, "State 1"); // we assume that passed properties from processes to be overriding
-        State state2 = new State(0, 0, 0.1435, "State 2");
-        State state3 = new State(800, 0, 0, "State 3");
-        State state4 = new State(0, 2000, 0, "State 4");
-//        Process process1 = new Process(state2, state1, 'v');
-//        Process process2 = new Process(state3, state2, 't');
-//        Process process3 = new Process(state4, state3, 'p');
-//        Process process4 = new Process(state1, state4, 't');
+            char processType = controller.getProcessType();
 
-        Process process1 = new Process(state2, state1, 'v');
-        Process process2 = new Process(state3, state2, 't');
-        Process process3 = new Process(state4, state3, 'p');
-        Process process4 = new Process(state1, state4, 't');
+            double nValue = 0; // Initialize nValue with a default value (e.g., 0)
+            boolean isValidNValue = true;
+            if (processType == 'x' || processType == 'y') {
+                if (processType == 'y') {
+                    nValue = 1.005/0.718;
+                } else {
+                    if (!controller.NValue.getText().isEmpty()) {
+                        try {
+                            nValue = Double.parseDouble(controller.NValue.getText());
+                        } catch (NumberFormatException e) {
+                            // Show an error message if the entered text is not a valid number
+                            showErrorAlert("Invalid n value entered. Please enter a valid number.");
+                            isValidNValue = false;
+                        }
+                    } else {
+                        showErrorAlert("Please enter an n value for process type " + processType + ".");
+                        isValidNValue = false;
+                    }
+                }
+            }
 
-        ls.add(process1);
-        ls.add(process2);
-        ls.add(process3);
-        ls.add(process4);
+            if (isValidNValue) {
+                Process process;
+                if (processType == 'x' || processType == 'y') {
+                    // if the process type is polytropic or isentropic, create process with n
+                    process = new Process(stateRight, stateLeft, nValue, processType);
+                } else {
+                    // else use the constructor without the n value
+                    process = new Process(stateRight, stateLeft, processType);
+                }
+                ls.add(process);
+            }
 
+        }
 
         return ls;
     }
@@ -405,8 +487,96 @@ public class AccountsController implements Initializable {
     }
 
     public void compute() {
+        List<Process> processes = new ArrayList<>();
 
+        // Retrieve the input values from the text fields and create processes
+        for (int i = 0; i < hboxParents.size(); i++) {
+            ProcessHolderController controller = processControllers.get(i);
+            HBox box = hboxParents.get(i);
+            TextField S1Pressure = (TextField) box.lookup("#S1pressure");
+            TextField S1Volume = (TextField) box.lookup("#S1Volume");
+            TextField S1Temp = (TextField) box.lookup("#S1temperature");
+
+            TextField S2Pressure = (TextField) box.lookup("#S2pressure");
+            TextField S2Volume = (TextField) box.lookup("#S2volume");
+            TextField S2Temp = (TextField) box.lookup("#S2temperature");
+
+
+            State initState;
+            if (i > 0) {
+                // If it is not the first process, create the initial state of the current process with the final state values of the previous process
+                State prevStateFinal = processes.get(i - 1).getState2();
+                initState = new State(prevStateFinal.getTemp(), prevStateFinal.getPressure(), prevStateFinal.getVolume(), "State " + (i * 2 + 1));
+            } else {
+                initState = new State(Double.parseDouble(S1Temp.getText()), Double.parseDouble(S1Pressure.getText()), Double.parseDouble(S1Volume.getText()), "State " + (i * 2 + 1));
+            }
+
+            State finalState = new State(Double.parseDouble(S2Temp.getText()), Double.parseDouble(S2Pressure.getText()), Double.parseDouble(S2Volume.getText()), "State " + (i * 2 + 2));
+            Process process = new Process(initState, finalState, controller.getProcessType()); // 'x' as a placeholder for the process type
+
+            processes.add(process);
+        }
+
+
+        // Solve the processes using the Solver class
+        Solver solver = new Solver(processes);
+        System.out.println(solver.CompleteSolve());
+
+        // Update the text fields with the computed values
+        try {
+            updateTextFields(solver.CompleteSolve());
+        } catch (IllegalArgumentException e) {
+            showErrorAlert(e.getMessage());
+        }
     }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void updateTextFields(Map<String, List<Double>> solvedStates) {
+        int i = 0;
+        for (Map.Entry<String, List<Double>> entry : solvedStates.entrySet()) {
+            if (i < hboxParents.size()) {
+                HBox box = hboxParents.get(i);
+
+                TextField S1Pressure = (TextField) box.lookup("#S1pressure");
+                TextField S1Volume = (TextField) box.lookup("#S1Volume");
+                TextField S1Temp = (TextField) box.lookup("#S1temperature");
+
+                TextField S2Pressure = (TextField) box.lookup("#S2pressure");
+                TextField S2Volume = (TextField) box.lookup("#S2volume");
+                TextField S2Temp = (TextField) box.lookup("#S2temperature");
+
+                List<Double> initStateValues = entry.getValue();
+                String nextKey = "State" + (Integer.parseInt(entry.getKey().replaceAll("\\D+", "")) + 1);
+
+                if (solvedStates.containsKey(nextKey)) {
+                    List<Double> finalStateValues = solvedStates.get(nextKey);
+
+                    S1Pressure.setText(String.valueOf(initStateValues.get(1)));
+                    S1Volume.setText(String.valueOf(initStateValues.get(2)));
+                    S1Temp.setText(String.valueOf(initStateValues.get(0)));
+
+                    S2Pressure.setText(String.valueOf(finalStateValues.get(1)));
+                    S2Volume.setText(String.valueOf(finalStateValues.get(2)));
+                    S2Temp.setText(String.valueOf(finalStateValues.get(0)));
+                } else {
+                    S1Pressure.setText(String.valueOf(initStateValues.get(1)));
+                    S1Volume.setText(String.valueOf(initStateValues.get(2)));
+                    S1Temp.setText(String.valueOf(initStateValues.get(0)));
+                }
+
+                i++;
+            }
+        }
+    }
+
+
 
     public int getMaxVal() {
         return maxVal;

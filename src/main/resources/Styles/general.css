@@ -1,0 +1,109 @@
+/* Font import */
+/*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  background-color: #f5f8fa;
+}
+
+/* Buttons */
+.button {
+  background-color: #4f8cc9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #2d7abf;
+}
+
+/* Forms */
+.form-input {
+  border: none;
+  border-bottom: 1px solid #b3c3d3;
+  font-size: 16px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-input:focus {
+  border-bottom: 1px solid #4f8cc9;
+  outline: none;
+}
+
+.form-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  color: #4f8cc9;
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Textfield styles */
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 5px;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+.text-field:focused {
+    -fx-border-color: #3875D7;
+    -fx-box-shadow: 0px 0px 10px 0px rgba(56,117,215,0.5);
+}
+
+.text-field:hover {
+    -fx-box-shadow: 0px 0px 10px 0px rgba(56,117,215,0.2);
+}
+

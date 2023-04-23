@@ -1,0 +1,109 @@
+.register_container {
+-fx-background-color: #003da5;
+-fx-pref-height: 100%;
+-fx-pref-width: 100%;
+}
+
+/* Logo Container Styles */
+.register_logo_container {
+-fx-background-color: #003da5;
+-fx-alignment: center;
+}
+
+.register_logo_container Text {
+-fx-font-size: 2em;
+-fx-fill: #FFFFFF;
+-fx-font-family: "Poppins", sans-serif;
+-fx-animation: fadeIn 2s;
+}
+
+.register_logo_container .fontawesome-icon-view {
+-fx-fill: #003da5;
+-fx-animation: bounce 2s infinite;
+}
+
+/* Account selector Choicebox Styles */
+.account_selector {
+-fx-background-color: #ECF39E;
+-fx-transition: background-color 0.3s;
+}
+
+.account_selector:hover {
+-fx-background-color: #A9E190;
+}
+
+/* Label contained within the account selector */
+.account_selector .label {
+-fx-text-fill: #2C5364;
+-fx-font-size: 1.1em;
+-fx-font-family: "Poppins", sans-serif;
+}
+
+.account_selector .arrow {
+-fx-background-color: #2C5364;
+}
+
+/* Register form styles */
+.register_form_container {
+-fx-spacing: 15;
+-fx-alignment: top-left;
+}
+
+.register_form_container Label {
+-fx-font-size: 1.1em;
+-fx-font-weight: bold;
+-fx-font-family: "Poppins", sans-serif;
+}
+
+.input_field {
+-fx-background-color: white;
+-fx-pref-height: 35;
+-fx-font-size: 1.2em;
+-fx-font-family: "Poppins", sans-serif;
+-fx-transition: box-shadow 0.3s;
+}
+
+.input_field:focused {
+-fx-effect: dropshadow(three-pass-box, rgba(44, 83, 100, 0.5), 5, 0, 0, 0);
+}
+
+.register_form_container Button {
+-fx-background-color: #003da5;
+-fx-text-fill: #FFFFFF;
+-fx-pref-width: 100%;
+-fx-pref-height: 40%;
+-fx-font-size: 1.2em;
+-fx-font-family: "Poppins", sans-serif;
+-fx-transition: background-color 0.3s;
+}
+
+.register_form_container Button:hover {
+-fx-background-color: #1B384A;
+-fx-cursor: hand;
+}
+
+.error_lbl {
+-fx-text-fill: #FF0000;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+0% {
+-fx-opacity: 0;
+}
+100% {
+-fx-opacity: 1;
+}
+}
+
+@keyframes bounce {
+0%, 20%, 50%, 80%, 100% {
+-fx-translate-y: 0;
+}
+40% {
+-fx-translate-y: -30px;
+}
+60% {
+-fx-translate-y: -15px;
+}
+}

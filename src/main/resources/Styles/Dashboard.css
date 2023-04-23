@@ -1,29 +1,47 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');*/
 
-
-
-.dashboard{
-    -fx-background-color: #EEEEEE;
+.dashboard {
+    -fx-background-color: #F1F1F1;
+    -fx-width: 100%;
+    -fx-height: 100%;
+    -fx-display: flex;
+    -fx-flex-direction: column;
+    -fx-align-items: center;
+    -fx-justify-content: center;
+}
+.bg-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('Users/badranaljohani/Downloads/CapstoneProductionEnvironment-master-4/src/main/resources/Images/slu-logomark-blue-rgb.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1;
 }
 
-.user_name{
+
+.user_name {
     -fx-font-size: 2.6em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-.date_label{
+.date_label {
     -fx-text-fill: #AAAAAA;
     -fx-font-size: 1.1em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-.section_title{
+.section_title {
     -fx-font-size: 1.4em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
 }
 
-/* Account view*/
-
-.accounts_view{
+/* Account view */
+.accounts_view {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10 0 0 10;
     -fx-padding: 10 0 10 0;
@@ -33,52 +51,52 @@
     -fx-spacing: 10;
 }
 
-.account{
+.account {
     -fx-background-radius: 5;
-    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 10, 0, 0, 10);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
 }
 
 .account VBox {
     -fx-background-color: #FFFFFF;
 }
 
-.account Text{
+.account Text {
     -fx-fill: #FFFFFF;
-    -fx-font-family: "Calibri Light";
-    -fx-font-size: 1.5em
+    -fx-font-family: "Poppins", sans-serif;
+    -fx-font-size: 1.5em;
 }
 
 .account FontAwesomeIconView {
     -fx-fill: #FFFFFF;
 }
 
-.account_gradient{
-    -fx-background-color: linear-gradient(to right, #132A13, #253F25);
+.account_gradient {
+    -fx-background-color: linear-gradient(to right, #2C5364, #203A43);
 }
 
-.account_balance{
+.account_balance {
     -fx-text-fill: #FFFFFF;
-    -fx-font-family: Calibri;
+    -fx-font-family: "Poppins", sans-serif;
     -fx-font-size: 3em;
     -fx-font-weight: bold;
 }
 
-.account_number{
+.account_number {
     -fx-text-fill: #FFFFFF;
-    -fx-font-family: Calibri;
+    -fx-font-family: "Poppins", sans-serif;
     -fx-font-size: 1.5em;
     -fx-text-alignment: center;
 }
 
-/* Account Summary View*/
-.summary_view{
+/* Account Summary View */
+.summary_view {
     -fx-background-color: #FFFFFF;
     -fx-padding: 5 10 5 10;
     -fx-spacing: 5;
     -fx-alignment: center_left;
 }
 
-.account_summary_container{/* giving nice curvature and definition to inner vbox*/
+.account_summary_container {
     -fx-padding: 10;
     -fx-spacing: 10;
     -fx-alignment: center_left;
@@ -92,68 +110,65 @@
     -fx-stroke: #AAAAAA;
 }
 
-.income_amount{
+.income_amount {
     -fx-text-fill: #00AA00;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
     -fx-font-size: 1.5em;
 }
 
-.expense_amount{
+.expense_amount {
     -fx-text-fill: #AA0000;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
     -fx-font-size: 1.5em;
 }
 
-/* Transaction view*/
-
-.transaction_listview{
-    -fx-background-color: #EEEEEE;
+/* Transaction view */
+.transaction_listview {
+    -fx-background-color: #F1F1F1;
     -fx-border-width: 0 0 0 0;
     -fx-border-color: #AAAAAA;
 }
 
-.transaction_listview .scroll-bar:vertical{ /* this removes the vertical scroll bar*/
+.transaction_listview .scroll-bar:vertical {
     -fx-scale-x: 0;
 }
 
-.list_cell{
-    -fx-background-color: #EEEEEE;
+.list_cell {
+    -fx-background-color: #F1F1F1;
     -fx-padding: 15 0 15 0;
 }
 
-/* send money view*/
-
+/* send money view */
 .new_trans_container {
-    -fx-background-color: #EEEEEE;
+    -fx-background-color: #F1F1F1;
     -fx-padding: 20 10 20 10;
     -fx-spacing: 10;
     -fx-alignment: center_left;
 }
 
-.new_trans_container Label{
-        -fx-font-family: "Calibri Light";
-        -fx-font-size: 1.3em;
+.new_trans_container Label {
+    -fx-font-family: "Poppins", sans-serif;
+    -fx-font-size: 1.3em;
 }
 
-.new_trans_container TextField{
-        -fx-pref-height: 40;
-        -fx-background-color: #FFFFFF;
-        -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 0, 3);
+.new_trans_container TextField {
+    -fx-pref-height: 40;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 6);
 }
 
 .new_trans_container Button {
-    -fx-background-color: linear-gradient(to right, #132A13, #253F25);
-    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 0, 3);
+    -fx-background-color: linear-gradient(to right, #2C5364, #203A43);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 6);
     -fx-pref-width: 230;
     -fx-font-size: 1.5em;
-    -fx-font-family: "Calibri Light";
+    -fx-font-family: "Poppins", sans-serif;
     -fx-text-fill: #FFFFFF;
 }
 
 .new_trans_container Button:hover {
     -fx-cursor: hand;
 }
-
 
 
 

@@ -6,23 +6,33 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../Styles/login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.LoginController">
-   <VBox prefHeight="400.0" prefWidth="200.0" styleClass="login_logo_container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <ImageView fx:id="IconLoginImageView" fitHeight="102.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="H.E.A.T.S." />
-   </VBox>
-   <VBox layoutX="231.0" layoutY="21.0" prefHeight="350.0" prefWidth="350.0" styleClass="login_form_container" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-      <Label id="choice-prompt-text" text="Choose Your Account Type" />
-      <ChoiceBox fx:id="system_selector" prefWidth="150.0" styleClass="account_selector" />
-      <Label fx:id="username_address_label" text="Username:" />
-      <TextField fx:id="username_address_field" styleClass="input_field" />
-      <Label text="Password:" />
-      <PasswordField fx:id="password_field" styleClass="input_field" />
-      <Button fx:id="login_btn" mnemonicParsing="false" text="Login" />
-      <Label fx:id="error_lbl" styleClass="error_lbl" />
-   </VBox>
-</AnchorPane>
+<BorderPane stylesheets="@../Styles/login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.LoginController">
+   <left>
+      <VBox prefHeight="400.0" prefWidth="200.0" styleClass="login_logo_container">
+         <ImageView fx:id="IconLoginImageView" fitHeight="202.0" fitWidth="213.0" pickOnBounds="true" preserveRatio="true" />
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heats">
+            <font>
+               <Font name="Quantify" size="13.0" />
+            </font></Text>
+      </VBox>
+   </left>
+   <center>
+      <VBox layoutX="231.0" layoutY="21.0" prefHeight="350.0" prefWidth="350.0" styleClass="login_form_container">
+         <Label id="choice-prompt-text" text="Choose Your Account Type" />
+         <ChoiceBox fx:id="system_selector" prefWidth="150.0" styleClass="account_selector" />
+         <Label fx:id="username_address_label" text="Username:" />
+         <TextField fx:id="username_address_field" styleClass="input_field" />
+         <Label text="Password:" />
+         <PasswordField fx:id="password_field" styleClass="input_field" />
+         <Button fx:id="login_btn" mnemonicParsing="false" text="Login" />
+         <Label fx:id="username_address_label1" layoutX="10.0" layoutY="86.0" text="No account?" />
+         <Button fx:id="register_btn" prefHeight="29.0" prefWidth="246.0" scaleX="0.5" scaleY="0.5" style="-fx-text-fill: #FFFFFF; -fx-underline: true;" text="Create One!" textFill="WHITE" translateX="11.0" translateY="-38.0" />
+         <Label fx:id="error_lbl" styleClass="error_lbl" />
+      </VBox>
+   </center>
+</BorderPane>
