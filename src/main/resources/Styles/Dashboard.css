@@ -16,7 +16,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('Users/badranaljohani/Downloads/CapstoneProductionEnvironment-master-4/src/main/resources/Images/slu-logomark-blue-rgb.png');
+    background-image: url('/Images/slu-logomark-blue-rgb.png');
     background-size: cover;
     background-position: center;
     opacity: 0.5;

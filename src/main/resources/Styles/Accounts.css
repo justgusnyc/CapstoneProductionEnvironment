@@ -1,49 +1,61 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');*/
-
-.accounts_view_container {
-    -fx-background-color: #FFFFFF;
+.report_container {
+  -fx-background-color: linear-gradient(to bottom, #F1F1F1, #2C5364);
+  -fx-background-radius: 10;
+  -fx-alignment: center;
+  -fx-spacing: 10;
+  -fx-padding: 10 0 10 0;
 }
 
-.accounts_view_container Text {
+.report_container Text {
+  -fx-font-weight: bold;
+  -fx-fill: #132A13;
+}
+
+.report_container Label {
+  -fx-text-alignment: center;
+  -fx-wrap-text: true;
+}
+
+.report_container Text {
     -fx-fill: #132A13;
     -fx-font-size: 1.4em;
     -fx-font-family: "Poppins", sans-serif;
-}
-
-.accounts_view_container VBox {
-    -fx-border-width: 0 0 0 1;
-    -fx-border-color: #888888;
-    -fx-padding: 10;
-    -fx-spacing: 15;
 }
 
 .accounts_view_container VBox Text {
     -fx-font-size: 1.2em;
 }
 
-.accounts_view_container VBox Label {
-    -fx-font-size: 1.2em;
-    -fx-font-weight: bold;
+
+
+
+.report_container Button {
+  -fx-pref-width: 80;
+  -fx-background-color: linear-gradient(to bottom, #2C5364, #203A43);
+  -fx-text-fill: #FFFFFF;
+  -fx-font-size: 1.1em;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+  -fx-transition: all 0.2s ease-in-out;
 }
 
-.accounts_view_container TextField {
-    -fx-pref-width: 230;
-    -fx-pref-height: 35;
-    -fx-background-color: #FFFFFF;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+.report_container Button:hover {
+  -fx-background-color: linear-gradient(to bottom, #203A43, #2C5364);
+  -fx-cursor: hand;
+  -fx-scale-x: 1.1;
+  -fx-scale-y: 1.1;
 }
 
-.accounts_view_container Button {
-    -fx-background-color: linear-gradient(to right, #2C5364, #203A43);
-    -fx-pref-width: 230;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
-    -fx-font-size: 1.5em;
-    -fx-font-family: "Poppins", sans-serif;
+.report_container ToggleButton {
+
+    -fx-border-width: 2;
+    -fx-border-color: #2C5364;
+    -fx-border-radius: 50px;
+    -fx-padding: 5;
+    -fx-text-fill: #2C5364;
+}
+
+.report_container ToggleButton:selected {
+    -fx-background-color: #2C5364;
+    -fx-border-color: #2C5364;
     -fx-text-fill: #FFFFFF;
-    -fx-transition: all 0.2s ease-in-out;
-}
-
-.accounts_view_container Button:hover {
-    -fx-background-color: linear-gradient(to right, #203A43, #2C5364);
-    -fx-cursor: hand;
 }

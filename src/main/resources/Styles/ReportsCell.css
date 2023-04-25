@@ -4,6 +4,7 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, #000000, 5, 0, 0, 7);
+    -fx-padding: 10px;
 }
 
 .report_icon_container {

@@ -1,5 +1,7 @@
 package com.example.capstone.Controllers;
 
+import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
+import com.example.capstone.Controllers.ClosedSystem.ClosedSystemMenuController;
 import com.example.capstone.Models.Model;
 import com.example.capstone.Views.SystemType;
 import javafx.collections.FXCollections;
@@ -58,6 +60,10 @@ public class LoginController implements Initializable {
             Model.getInstance().evaluateClosedSystemCredentials(username_address_field.getText(), password_field.getText());
             if(Model.getInstance().getClosedSystemLoginSuccessFlag()){
                 Model.getInstance().getViewFactory().showClosedSystemWindow();
+                ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
+                closedSystemMenuController.goToDashboard();
+                closedSystemMenuController.goToCalculate();
+
                 // close the login stage now
                 Model.getInstance().getViewFactory().closeStage(stage);
 

@@ -1,0 +1,70 @@
+#ProcessContainer {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #888888;
+    -fx-border-width: 0 1 0 0;
+    -fx-spacing: 15;
+    -fx-padding: 10;
+}
+
+#ProcessContainer Text {
+    -fx-fill: #132A13;
+    -fx-font-size: 1.4em;
+    -fx-font-family: "Poppins", sans-serif;
+}
+
+#ProcessContainer HBox {
+    -fx-spacing: 10;
+}
+
+#State1Container, #State2Container {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #888888;
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-pref-height: 200.0;
+    -fx-pref-width: 200.0;
+}
+
+#State1Container Text, #State2Container Text {
+    -fx-fill: #132A13;
+    -fx-font-size: 1.2em;
+}
+
+#ProcessConfigurations {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #888888;
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-pref-height: 200.0;
+    -fx-pref-width: 200.0;
+}
+
+#ProcessConfigurations Text, #ProcessConfigurations Label {
+    -fx-fill: #132A13;
+    -fx-font-size: 1.2em;
+}
+
+#ProcessConfigurations Label {
+    -fx-font-weight: bold;
+}
+
+#ProcessConfigurations TextField, #ProcessConfigurations ChoiceBox {
+    -fx-pref-width: 100.0;
+    -fx-pref-height: 30.0;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+}
+
+/* Hide S, H, and U TextFields */
+#S1SLabel, #S1S, #S1HLabel, #S1H, #S1ULabel, #S1U, #S2S, #S2SLabel, #S2HLabel, #S2H, #S2ULabel, #S2U {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+    -fx-max-width: 0;
+    -fx-max-height: 0;
+    -fx-min-width: 0;
+    -fx-min-height: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+}

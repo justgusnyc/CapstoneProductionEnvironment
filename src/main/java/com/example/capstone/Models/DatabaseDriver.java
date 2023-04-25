@@ -36,7 +36,7 @@ public class DatabaseDriver {
 
     public boolean addUser(String firstName, String lastName, String user, String password) {
         try {
-            String sql = "INSERT INTO Clients (FirstName, LastName, PayeeAddress, Password, Date) VALUES (?, ?, ?, ?, strftime('%Y-%m-%d', 'now'))";
+            String sql = "INSERT INTO Users (FirstName, LastName, UsernameAddress, Password, Date) VALUES (?, ?, ?, ?, strftime('%Y-%m-%d', 'now'))";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
@@ -104,14 +104,14 @@ public class DatabaseDriver {
 
     // creates and records new report
     // check the dashboard send money to see how to actually handle the event
-    public void newReport(String reportName, int numStates, String cycleYesNo, double heat, double work){
+    public void newReport(String reportName, int numStates, String cycleYesNo, double heat, double work, int numProcesses, String processChars){
         Statement statement;
         try{
             statement = this.conn.createStatement();
             LocalDate date = LocalDate.now();
             statement.executeUpdate("INSERT INTO "+
-                    "Reports(user_id, report_name, cycle, num_states, heat, work) "+
-                    "VALUES ("+currentUserId+", '"+reportName+"', '"+cycleYesNo+"', "+numStates+", "+heat+", "+work+")");
+                    "Reports(user_id, report_name, cycle, num_states, heat, work, numProcesses, processChars) "+
+                    "VALUES ("+currentUserId+", '"+reportName+"', '"+cycleYesNo+"', "+numStates+", "+heat+", "+work+", "+numProcesses+", '"+processChars+"')");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -141,6 +141,8 @@ public class DatabaseDriver {
         return resultSet;
     }
 
+
+
     public ResultSet getStatesByReportName(String reportName){
         ResultSet reports = searchReport(reportName);
         Statement statement;
@@ -154,6 +156,39 @@ public class DatabaseDriver {
             e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public void deleteReportAndStates(String reportName) throws SQLException {
+        PreparedStatement selectReportStatement = this.conn.prepareStatement("SELECT report_id FROM Reports WHERE report_name=?");
+        selectReportStatement.setString(1, reportName);
+        ResultSet reportResult = selectReportStatement.executeQuery();
+        int reportId = -1;
+        if (reportResult.next()) {
+            reportId = reportResult.getInt("report_id");
+        }
+
+        PreparedStatement reportStatement = this.conn.prepareStatement("DELETE FROM Reports WHERE report_name=?");
+        reportStatement.setString(1, reportName);
+        int deletedReports = reportStatement.executeUpdate();
+
+        if (deletedReports == 0) {
+            System.out.println("No reports deleted.");
+            return;
+        }
+
+        if (reportId != -1) {
+            PreparedStatement stateStatement = this.conn.prepareStatement("DELETE FROM States WHERE report_id=?");
+            stateStatement.setInt(1, reportId);
+            stateStatement.executeUpdate();
+        }
+
+
+        System.out.println("Report and associated states deleted.");
+    }
+
+    public void vacuum() throws SQLException {
+        Statement statement = this.conn.createStatement();
+        statement.executeUpdate("VACUUM");
     }
 
     public ResultSet getStateDataByName(String stateLabel){

@@ -14,11 +14,6 @@ public class ReportsCellFactory extends ListCell<Reports> {
 
     }
 
-    public ReportsCellFactory(ListView<Reports> listView){
-        this.listView = listView;
-    }
-
-
     @Override
     protected void updateItem(Reports reports, boolean empty) { // this is a built in method for the ListCell class
         super.updateItem(reports, empty); // that is why we are passing this to the super class here, it is a prebuilt one that allows us to update our list cells

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="ProcessContainer" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.ProcessHolderController">
+<HBox fx:id="ProcessContainer" prefWidth="600.0" stylesheets="@../../Styles/processHolder.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.ProcessHolderController">
     <VBox fx:id="State1Container" prefHeight="200.0" prefWidth="200.0">
         <padding>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
@@ -18,17 +18,17 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </VBox.margin>
         </Text>
-        <Label text="Pressure" />
+        <Label text="Pressure (kPa)" />
         <TextField fx:id="S1pressure" />
-        <Label text="Volume" />
+        <Label text="Volume (m^3/kg" />
         <TextField fx:id="S1volume" />
-        <Label text="Temperature" />
+        <Label text="Temperature (K)" />
         <TextField fx:id="S1temperature" />
-        <Label text="S" />
+        <Label fx:id="S1SLabel" text="S" />
         <TextField fx:id="S1S" />
-        <Label text="H" />
+        <Label fx:id="S1HLabel" text="H" />
         <TextField fx:id="S1H" />
-        <Label text="U" />
+        <Label fx:id="S1ULabel" text="U" />
         <TextField fx:id="S1U" />
     </VBox>
     <VBox fx:id="ProcessConfigurations" prefHeight="200.0" prefWidth="200.0">
@@ -36,6 +36,10 @@
         <ChoiceBox fx:id="ProcessPicker" />
         <Label prefHeight="50.0" text="N value" />
         <TextField fx:id="NValue" />
+      <Label layoutX="21.0" layoutY="98.0" prefHeight="50.0" text="Work" />
+      <TextField fx:id="workTextField" layoutX="21.0" layoutY="148.0" />
+      <Label layoutX="21.0" layoutY="141.0" prefHeight="50.0" text="Heat" />
+      <TextField fx:id="heatTextfield" layoutX="21.0" layoutY="175.0" />
         <padding>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
         </padding>
@@ -49,17 +53,17 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </VBox.margin>
         </Text>
-        <Label text="Pressure" />
+        <Label text="Pressure (kPa)" />
         <TextField fx:id="S2pressure" />
-        <Label text="Volume" />
+        <Label text="Volume (m^3/kg)" />
         <TextField fx:id="S2volume" />
-        <Label text="Temperature" />
+        <Label text="Temperature (K)" />
         <TextField fx:id="S2temperature" />
-        <Label text="S" />
+        <Label fx:id="S2SLabel" text="S" />
         <TextField fx:id="S2S" />
-        <Label text="H" />
+        <Label fx:id="S2HLabel" text="H" />
         <TextField fx:id="S2H" />
-        <Label text="U" />
+        <Label fx:id="S2ULabel" text="U" />
         <TextField fx:id="S2U" />
     </VBox>
 </HBox>

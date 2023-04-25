@@ -23,10 +23,8 @@ pane when we switch scenes through the menu-->
     </left>
 
     <center>
-        <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-                <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="Accounts.fxml" HBox.hgrow="ALWAYS" />
-            </HBox>
-        </AnchorPane>
+
+                <fx:include source="Accounts.fxml" />
+
     </center>
 </BorderPane>

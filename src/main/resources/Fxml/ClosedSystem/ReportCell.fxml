@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -17,11 +16,10 @@
         but that means that we removed the controller for this fxml-->
 
 <AnchorPane styleClass="cell_container" stylesheets="@../../Styles/ReportsCell.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-    <Line endY="20.0" layoutX="212.0" layoutY="24.0" AnchorPane.leftAnchor="211.5" AnchorPane.topAnchor="23.5" />
     <VBox layoutY="12.0">
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Report Name:" textAlignment="CENTER">
          <VBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
          </VBox.margin>
          <font>
             <Font name="Harrington" size="15.0" />
@@ -29,119 +27,127 @@
       </Text>
         <Label fx:id="reportNameLabel" styleClass="report_username_label" text="Report Name">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </Label>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </VBox>
-    <VBox layoutX="126.0" layoutY="14.0">
+    <VBox layoutX="101.0" layoutY="14.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Num. States" textAlignment="CENTER" wrappingWidth="65.97265625">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <font>
                 <Font name="PT Bold Arch" size="12.0" />
             </font>
         </Text>
-        <Label fx:id="numStatesLabel" prefHeight="27.0" prefWidth="48.0" styleClass="report_amount_label" text="Label" textAlignment="CENTER">
+        <Label fx:id="numStatesLabel" styleClass="report_amount_label" text="4" textAlignment="CENTER" translateX="20.0">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </Label>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </VBox>
-    <VBox layoutX="223.0" layoutY="14.0">
+    <VBox layoutX="179.0" layoutY="14.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cycle:" textAlignment="CENTER" wrappingWidth="44.97265625">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <font>
                 <Font name="PT Bold Arch" size="12.0" />
             </font>
         </Text>
-        <Label fx:id="cycleYesNoLabel" prefHeight="27.0" prefWidth="58.0" styleClass="report_amount_label" text="Label" textAlignment="CENTER">
+        <Label fx:id="cycleYesNoLabel" styleClass="report_amount_label" text="Yes" textAlignment="CENTER" translateX="5.0">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </Label>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </VBox>
-    <VBox layoutX="313.0" layoutY="14.0">
+    <VBox layoutX="236.0" layoutY="14.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heat" textAlignment="CENTER" wrappingWidth="87.97265625">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <font>
                 <Font name="PT Bold Arch" size="12.0" />
             </font>
         </Text>
-        <Label fx:id="heatLabel" prefHeight="27.0" prefWidth="84.0" styleClass="report_amount_label" text="Label" textAlignment="CENTER">
+        <Label fx:id="heatLabel" styleClass="report_amount_label" text="45.03" textAlignment="CENTER" translateX="20.0">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </Label>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </VBox>
-    <HBox layoutX="513.0" layoutY="21.0">
+    <HBox layoutX="429.0" layoutY="33.0">
         <Button fx:id="expandReportButton" mnemonicParsing="false" text="Expand">
           <HBox.margin>
-              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
           </HBox.margin>
           <padding>
-              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
           </padding>
         </Button>
         <Button fx:id="loadButton" mnemonicParsing="false" text="Load">
            <HBox.margin>
-               <Insets top="10.0" />
+               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
            </HBox.margin>
            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
            </padding>
         </Button>
+      <Button fx:id="deleteButton" mnemonicParsing="false" text="D">
+         <HBox.margin>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </Button>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </HBox>
-    <VBox layoutX="415.0" layoutY="14.0">
+    <VBox layoutX="336.0" layoutY="14.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Work" textAlignment="CENTER" wrappingWidth="87.97265625">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <font>
                 <Font name="PT Bold Arch" size="12.0" />
             </font>
         </Text>
-        <Label fx:id="workLabel" prefHeight="27.0" prefWidth="84.0" styleClass="report_amount_label" text="Label" textAlignment="CENTER">
+        <Label fx:id="workLabel" styleClass="report_amount_label" text="65.12" textAlignment="CENTER" translateX="20.0">
             <VBox.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </VBox.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </Label>
       <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </VBox>
     <padding>

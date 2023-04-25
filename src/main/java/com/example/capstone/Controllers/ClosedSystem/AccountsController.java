@@ -45,15 +45,17 @@ public class AccountsController implements Initializable {
     public ChoiceBox materialChoice;
     public ToggleButton cycleYesButton;
     public Button computeButton;
-    public Button clearButton;
     public ScrollPane processesScrollPane;
     public ChoiceBox visualTypeChoiceBox;
     public ScrollPane visualScrollPane;
     public VBox visualScrollPaneVBox;
     public Button SaveReportButton;
     public TextField SaveReportNameTextField;
+    public TextField netHeatTextField;
+    public TextField netWorkTextField;
 
     private List<Process> processesList;
+    public Button clearButton;
 
     private List<HBox> hboxParents = new ArrayList<>();
 
@@ -86,10 +88,17 @@ public class AccountsController implements Initializable {
 
     private ProcessHolderController processHolderController;
 
+    private DashboardController dashboardController;
+//    private String processChars = "";
+
 //    public void setProcessHolderController(ProcessHolderController processHolderController) {
 //        this.processHolderController = processHolderController;
 //    }
 
+    private double netWork, netHeat, netHeatIn, netHeatOut, netWorkIn, netWorkOut;
+
+    private List<Double> processHeats = new ArrayList<>();
+    private List<Double> processWorks = new ArrayList<>();
 
 
     @Override
@@ -100,15 +109,22 @@ public class AccountsController implements Initializable {
         visualTypeChoiceBox.setItems(chartOptions);
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            int max;
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number value, Number newValue) {
-                int max = maxProcesses.get(newValue.intValue());
+                if(newValue.intValue() == -1){
+                    max = -1;
+                }
+                else{
+                    max = maxProcesses.get(newValue.intValue());
+                }
                 switch (max) {
                     case 1 -> maxVal = 1;
                     case 2 -> maxVal = 2;
                     case 3 -> maxVal = 3;
                     case 4 -> maxVal = 4;
                     case 5 -> maxVal = 5;
+                    case -1 -> maxVal = 0;
                     default -> System.out.println("Something was wrong in pretty");
                 }
                 try {
@@ -155,6 +171,7 @@ public class AccountsController implements Initializable {
                         }
                     }
                     makeStateValuesMap();
+                    hideConnectedVBoxes();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,6 +181,7 @@ public class AccountsController implements Initializable {
 
         cycleYesButton.setOnAction(e -> {
             if (cycleYesButton.isSelected()) {
+                cycleYesButton.setText("Yes");
                 cycleFlag = true;
                 // Get the text fields list for the left most state
                 List<List<TextField>> textFieldsList = connectedTextField.get("State1");
@@ -184,7 +202,10 @@ public class AccountsController implements Initializable {
 
                 // Update the second state label of the last process controller
                 processControllers.get(lastIndex).setSecondStateLabel("State1");
+                List<TextField> valueToRemove = stateValuesMap.get("State" + state2Indexes[maxVal - 1]);
+                stateValuesMap.remove("State" + state2Indexes[maxVal - 1], valueToRemove);
             } else {
+                cycleYesButton.setText("No");
                 cycleFlag = false;
                 // Get the text fields list for the left most state
                 List<List<TextField>> textFieldsList = connectedTextField.get("State1");
@@ -206,6 +227,7 @@ public class AccountsController implements Initializable {
                 // Update the second state label of the last process controller
 
                 processControllers.get(lastIndex).setSecondStateLabel("State" + state2Indexes[maxVal - 1]);
+                stateValuesMap.computeIfAbsent("State" + state2Indexes[maxVal - 1], k -> new ArrayList<>());
             }
         });
 
@@ -296,24 +318,41 @@ public class AccountsController implements Initializable {
 
                 for (int i = 0; i < processControllers.size(); i++) {
                     ProcessHolderController controller = processControllers.get(i);
+                    double heat = processes.get(i).getHeat();
+                    double work=processes.get(i).getWork();
+                    netWork += work;
+                    netHeat += heat;
+                    if (heat > 0) netHeatIn += heat;
+                    if (heat < 0) netHeatOut += heat;
+                    if (work > 0) netWorkIn += work;
+                    if (work < 0) netWorkOut += work;
+
+
+                    controller.setHeatTextfield(processes.get(i).getHeat());
+                    controller.setWorkTextField(processes.get(i).getWork());
+                    processHeats.add(processes.get(i).getHeat());
+                    processWorks.add(processes.get(i).getWork());
+
                     try {
                         controller.setValuesAfterCompleteSolve(m);
 //                        updateTextFields(solver.CompleteSolve());
+
                     } catch (IllegalArgumentException e) {
                         showErrorAlert(e.getMessage());
                     }
 //                    System.out.println(processes.get(i));
                 }
-
-
+                netHeatTextField.setText(""+netHeat);
+                netWorkTextField.setText(""+netWork);
             }
+
+
         });
 
         clearButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                ProcessLayout.getChildren().clear();
-                visualScrollPane.setContent(null);
+                clearPage();
 
             }
         });
@@ -336,6 +375,14 @@ public class AccountsController implements Initializable {
         chart = new LineChart<>(xAxis, yAxis);
         chart.setTitle("Visualization Presets");
 
+        xAxis.setLowerBound(0);
+        xAxis.setUpperBound(0.2);
+        xAxis.setTickUnit(0.025);
+
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(2500);
+        yAxis.setTickUnit(500);
+
 
 //        visualScrollPane.setContent(chart);
 //        visualScrollPane.setFitToWidth(true);
@@ -343,19 +390,37 @@ public class AccountsController implements Initializable {
 
         visualTypeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 
+
             if (newValue.equals("P-v")) {
-                XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                series.setName("P-v");
-                for (int i = 0; i < pressureOverTime.size(); i++) {
-                    Double pressure = pressureOverTime.get(i);
-                    Double volume = volumeOverTime.get(i);
-                    series.getData().add(new XYChart.Data<>(pressure, volume));
+                visualScrollPaneVBox.getChildren().clear();
+
+                if (newValue.equals("P-v")) {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName("P-v");
+                    for (int i = 0; i < volumeOverTime.size(); i++) {
+                        Double temp = tempOverTime.get(i);
+                        Double volume = volumeOverTime.get(i);
+                        Double pressure = 0.287 * temp / volume;
+                        series.getData().add(new XYChart.Data<>(volume, pressure));
+                    }
+                    chart.getData().add(series);
+//                    visualScrollPane.setContent(chart);
+                    visualScrollPaneVBox.getChildren().add(chart);
                 }
-                chart.getData().add(series);
-                visualScrollPane.setContent(chart);
+
+//                for (int i = 0; i < volumeOverTime.size(); i++) {
+//                    Double temp = tempOverTime.get(i);
+//                    Double volume = volumeOverTime.get(i);
+//                    Double pressure = pressureOverTime.get(i);
+//                    System.out.println("Data point " + (i + 1) + ": Volume = " + volume + ", Pressure = " + pressure);
+//                    series.getData().add(new XYChart.Data<>(volume, pressure));
+//                }
+//                chart.getData().add(series);
+//                visualScrollPane.setContent(chart);
 //                visualScrollPane.setFitToWidth(true);
 //                visualScrollPane.setFitToHeight(true);
             } else if (newValue.equals("T-v")) {
+                visualScrollPaneVBox.getChildren().clear();
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 series.setName("T-v");
                 for (int i = 0; i < tempOverTime.size(); i++) {
@@ -364,7 +429,8 @@ public class AccountsController implements Initializable {
                     series.getData().add(new XYChart.Data<>(temp, volume));
                 }
                 chart.getData().add(series);
-                visualScrollPane.setContent(chart);
+                visualScrollPaneVBox.getChildren().add(chart);
+//                visualScrollPane.setContent(chart);
 //                visualScrollPane.setFitToWidth(true);
 //                visualScrollPane.setFitToHeight(true);
             } else if (newValue.equals("T-s")) {
@@ -443,48 +509,8 @@ public class AccountsController implements Initializable {
         return ls;
     }
 
-    private void getTextFields() {
-
-        for (int i = 0; i < hboxParents.size(); i++) {
-            List<TextField> textsLeft = new ArrayList<>();
-            List<TextField> textsRight = new ArrayList<>();
-            String leftStateName = processControllers.get(i).getFirstStateLabelString();
-            String rightStateName = processControllers.get(i).getSecondStateLabelString();
-
-            HBox box = hboxParents.get(i);
-            TextField S1Pressure = (TextField) box.lookup("#S1pressure");
-            TextField S1Volume = (TextField) box.lookup("#S1Volume");
-            TextField S1Temp = (TextField) box.lookup("#S1temperature");
-            textsLeft.add(S1Pressure);
-            textsLeft.add(S1Volume);
-            textsLeft.add(S1Temp);
-            textFields.add(textsLeft);
-            textFieldsStatesNames.add(leftStateName);
-
-            TextField S2Pressure = (TextField) box.lookup("#S2pressure");
-            TextField S2Volume = (TextField) box.lookup("#S2volume");
-            TextField S2Temp = (TextField) box.lookup("#S2temperature");
-            textsRight.add(S2Pressure);
-            textsRight.add(S2Volume);
-            textsRight.add(S2Temp);
-            textFields.add(textsRight);
-            textFieldsStatesNames.add(rightStateName);
-        }
 
 
-//        return textFields;
-    }
-
-
-    public List<HBox> getHBoxes(HBox hbox) {
-        List<HBox> hboxList = new ArrayList<>();
-        for (Node child : hbox.getChildren()) {
-            if (child instanceof HBox) {
-                hboxList.add((HBox) child);
-            }
-        }
-        return hboxList;
-    }
 
     public void compute() {
         List<Process> processes = new ArrayList<>();
@@ -604,14 +630,20 @@ public class AccountsController implements Initializable {
         }
     }
 
+    private String getProcessChars(){
+        String processChars = "";
+        for(ProcessHolderController process :processControllers){
+            char c = process.getProcessType();
+            processChars += c;
+        }
+        return processChars;
+    }
+
     private void onSaveReports() throws SQLException {
         int currentReportID;
-//        if(Model.getInstance().getDatabaseDriver().getCurrentReportID() == 0){
-//            currentReportID = 1;
-//        }
-//        else{
-            currentReportID = Model.getInstance().getDatabaseDriver().getCurrentReportID();
-//        }
+
+        currentReportID = Model.getInstance().getDatabaseDriver().getCurrentReportID();
+//
         System.out.println("in accounts: "+currentReportID);
         String reportName = this.SaveReportNameTextField.getText();
         int numStates = stateValuesMap.size();
@@ -621,6 +653,7 @@ public class AccountsController implements Initializable {
         double H = 0;
         double U = 0;
 
+        String processChars = getProcessChars();
 
 
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchReport(reportName);
@@ -636,7 +669,7 @@ public class AccountsController implements Initializable {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
-            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", heat, work);
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", netHeat, netWork, this.maxVal, processChars);
 
         } else {
             ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State " + maxVal + 1);
@@ -650,7 +683,7 @@ public class AccountsController implements Initializable {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
-            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "No", heat, work);
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "No", netHeat, netWork, this.maxVal, processChars);
 
         }
 
@@ -659,6 +692,7 @@ public class AccountsController implements Initializable {
 //            Model.getInstance().getDatabaseDriver().updateStates();
 //        }
 //        else{
+        int i = 0, ind = 0;
             for (Map.Entry<String, List<TextField>> entry : stateValuesMap.entrySet()) {
                 String stateName = entry.getKey();
                 List<TextField> textFieldList = entry.getValue();
@@ -667,6 +701,23 @@ public class AccountsController implements Initializable {
                 double currentVolume = Double.parseDouble(textFieldList.get(1).getText());
                 double currentTemp = Double.parseDouble(textFieldList.get(2).getText());
 
+                if(cycleFlag){
+                    work = processWorks.get(i);
+                    heat = processHeats.get(i);
+                }
+                else {
+                    if(i >= processControllers.size()){
+                        work = processWorks.get(processControllers.size()-1);
+                        heat = processHeats.get(processControllers.size()-1);
+                    }
+                }
+                    i++;
+//                if((i != 0) && (i % 2 == 0)){
+//                    ind += 1; // if cycle then this is not needed at all, each state gets each work and heat
+//                }
+//                work = processWorks.get(ind);
+//                heat = processHeats.get(ind);
+
 //                System.out.println("State: " + stateName);
 //                System.out.println("Current Pressure: " + currentPressure);
 //                System.out.println("Current Volume: " + currentVolume);
@@ -674,7 +725,8 @@ public class AccountsController implements Initializable {
 
                 Model.getInstance().getDatabaseDriver().saveStateToDB(currentReportID, stateName, currentPressure, currentVolume, currentTemp, heat, work, S, H, U);
             }
-//        }
+                Model.getInstance().setLatestReports();
+                Model.getInstance().setAllReports();
         }
 
 
@@ -713,5 +765,141 @@ public class AccountsController implements Initializable {
     public void setStateDataMap(Map<String, List<Double>> stateDataMap) {
         this.stateDataMap = stateDataMap;
     }
+
+    private void clearPage() {
+        hboxParents.clear();
+        processControllers.clear();
+        textFields.clear();
+        textFieldsStatesNames.clear();
+        cycleFlag = false;
+        stateValuesMap.clear();
+        connectedTextField.clear();
+//        stateDataMap.clear();
+        ProcessLayout.getChildren().clear();
+        chart.getData().clear();
+        pressureOverTime.clear();
+        volumeOverTime.clear();
+        tempOverTime.clear();
+        maxVal = 0;
+        numProcessesChoice.setValue(null);
+        visualScrollPaneVBox.getChildren().clear();
+    }
+
+    public void setProcessChoice(int numProcess){
+
+        switch (numProcess){
+            case(1) -> numProcessesChoice.getSelectionModel().select(0);
+            case(2) -> numProcessesChoice.getSelectionModel().select(1);
+            case(3) -> numProcessesChoice.getSelectionModel().select(2);
+            case(4) -> numProcessesChoice.getSelectionModel().select(3);
+            case(5) -> numProcessesChoice.getSelectionModel().select(4);
+            default -> System.out.println("Something went wrong in process choice");
+
+        }
+    }
+
+    public void loadData(int numProcesses, String processChars, String cycleYesNo){ // we need to make a "load chart" feature
+        ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
+        clearPage();
+        setProcessChoice(numProcesses);
+        System.out.println("Cycle yes no: "+cycleYesNo);
+        if(cycleYesNo.equals("Yes") && !cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS YES AND IT WAS NOT SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(true);
+            cycleFlag = true;
+        }
+        else if(cycleYesNo.equals("Yes") && cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS YES AND IT WAS SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(true);
+            cycleFlag = true;
+        }
+        else if (cycleYesNo.equals("No") && cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS NO AND IT WAS SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(false);
+            cycleFlag = false;
+        }
+        else if (cycleYesNo.equals("No") && !cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS NO AND IT WAS NOT SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(false);
+            cycleFlag = false;
+        }
+        System.out.println("Num processes: "+numProcesses);
+//        numProcessesChoice.getSelectionModel().select(numProcesses); // this is the INDEX not the valhe
+
+        for(int i = 0; i < processControllers.size(); i++){
+            System.out.println(i);
+            ProcessHolderController controller = processControllers.get(i);
+            controller.setProcessPicker(processChars.charAt(i));
+
+            controller.setDataByMap(this.stateDataMap);
+            System.out.println("Controller first label: "+controller.getFirstStateLabelString());
+        }
+        closedSystemMenuController.goToCalculate(); // click the calculate button
+
+    }
+
+
+    private void updateTextField(TextField textField, Double newValue, boolean userInput) {
+        textField.setText(String.valueOf(newValue));
+        if (userInput) {
+            textField.setStyle("-fx-background-color: #98FB98;"); // Pale green background for user input
+        } else {
+            textField.setStyle(""); // Clear the background style for non-user input
+        }
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
+
+    public void setDashboardSummary(){
+        setDashboardController(Model.getInstance().getViewFactory().getDashboardController());
+        if(this.dashboardController != null){
+//            dashboardController.se
+        }
+    }
+
+    public void hideConnectedVBoxes() {
+        // Get the secondStateLabel of the current controller
+        if(processControllers.size() > 0){
+            ProcessHolderController currentController = processControllers.get(0);
+            for (ProcessHolderController controller : processControllers) {
+                // Check if the firstStateLabel of the current controller matches the secondStateLabel of the looped controller
+                if (currentController.getSecondStateLabelString().equals(controller.getFirstStateLabelString())) {
+                    // Hide the corresponding VBox on the looped controller
+                    controller.getState1Container().setVisible(false);
+                    controller.getState1Container().setStyle("-fx-opacity: 0;"+
+                    "-fx-pref-width: 0;"+
+                    "-fx-pref-height: 0;"+
+                    "-fx-max-width: 0;"+
+                    "-fx-max-height: 0;"+
+                    "-fx-min-width: 0;"+
+                    "-fx-min-height: 0;"+
+                    "-fx-border-color: transparent;"+
+                    "-fx-border-width: 0;"+
+                    "-fx-background-color: transparent;");
+                }
+                currentController = controller;
+            }
+
+        }
+
+    }
+
+    public void setStatesToSaveWithProcessHeatAndWork(){
+
+        for(ProcessHolderController process: processControllers){
+
+        }
+    }
+
+
+
 }
 

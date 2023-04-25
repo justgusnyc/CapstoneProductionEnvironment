@@ -35,6 +35,14 @@ public class DashboardController implements Initializable {
     public TextField amount_field;
     public TextArea message_field;
     public Button sendMoney_button;
+    public Label netWorkLabel;
+    public Label netHeatLabel;
+    public Label pressureSummaryLabel;
+    public Label volumeSummaryLabel;
+    public Label tempSummaryLabel;
+    public Label cycleSummaryLabel;
+    public Label processSummaryLabel;
+    public Label stateNameLabel;
 
     @FXML
     private ImageView backgroundImageView;
@@ -49,8 +57,14 @@ public class DashboardController implements Initializable {
         // inside of the model section we are creating a singleton of the view factory
         bindData();
         initLatestReportsList();
-        transaction_listview.setItems(Model.getInstance().getLatestReports());
-        transaction_listview.setCellFactory(e -> new ReportsCellFactory());
+        if(Model.getInstance().getLatestReports() == null){
+            transaction_listview.setItems(null);
+        }
+        else{
+            transaction_listview.setItems(Model.getInstance().getLatestReports());
+            transaction_listview.setCellFactory(e -> new ReportsCellFactory());
+
+        }
     }
 
     public void bindData(){
@@ -68,4 +82,38 @@ public class DashboardController implements Initializable {
             Model.getInstance().setLatestReports(); // we are trying to avoid this list being appended every time we load the page, repeating many times
         }
     }
+
+    public void setNetHeatLabelText(String netHeatLabel) {
+        this.netHeatLabel.setText(netHeatLabel);
+    }
+
+    public void setNetWorkLabelText(String netHeatLabel) {
+        this.netWorkLabel.setText(netHeatLabel);
+    }
+
+    public void setPressureLabelText(String netHeatLabel) {
+        this.pressureSummaryLabel.setText(netHeatLabel);
+    }
+
+    public void setVolumeLabelText(String netHeatLabel) {
+        this.volumeSummaryLabel.setText(netHeatLabel);
+    }
+
+    public void setTempLabelText(String netHeatLabel) {
+        this.tempSummaryLabel.setText(netHeatLabel);
+    }
+
+    public void setCycleLabelText(String netHeatLabel) {
+        this.cycleSummaryLabel.setText(netHeatLabel);
+    }
+
+    public void setProcessLabelText(String netHeatLabel) {
+        this.processSummaryLabel.setText(netHeatLabel);
+    }
+
+    public void setStateNameLabelText(String netHeatLabel) {
+        this.stateNameLabel.setText(netHeatLabel);
+    }
+
+
 }

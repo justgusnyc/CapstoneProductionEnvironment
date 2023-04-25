@@ -15,8 +15,8 @@ public class Process extends ACProcess {
     char process;
     List<State> solvedStates = new ArrayList<>();
     Map<String, List<Double>> CpCvMap = new HashMap<>();
-    private double heat;
-    private double work;
+    public double heat;
+    public double work;
     private double deltaEntropy;
     private double deltaEnthalpy;
 
@@ -50,6 +50,8 @@ public class Process extends ACProcess {
         CpCvColdAir.add(0.718); // Cv value for cold air, this will change with other types of air
         CpCvMap.put("ColdAir", CpCvColdAir);
 
+
+
     }
 
     // public Process(List<Process> p){
@@ -61,8 +63,6 @@ public class Process extends ACProcess {
     public void validateStates() {
 
         double R = 0.287;
-
-        //if state1 has all values check if its a valid state
 
         //if state1 has all values check if its a valid state
 
@@ -178,8 +178,6 @@ public class Process extends ACProcess {
         double v2 = state2.getVolume();
         double R = 0.287;
         double n = this.getN();
-        // double Cp = 1.005;
-        // double Cv = 0.718;
 
 
         switch (this.process) {
@@ -207,13 +205,6 @@ public class Process extends ACProcess {
                     this.state2.setTOriginal(t2);
                 }
 
-                if (p1 != 0 & p2 != 0) {
-                    this.setWork(R * (t1) * Math.log(p1 / p2));
-                } else {
-                    this.setWork(R * (t1) * (Math.log(v2 / v1)));
-                }
-                this.setHeat(this.getWork());
-
 
                 break;
             case 'p':
@@ -239,9 +230,6 @@ public class Process extends ACProcess {
                     p2 = p1;
                     this.state2.setPOriginal(p2);
                 }
-                this.setWork(p1 * (v2 - v1));
-                double CpColdAir = CpCvMap.get("ColdAir").get(0);
-                this.setHeat(CpColdAir * (t2 - t1));
 
                 break;
             case 'v':
@@ -264,10 +252,6 @@ public class Process extends ACProcess {
                     this.state2.setVOriginal(v2);
                 }
 
-                this.setWork(0);
-                double CvColdAir = CpCvMap.get("ColdAir").get(1);
-                this.setHeat(CvColdAir * (t2 - t1));
-
 
                 break;
 
@@ -279,11 +263,6 @@ public class Process extends ACProcess {
 
         // delta entropy and delta enthalpy calculated after passing properties and work
         // & heat
-        double CpColdAir = CpCvMap.get("ColdAir").get(0);
-        this.setDeltaEntropy((CpColdAir * Math.log(t1 / t2)) - (R * Math.log(p2 / p1)));
-        this.setDeltaEnthalpy(CpColdAir * (t2 - t1));
-
-
         state1.setTemp(t1);
         state1.setPressure(p1);
         state1.setVolume(v1);
@@ -291,6 +270,12 @@ public class Process extends ACProcess {
         state2.setTemp(t2);
         state2.setPressure(p2);
         state2.setVolume(v2);
+
+        double CpColdAir = CpCvMap.get("ColdAir").get(0);
+        this.setDeltaEntropy((CpColdAir * Math.log(state1.getTemp() / state2.getTemp())) - (R * Math.log(state2.getPressure() / state1.getPressure())));
+        this.setDeltaEnthalpy(CpColdAir * (state2.getTemp() - state1.getTemp()));
+
+
 
     }
 
@@ -341,12 +326,12 @@ public class Process extends ACProcess {
                 }
 
 
-                double work = (R * (this.state2.getTemp() - this.state1.getTemp())) / (1 - this.getN());
-                this.setWork(work);
+                //double work = (R * (this.state2.getTemp() - this.state1.getTemp())) / (1 - this.getN());
+                //this.setWork(work);
 
-                double heatt = (CvColdAir) * (this.state2.getTemp() - this.state1.getTemp()) + this.getWork();
+                //double heatt = (CvColdAir) * (this.state2.getTemp() - this.state1.getTemp()) + this.getWork();
 
-                this.setHeat(heatt);
+                //this.setHeat(heatt);
                 //this.setWork((R * (t2 - this.state1.getTemp())) / (1 - this.getN()));
                 //this.setHeat(CvColdAir * (t2 - t1) + this.getWork());
 
@@ -383,9 +368,9 @@ public class Process extends ACProcess {
                 }
 
 
-                double workk = (R * (state2.getTemp() - state1.getTemp())) / (1 - nn);
-                this.setWork(workk);
-                this.setHeat(0);
+                //double workk = (R * (state2.getTemp() - state1.getTemp())) / (1 - nn);
+                //this.setWork(workk);
+                //this.setHeat(0);
 
                 break;
 
@@ -445,15 +430,6 @@ public class Process extends ACProcess {
 
         return flag;
     }
-    @Override
-    public String toString() {
-        return "Process{" +
-                "leftState=" + state1.getValues() +
-                ", rightState=" + state2.getValues() +
-                ", processType=" + this.process +
-                '}';
-    }
-
 
 //    public Map<String, List<Double>> getSolvedStatesValues() {
 //        Map<String, List<Double>> statesValues = new HashMap<>();
@@ -468,6 +444,13 @@ public class Process extends ACProcess {
 
     // getters
 
+    public String toString() {
+        return "Process{" +
+                "leftState=" + state1.getValues() +
+                ", rightState=" + state2.getValues() +
+                ", processType=" + this.process +
+                '}';
+    }
     public static Map<String, List<Double>> getStateValues() {
         return stateValues;
     }
@@ -498,11 +481,57 @@ public class Process extends ACProcess {
     }
 
     public double getWork() {
-        return this.work;
+        double work = 0;
+        double R=0.287;
+        switch (this.process) {
+            case 't':
+
+                work=R * (state1.getTemp()) * (Math.log(state2.getVolume() / state1.getVolume()));
+
+                break;
+            case 'p':
+                work=state1.getPressure() * (state2.getVolume() - state1.getVolume());
+                break;
+            case 'v':
+                work=0;
+                break;
+
+            default:
+                System.out.println("Something was wrong in calculating the work ");
+
+
+        }
+        return work;
     }
 
     public double getHeat() {
-        return this.heat;
+
+        double heat = 0;
+        double R = 0.287;
+        double CpColdAir = CpCvMap.get("ColdAir").get(0);
+        double CvColdAir = CpCvMap.get("ColdAir").get(1);
+
+        switch (this.process) {
+            case 't':
+
+                heat=R * (state1.getTemp()) * Math.log(state2.getVolume() / state1.getVolume());
+                break;
+            case 'p':
+
+                heat=(CpColdAir * (state2.getTemp() - state1.getTemp()));
+
+                break;
+            case 'v':
+
+                heat=(CvColdAir * (state2.getTemp() - state1.getTemp()));
+                break;
+
+            default:
+                System.out.println("Something was wrong in calucalting the heat");
+
+
+        }
+        return heat;
     }
 
     public double getDeltaEntropy() {

@@ -2,6 +2,10 @@ package com.example.capstone.Views;
 
 import com.example.capstone.Controllers.ClosedSystem.AccountsController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
+import com.example.capstone.Controllers.ClosedSystem.ClosedSystemMenuController;
+import com.example.capstone.Controllers.ClosedSystem.DashboardController;
+import com.example.capstone.Models.Model;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,13 +15,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 // combines the dashboard and the menu displayed side by side
@@ -32,6 +36,8 @@ public class ViewFactory {
     private AnchorPane viewReportsView;
     private BorderPane accountsView;
     private AccountsController accountsController;
+
+    private DashboardController dashboardController;
 
     // open system views
     private final StringProperty openSystemSelectedMenuItem;
@@ -59,7 +65,10 @@ public class ViewFactory {
         if(dashboardView == null){ // if we do not have the view then we load the correct fxml
             try{ // we first check is dashboard is equal to null, every time that the user goes from dashboard to somewhere else and comes back, we should be able to use this instantiation without loading it again to save computation
                 // basically if the object has already been created then we use it, makes app faster
-                dashboardView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml")).load();
+//                dashboardView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml")).load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml"));
+                dashboardView = loader.load();
+                this.dashboardController = loader.getController();
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -78,26 +87,31 @@ public class ViewFactory {
         return  viewReportsView;
     }
 
-    public BorderPane getAccountsView(){ // opens the view reports fxml page in a pseudo singleton way
-
-        if(accountsView == null){
-            try{
+    public BorderPane getAccountsView() {
+        if (accountsView == null) {
+            try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Accounts.fxml"));
                 accountsView = loader.load();
                 accountsController = loader.getController();
 
+//                PauseTransition pause = new PauseTransition(Duration.seconds(3));
 
-            } catch (Exception e){
+                // Set the action to be performed after the pause
+//                pause.setOnFinished(event -> {
+//                    setAccountsController(accountsController);
+//                });
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return  accountsView;
+        return accountsView;
     }
 
     private void createStage(FXMLLoader loader){
         Scene scene = null;
         try{
             scene = new Scene(loader.load()); // we put this inside of the try catch in case the file that the loader is looking for does not exist
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -111,22 +125,40 @@ public class ViewFactory {
         stage.show();
     }
 
-    public void showExpandedReportWindow(String username, String messageText){
-        StackPane pane = new StackPane();
-        HBox hBox = new HBox(5);
-        hBox.setAlignment(Pos.CENTER);
-        Label sender = new Label(username);
-        Label message = new Label(messageText);
-        hBox.getChildren().addAll(sender, message);
-        pane.getChildren().add(hBox);
-        Scene scene = new Scene(pane, 300, 100);
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/slu-logomark-blue-rgb.png")))); // returns observable list of images, how we add an icon as well to the top
-        stage.setResizable(true);
-        stage.initModality(Modality.APPLICATION_MODAL); // makes it so you cannot click away when it opens
-        stage.setTitle("Expanded Report");
-        stage.setScene(scene);
-        stage.show();
+    public void showExpandedReportWindow(String reportName){
+        // get the results from the database, then while the resultset has next
+        ResultSet resultSet = Model.getInstance().getDatabaseDriver().getStatesByReportName(reportName);
+        try {
+            StackPane pane = new StackPane();
+            VBox vBox = new VBox(5);
+//            VBox.setAlignment(Pos.CENTER);
+            while (resultSet.next()){
+                String stateName = resultSet.getString("state_name");
+                double pressure = resultSet.getDouble("pressure");
+                double volume = resultSet.getDouble("volume");
+                double temp = resultSet.getDouble("temp");
+                double heat = resultSet.getDouble("heat");
+                double work = resultSet.getDouble("work");
+
+                Label StateLabel = new Label();
+//                StateLabel.setText("Name: "+stateName+ " P: "+pressure+" v: "+volume+" T: "+temp+" Work(associated process): "+work+" Heat: "+heat);
+                StateLabel.setText("Name: "+stateName+ " P: "+String.format("%.2f", pressure)+" v: "+String.format("%.5f", volume)+" T: "+String.format("%.2f", temp));
+                vBox.setStyle("-fx-padding: 10");
+                vBox.getChildren().add(StateLabel);
+            }
+            pane.getChildren().add(vBox);
+            pane.setStyle("-fx-background-color: white;"+"-fx-border-style: solid inside;"+"-fx-border-color: green;");
+            Scene scene = new Scene(pane, 300, 100);
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/slu-logomark-blue-rgb.png")))); // returns observable list of images, how we add an icon as well to the top
+            stage.setResizable(true);
+            stage.initModality(Modality.APPLICATION_MODAL); // makes it so you cannot click away when it opens
+            stage.setTitle("Expanded Report");
+            stage.setScene(scene);
+            stage.show();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
@@ -149,6 +181,7 @@ public class ViewFactory {
 
         ClosedSystemController closedSystemController = new ClosedSystemController();
         loader.setController(closedSystemController); // we had to set this manually because of removing the fx controller from the closed system fxml file
+        ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
         createStage(loader);
     }
 
@@ -158,5 +191,13 @@ public class ViewFactory {
 
     public AccountsController getAccountsController() {
         return this.accountsController;
+    }
+
+    public void setAccountsController(AccountsController accountsController) {
+        this.accountsController = accountsController;
+    }
+
+    public DashboardController getDashboardController() {
+        return dashboardController;
     }
 }

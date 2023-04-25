@@ -28,6 +28,7 @@ public class ClosedSystemController implements Initializable {
                 case DASHBOARD -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getDashboardView());
                 case VIEWREPORTS -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getViewReportsView());
                 default -> closedSystemParent.setCenter(Model.getInstance().getViewFactory().getAccountsView());
+
             }
         });
 

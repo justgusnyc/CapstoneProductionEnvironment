@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -57,6 +58,14 @@ public class ProcessHolderController implements Initializable {
     public VBox State2Container;
     public Text firstStateLabel;
     public Text secondStateLabel;
+    public Label S1SLabel;
+    public Label S1HLabel;
+    public Label S1ULabel;
+    public Label S2SLabel;
+    public Label S2HLabel;
+    public Label S2ULabel;
+    public TextField workTextField;
+    public TextField heatTextfield;
 
     private BorderPane accountsView;
     public int c = 1;
@@ -75,10 +84,10 @@ public class ProcessHolderController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ProcessContainer.setStyle("-fx-background-color: white;"+"-fx-border-style: solid inside;"+"-fx-border-color: green;");
-        State1Container.setStyle("-fx-background-color: white");
-        ProcessConfigurations.setStyle("-fx-background-color: white");
-        State2Container.setStyle("-fx-background-color: white");
+//        ProcessContainer.setStyle("-fx-background-color: white;"+"-fx-border-style: solid inside;"+"-fx-border-color: green;");
+//        State1Container.setStyle("-fx-background-color: white");
+//        ProcessConfigurations.setStyle("-fx-background-color: white");
+//        State2Container.setStyle("-fx-background-color: white");
 
         ProcessPicker.setItems(processTypes);
 
@@ -271,12 +280,16 @@ public class ProcessHolderController implements Initializable {
 
         } catch (NumberFormatException e) {
 //            System.out.println("Error not a double number");
-            return -1;
+            return 0;
         }
     }
 
     public char getProcessType() {
         return processType;
+    }
+
+    public void setProcessType(char processType) {
+        this.processType = processType;
     }
 
     public void setFirstStateLabel(String firstStateLabel) {
@@ -373,7 +386,28 @@ public class ProcessHolderController implements Initializable {
         return rightTextFields;
     }
 
-//    public void clearStateValues() {
+    public void setProcessPicker(char processtype) {
+
+        switch (processtype){
+            case('p') -> ProcessPicker.getSelectionModel().select(0);
+            case('v') -> ProcessPicker.getSelectionModel().select(1);
+            case('t') -> ProcessPicker.getSelectionModel().select(2);
+            case('x') -> ProcessPicker.getSelectionModel().select(3);
+            case('y') -> ProcessPicker.getSelectionModel().select(4);
+            default -> System.out.println("Something wrong setting up process types");
+        }
+
+    }
+
+    public void setHeatTextfield(double heat) {
+        this.heatTextfield.setText(String.format("%.2f", heat));
+    }
+
+    public void setWorkTextField(double work) {
+        this.workTextField.setText(String.format("%.2f", work));
+    }
+
+    //    public void clearStateValues() {
 //
 //    }
 }

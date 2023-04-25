@@ -11,6 +11,11 @@ public abstract class ACSolver {
         PROCESSES.addAll(p);
     }
 
+    public List<Process> getProcesses() {
+        return this.getProcesses();
+    }
+
+
     public ACSolver(Process p){
         PROCESSES.clear();
         PROCESSES.add(p);

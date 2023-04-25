@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ReportCellController implements Initializable {
@@ -25,6 +26,7 @@ public class ReportCellController implements Initializable {
 
     private final Reports report; // this is used with the reportcellfactory and the ReportCellController, each individual report
     public Button loadButton;
+    public Button deleteButton;
 
     public ReportCellController(Reports report){
         this.report = report; // basically this is the constructor for the private final reports above, and this
@@ -34,27 +36,34 @@ public class ReportCellController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DecimalFormat df = new DecimalFormat("####.###");
         reportNameLabel.textProperty().bind(report.reportNameProperty());
         numStatesLabel.textProperty().bind(report.numStatesProperty().asString());
         cycleYesNoLabel.textProperty().bind(report.cycleProperty());
-        heatLabel.textProperty().bind(report.heatProperty().asString());
-        workLabel.textProperty().bind(report.workProperty().asString());
-        expandReportButton.setOnAction(event -> Model.getInstance().getViewFactory().showExpandedReportWindow(report.reportNameProperty().get(),report.cycleProperty().get()));
+        heatLabel.textProperty().bind(report.heatProperty());
+        workLabel.textProperty().bind(report.workProperty());
+        expandReportButton.setOnAction(event -> Model.getInstance().getViewFactory().showExpandedReportWindow(report.reportNameProperty().get()));
 
         loadButton.setOnAction(new EventHandler<ActionEvent>() {
-            AccountsController accountsController = Model.getInstance().getViewFactory().getAccountsController();
-            ResultSet states = Model.getInstance().getDatabaseDriver().getStatesByReportName(reportNameLabel.textProperty().get());
-
+            // - clear the page
+            // load the right number of processes and select cycle if needed
+            // populate that data
+            // we need to add what the process chars were, probably store that in the reports table
             @Override
             public void handle(ActionEvent actionEvent) {
+                System.out.println("Report name: "+reportNameLabel.textProperty());
+                ResultSet states = Model.getInstance().getDatabaseDriver().getStatesByReportName(reportNameLabel.textProperty().get());
+                AccountsController accountsController = Model.getInstance().getViewFactory().getAccountsController();
                 Map<String, List<Double>> stateDataMap = new HashMap<>();
 
                 try {
                     while (states.next()) {
                         String stateName = states.getString("state_name");
+                        System.out.println("State name: " +stateName);
                         System.out.println(stateName);
                         List<Double> stateData = new ArrayList<>();
                         stateData.add(states.getDouble("pressure"));
+                        System.out.println("Pressure " +states.getDouble("pressure"));
                         stateData.add(states.getDouble("volume"));
                         stateData.add(states.getDouble("temp"));
                         stateData.add(states.getDouble("heat"));
@@ -67,12 +76,37 @@ public class ReportCellController implements Initializable {
                         stateDataMap.put(stateName, stateData);
                     }
 
+                    System.out.println("Accounts controller null? "+accountsController);
+
+//                    if(accountsController != null){
+                        accountsController.setStateDataMap(stateDataMap);
+                    System.out.println("state data map: "+stateDataMap);
+                        accountsController.loadData(report.numProcessesProperty().get(), report.processCharsProperty().get(), cycleYesNoLabel.getText());
+
+//                    }
+
 //                    clearStateValues();
                     System.out.println("state data map: "+stateDataMap);
-                    accountsController.setStateDataMap(stateDataMap);
-                    accountsController.populateTextFields();
+//                    accountsController.populateTextFields();
+                    System.out.println("Load button click: "+report.numProcessesProperty().get());
                 } catch (SQLException e) {
                     e.printStackTrace();
+                }
+            }
+        });
+
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String reportName = reportNameLabel.getText();
+
+                try {
+                    Model.getInstance().getDatabaseDriver().deleteReportAndStates(reportName);
+                    Model.getInstance().setAllReports();
+                    Model.getInstance().setLatestReports();
+//                    Model.getInstance().getDatabaseDriver().vacuum();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });

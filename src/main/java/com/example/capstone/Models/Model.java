@@ -124,8 +124,10 @@ public class Model {
                 int numStates = resultSet.getInt("num_states");
                 double heat = resultSet.getDouble("heat");
                 double work = resultSet.getDouble("work");
+                int numProcesses = resultSet.getInt("numProcesses");
+                String processChars = resultSet.getString("processChars");
 
-                report.add(new Reports(userID, reportName, cycle, numStates, heat, work));
+                report.add(new Reports(userID, reportName, cycle, numStates, heat, work, numProcesses, processChars));
                 report.addListener(new ListChangeListener<Reports>() {
                     @Override
                     public void onChanged(Change<? extends Reports> change) {

@@ -10,15 +10,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../Styles/Dashboard.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.DashboardController">
    <ImageView cache="true" disable="true" fitHeight="750.0" fitWidth="847.0" focusTraversable="true" nodeOrientation="INHERIT" opacity="0.28" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../../Images/slu-logomark-blue-rgb.png" />
-      </image>
+      <Image url="@../../Images/slu-logomark-blue-rgb.png" />
    </ImageView>
-   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" prefHeight="750.0" prefWidth="850.0" styleClass="dashboard bg-image" StackPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" styleClass="dashboard bg-image" StackPane.alignment="CENTER" VBox.vgrow="ALWAYS">
       <Text fx:id="user_name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hi, Gus" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
       <Label fx:id="login_date" styleClass="date_label" text="Today is 2023-01-22" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="27.0" />
       <Text layoutX="811.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Value Change Summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0" />
@@ -29,26 +28,37 @@
                <String fx:value="account" />
                <String fx:value="account_gradient" />
             </styleClass>
-            <Label fx:id="checking_balance" layoutX="23.0" layoutY="25.0" styleClass="account_balance" text="1200" visible="false" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0" />
-            <Label layoutX="26.0" layoutY="82.0" styleClass="account_number" text="Process 1" visible="false" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="14.0" />
-            <Label fx:id="checking_acc_num" layoutX="108.0" layoutY="110.0" styleClass="account_number" text="Polytropic" visible="false" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="138.0" />
-            <Text layoutX="14.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State 1" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" />
-            <Label fx:id="checking_balance1" layoutX="111.0" layoutY="25.0" styleClass="account_balance" text="1200" visible="false" />
-            <Label fx:id="checking_balance11" layoutX="210.0" layoutY="25.0" styleClass="account_balance" text="1200" visible="false" />
+            <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressure: " />
+            <Text layoutX="21.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume:" />
+            <Text layoutX="1.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" />
+            <Label fx:id="pressureSummaryLabel" layoutX="107.0" layoutY="17.0" prefHeight="33.0" prefWidth="65.0" text="1200" textFill="#e8e5e5" />
+            <Label fx:id="volumeSummaryLabel" layoutX="107.0" layoutY="74.0" prefHeight="33.0" prefWidth="65.0" text="0.1435" textFill="#e8e5e5" />
+            <Label fx:id="tempSummaryLabel" layoutX="122.0" layoutY="136.0" prefHeight="33.0" prefWidth="65.0" text="800" textFill="#e8e5e5" />
+            <Text layoutX="268.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cycled?:" />
+            <Text layoutX="268.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tabled?:" />
+            <Text layoutX="268.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Process:" />
+            <Label fx:id="cycleSummaryLabel" layoutX="351.0" layoutY="17.0" prefHeight="33.0" prefWidth="65.0" text="Yes" textFill="#e8e5e5" />
+            <Label layoutX="351.0" layoutY="91.0" prefHeight="33.0" prefWidth="65.0" text="No" textFill="#e8e5e5" />
+            <Label fx:id="processSummaryLabel" layoutX="351.0" layoutY="145.0" prefHeight="33.0" prefWidth="65.0" text="1200" textFill="#e8e5e5" />
+            <Label fx:id="stateNameLabel" layoutX="476.0" layoutY="17.0" prefHeight="65.0" prefWidth="135.0" text="State Name" textAlignment="CENTER" textFill="#e8e5e5">
+               <font>
+                  <Font name="Bell MT Bold" size="22.0" />
+               </font>
+            </Label>
          </AnchorPane>
       </HBox>
       <VBox layoutX="735.0" layoutY="141.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="180.0" prefWidth="210.0" styleClass="summary_view" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0" VBox.vgrow="ALWAYS">
          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" styleClass="account_summary_container" VBox.vgrow="ALWAYS">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Work" />
-            <Label fx:id="income_label" styleClass="income_amount" text="+ 4000.00" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Work" />
+            <Label fx:id="netWorkLabel" styleClass="income_amount" text="+ 4000.00" />
             <Line endX="160.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heat" />
-            <Label fx:id="expense_label" styleClass="expense_amount" text="- 1500.00" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Heat" />
+            <Label fx:id="netHeatLabel" styleClass="expense_amount" text="- 1500.00" />
          </VBox>
       </VBox>
       <Text layoutX="39.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Latest Reports" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="375.0" />
       <Text layoutX="682.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Theortical Summary" translateY="-6.0" AnchorPane.rightAnchor="14.872955322265625" AnchorPane.topAnchor="374.0" />
-      <ListView fx:id="transaction_listview" layoutX="39.0" layoutY="404.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.84" prefHeight="365.0" prefWidth="570.0" styleClass="transaction_listview" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="395.0" />
+      <ListView fx:id="transaction_listview" layoutX="5.0" layoutY="404.0" maxHeight="1.7976931348623157E308" opacity="0.84" styleClass="transaction_listview" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="395.0" />
       <VBox layoutX="596.0" layoutY="395.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.84" prefHeight="357.0" prefWidth="240.0" styleClass="new_trans_container" AnchorPane.bottomAnchor="-2.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="395.0" VBox.vgrow="ALWAYS">
          <Label blendMode="SRC_ATOP" contentDisplay="TEXT_ONLY" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="371.0" prefWidth="220.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum congue libero a blandit. Nullam at risus malesuada, commodo justo ut, pellentesque lacus. Aliquam erat volutpat. Donec euismod, lacus at molestie malesuada, tellus velit fringilla tortor, vel blandit sem velit vel velit. Morbi vel eros velit. Nam ullamcorper, massa a faucibus scelerisque, justo nisl congue nisi, eu convallis libero erat a sapien. Sed rutrum, velit vel congue iaculis, velit quam fringilla lacus, sit amet molestie odio enim ac ligula. Nam consectetur dictum nibh, eu sagittis magna tristique non. Nam tincidunt congue magna, non aliquet lectus accumsan eu. Morbi ac bibendum ante. Nam sit amet congue nulla." translateY="-12.0" wrapText="true" />
       </VBox>

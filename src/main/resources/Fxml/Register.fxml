@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -25,13 +26,37 @@
     </VBox>
 
     <VBox layoutX="231.0" layoutY="21.0" prefHeight="400.0" prefWidth="350.0" styleClass="register_form_container" GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <Label id="choice-prompt-text" text="Choose Your Account Type" />
-        <ChoiceBox fx:id="system_selector" prefWidth="150.0" styleClass="account_selector" />
+        <Label id="choice-prompt-text" text="Choose Your Account Type" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets bottom="-4.0" left="10.0" right="10.0" top="5.0" />
+            </VBox.margin></Label>
+        <ChoiceBox fx:id="system_selector" prefWidth="150.0" styleClass="account_selector" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin></ChoiceBox>
         <GridPane hgap="10" vgap="10">
-            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="first_name_field" prefWidth="120.0" styleClass="input_field" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <TextField fx:id="last_name_field" prefWidth="120.0" styleClass="input_field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding></Label>
+            <TextField fx:id="first_name_field" prefWidth="120.0" styleClass="input_field" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </GridPane.margin></TextField>
+            <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding></Label>
+            <TextField fx:id="last_name_field" prefWidth="120.0" styleClass="input_field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </GridPane.margin></TextField>
             <columnConstraints>
                 <ColumnConstraints />
                 <ColumnConstraints />
@@ -41,16 +66,60 @@
                 <RowConstraints />
             </rowConstraints>
         </GridPane>
-        <Label fx:id="username_label" text="Username:" />
-        <TextField fx:id="username_field" styleClass="input_field" />
-        <Label text="Password:" />
-        <PasswordField fx:id="password_field" styleClass="input_field" />
-        <Label text="Confirm Password:" />
-        <PasswordField fx:id="confirm_password_field" styleClass="input_field" />
-        <Button fx:id="register_btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="198.0" snapToPixel="false" text="Register" />
-        <Label fx:id="already_have_account_label" text="Already have an account?" />
-        <Button fx:id="login_button" cacheShape="false" centerShape="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pickOnBounds="false" prefHeight="29.0" prefWidth="303.0" scaleShape="false" scaleX="0.5" scaleY="0.5" snapToPixel="false" styleClass="login_button" text="Login!" textFill="#125b2b" textOverrun="CLIP" translateX="-86.0" translateY="-17.0" underline="true" />
+        <Label fx:id="username_label" text="Username:">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></Label>
+        <TextField fx:id="username_field" styleClass="input_field">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></TextField>
+        <Label text="Password:">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></Label>
+        <PasswordField fx:id="password_field" styleClass="input_field">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></PasswordField>
+        <Label text="Confirm Password:">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></Label>
+        <PasswordField fx:id="confirm_password_field" styleClass="input_field">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></PasswordField>
+        <Button fx:id="register_btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="198.0" snapToPixel="false" text="Register">
+            <VBox.margin>
+                <Insets left="5.0" right="5.0" />
+            </VBox.margin></Button>
+        <Label fx:id="already_have_account_label" text="Already have an account?">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin></Label>
+        <Button fx:id="login_button" cacheShape="false" centerShape="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pickOnBounds="false" prefHeight="29.0" prefWidth="303.0" scaleShape="false" scaleX="0.5" scaleY="0.5" snapToPixel="false" styleClass="login_button" text="Login!" textFill="#125b2b" textOverrun="CLIP" translateX="-86.0" translateY="-17.0" underline="true">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin></Button>
         <Label fx:id="error_lbl" styleClass="error_lbl" />
     </VBox>
 </GridPane>
-
