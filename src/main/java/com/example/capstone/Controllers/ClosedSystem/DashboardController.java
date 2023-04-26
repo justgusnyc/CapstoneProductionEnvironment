@@ -22,7 +22,9 @@ import java.util.ResourceBundle;
 
 
 public class DashboardController implements Initializable {
+    @FXML
     public Text user_name;
+    @FXML
     public Label login_date;
     public Label checking_balance;
     public Label checking_acc_num;
@@ -30,18 +32,27 @@ public class DashboardController implements Initializable {
     public Label savings_acc_num;
     public Label income_label;
     public Label expense_label;
+    @FXML
     public ListView<Reports> transaction_listview;
     public TextField payee_field;
     public TextField amount_field;
     public TextArea message_field;
     public Button sendMoney_button;
+    @FXML
     public Label netWorkLabel;
+    @FXML
     public Label netHeatLabel;
+    @FXML
     public Label pressureSummaryLabel;
+    @FXML
     public Label volumeSummaryLabel;
+    @FXML
     public Label tempSummaryLabel;
+    @FXML
     public Label cycleSummaryLabel;
+    @FXML
     public Label processSummaryLabel;
+    @FXML
     public Label stateNameLabel;
 
     @FXML

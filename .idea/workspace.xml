@@ -5,36 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67647a5c-d74e-4c5e-847c-9631402e580e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ExpandedReport.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Styles/processHolder.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mazebank.db" beforeDir="false" afterPath="$PROJECT_DIR$/mazebank.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ClosedSystemMenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ProcessHolderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ProcessHolderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportCellController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportCellController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/DatabaseDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/DatabaseDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACProcess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/ACSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Process.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Process.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Reports.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ReportsCellFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ReportsCellFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ReportCell.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ReportCell.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/Register.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/Register.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/Accounts.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/Accounts.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/ClosedSystemMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/ClosedSystemMenu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/Dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/ReportsCell.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/ReportsCell.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

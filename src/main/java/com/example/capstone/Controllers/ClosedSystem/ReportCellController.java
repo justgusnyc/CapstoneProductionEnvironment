@@ -76,19 +76,19 @@ public class ReportCellController implements Initializable {
                         stateDataMap.put(stateName, stateData);
                     }
 
-                    System.out.println("Accounts controller null? "+accountsController);
+//                    System.out.println("Accounts controller null? "+accountsController);
 
 //                    if(accountsController != null){
                         accountsController.setStateDataMap(stateDataMap);
-                    System.out.println("state data map: "+stateDataMap);
+//                    System.out.println("state data map: "+stateDataMap);
                         accountsController.loadData(report.numProcessesProperty().get(), report.processCharsProperty().get(), cycleYesNoLabel.getText());
 
 //                    }
 
 //                    clearStateValues();
-                    System.out.println("state data map: "+stateDataMap);
+//                    System.out.println("state data map: "+stateDataMap);
 //                    accountsController.populateTextFields();
-                    System.out.println("Load button click: "+report.numProcessesProperty().get());
+//                    System.out.println("Load button click: "+report.numProcessesProperty().get());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

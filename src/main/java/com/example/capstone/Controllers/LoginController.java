@@ -1,9 +1,12 @@
 package com.example.capstone.Controllers;
 
+import com.example.capstone.Controllers.ClosedSystem.AccountsController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemController;
 import com.example.capstone.Controllers.ClosedSystem.ClosedSystemMenuController;
 import com.example.capstone.Models.Model;
 import com.example.capstone.Views.SystemType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -60,12 +64,24 @@ public class LoginController implements Initializable {
             Model.getInstance().evaluateClosedSystemCredentials(username_address_field.getText(), password_field.getText());
             if(Model.getInstance().getClosedSystemLoginSuccessFlag()){
                 Model.getInstance().getViewFactory().showClosedSystemWindow();
+                Model.getInstance().getViewFactory().closeStage(stage);
                 ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
                 closedSystemMenuController.goToDashboard();
                 closedSystemMenuController.goToCalculate();
+//                AccountsController accountsController = new AccountsController();
+//                try {
+//                    Thread.sleep(2000);
+//
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+//                    // Code to run after 1 second
+//                }));
+//                timeline.play();
+//                accountsController.loadExample();
 
                 // close the login stage now
-                Model.getInstance().getViewFactory().closeStage(stage);
 
             } else{
                 username_address_field.setText("");

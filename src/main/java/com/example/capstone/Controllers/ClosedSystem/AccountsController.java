@@ -4,6 +4,8 @@ import com.example.capstone.Models.Logic.Process;
 import com.example.capstone.Models.Logic.Solver;
 import com.example.capstone.Models.Logic.State;
 import com.example.capstone.Models.Model;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -61,7 +64,8 @@ public class AccountsController implements Initializable {
 
     ObservableList<Integer> maxProcesses = FXCollections.observableArrayList(1, 2, 3, 4, 5);
 
-    private ObservableList<String> chartOptions = FXCollections.observableArrayList("P-v", "T-v", "T-s", "P-h");
+//    private ObservableList<String> chartOptions = FXCollections.observableArrayList("P-v", "T-v", "T-s", "P-h");
+    private ObservableList<String> chartOptions = FXCollections.observableArrayList("P-v", "T-v");
 
     int[] state1Indexes = {1, 2, 3, 4, 5};
     int[] state2Indexes = {2, 3, 4, 5, 6};
@@ -104,9 +108,16 @@ public class AccountsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
         numProcessesChoice.setItems(maxProcesses);
 
         visualTypeChoiceBox.setItems(chartOptions);
+
+
+
+
+//        loadExample();
+
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             int max;
@@ -361,6 +372,8 @@ public class AccountsController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
+//                    loadExample();
+//                    computeButton.fire();
                     onSaveReports();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -892,11 +905,100 @@ public class AccountsController implements Initializable {
 
     }
 
-    public void setStatesToSaveWithProcessHeatAndWork(){
+    private Map<String, List<Double>> getExampleData(){
+        Map<String, List<Double>> exampleData = new HashMap<>();
 
-        for(ProcessHolderController process: processControllers){
+        List<Double> state1 = new ArrayList<>();
+        state1.add(1000.0);
+        state1.add(0.1435);
+        state1.add(500.0);
+        List<Double> state2 = new ArrayList<>();
+        state1.add(1600.0);
+        state1.add(0.1435);
+        state1.add(800.0);
+        List<Double> state3 = new ArrayList<>();
+        state1.add(2000.0);
+        state1.add(0.1148);
+        state1.add(800.0);
+        List<Double> state4 = new ArrayList<>();
+        state1.add(2000.0);
+        state1.add(0.07175);
+        state1.add(500.0);
 
+        exampleData.put("State 1", state1);
+        exampleData.put("State 2", state2);
+        exampleData.put("State 3", state3);
+        exampleData.put("State 4", state4);
+
+        return exampleData;
+
+    }
+
+    public void loadExample(){
+        System.out.println("Loading example... ");
+        String cycleYesNo = "Yes";
+        ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
+        Map<String, List<Double>> exampleData = getExampleData();
+
+
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+        clearPage();
+
+        setProcessChoice(4);
+//        closedSystemMenuController.goToCalculate(); // click the calculate button
+        String processChars = "vtpt";
+        if(cycleYesNo.equals("Yes") && !cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS YES AND IT WAS NOT SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(true);
+            cycleFlag = true;
         }
+        else if(cycleYesNo.equals("Yes") && cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS YES AND IT WAS SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(true);
+            cycleFlag = true;
+        }
+        else if (cycleYesNo.equals("No") && cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS NO AND IT WAS SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(false);
+            cycleFlag = false;
+        }
+        else if (cycleYesNo.equals("No") && !cycleYesButton.isSelected()){
+            System.out.println("THE CYCLE BUTTON WAS NO AND IT WAS NOT SELECTED");
+            cycleYesButton.fire();
+            cycleYesButton.fire();
+            cycleYesButton.setSelected(false);
+            cycleFlag = false;
+        }
+
+
+
+        for(int i = 0; i < processControllers.size(); i++){
+            System.out.println(i);
+            ProcessHolderController controller = processControllers.get(i);
+            controller.setProcessPicker(processChars.charAt(i));
+
+            controller.setDataByMap(exampleData);
+            System.out.println("Controller first label: "+controller.getFirstStateLabelString());
+        }
+
+//        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+//            // Code to run after 1 second
+//        }));
+//        timeline.play();
+
+        closedSystemMenuController.goToCalculate();
+//        computeButton.fire();
+//        visualTypeChoiceBox.getSelectionModel().select(0);
+
+
     }
 
 

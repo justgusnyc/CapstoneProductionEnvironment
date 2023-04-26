@@ -31,8 +31,8 @@ public class ClosedSystemMenuController implements Initializable {
         // where when these buttons are actually pressed, it will set the switch statement to a different case
         // and that case will correspond to what the general closedSystemController will actually open from the
         // view factory instances
-        dashboard_btn.fire();
-        accounts_button.fire();
+//        dashboard_btn.fire();
+//        accounts_button.fire();
     }
 
     private void addListeners(){ // when the dashboard button is clicked, we trigger the dashboard object from facotry
