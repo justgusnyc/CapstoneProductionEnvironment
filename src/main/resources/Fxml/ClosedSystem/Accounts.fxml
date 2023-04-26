@@ -316,7 +316,7 @@
          </HBox>
          <HBox>
             <VBox fx:id="visualScrollPaneVBox" prefHeight="193.0" prefWidth="390.0" />
-            <ScrollPane prefHeight="186.0" prefWidth="452.0">
+            <ScrollPane prefHeight="186.0" prefWidth="452.0" HBox.hgrow="ALWAYS">
                <content>
                   <Label fx:id="calculationSummaryLabel" prefHeight="341.0" prefWidth="436.0">
                      <padding>
