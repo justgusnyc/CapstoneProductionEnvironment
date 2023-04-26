@@ -71,6 +71,7 @@ public class ProcessHolderController implements Initializable {
     public int c = 1;
     public int ind = 0;
     ObservableList<Character> processTypes = FXCollections.observableArrayList('p','v','t','x', 'y');
+    ObservableList<String> processTypes2 = FXCollections.observableArrayList("Isobaric","Isochoric","Isothermal","Polytropic", "Isentropic");
 
     private char processType;
 
@@ -89,7 +90,7 @@ public class ProcessHolderController implements Initializable {
 //        ProcessConfigurations.setStyle("-fx-background-color: white");
 //        State2Container.setStyle("-fx-background-color: white");
 
-        ProcessPicker.setItems(processTypes);
+        ProcessPicker.setItems(processTypes2);
 
         ProcessPicker.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -104,7 +105,7 @@ public class ProcessHolderController implements Initializable {
 //    } // why do we need this method here?
 
     public void setData(Process process){
-//        S1pressure.requestLayout(); what would this do here?
+//        S1pressure.requestLayout(); what would this do here?a
         State state1 = process.getState1();
         State state2 = process.getState2();
 //        firstStateLabel.setText(state1.getStateName());
@@ -130,6 +131,20 @@ public class ProcessHolderController implements Initializable {
 //        System.out.println(statesSolved.get(1).getPressure());
     }
 
+    public List<Boolean> getInputStatus() {
+        List<Boolean> values = new ArrayList<>();
+
+        values.add(!S1temperature.getText().isEmpty());
+        values.add(!S1pressure.getText().isEmpty());
+        values.add(!S1volume.getText().isEmpty());
+
+        values.add(!S2temperature.getText().isEmpty());
+        values.add(!S2pressure.getText().isEmpty());
+        values.add(!S2volume.getText().isEmpty());
+
+        return values;
+    }
+
     public void setDataByMap(Map<String, List<Double>> stateDataMap){
         for (Map.Entry<String, List<Double>> stateData : stateDataMap.entrySet()) {
             String stateName = stateData.getKey();
@@ -144,21 +159,38 @@ public class ProcessHolderController implements Initializable {
                 System.out.println("Match found for state name: " + stateName);
                 System.out.println("Values for " + stateName + ": " + stateValues);
 
-                S1pressure.setText(""+stateValues.get(0));
-                S1volume.setText(""+stateValues.get(1));
-                S1temperature.setText(""+stateValues.get(2));
+                S1pressure.setText(String.format("%.4f", stateValues.get(0)));
+                S1volume.setText(String.format("%.4f", stateValues.get(1)));
+                S1temperature.setText(String.format("%.4f", stateValues.get(2)));
 
             } else if(stateName.equals(this.getSecondStateLabelString())){
                 // Do something else when the state name does not match the input
                 System.out.println("No match found for state name: " + stateName);
 
-                S2pressure.setText(""+stateValues.get(0));
-                S2volume.setText(""+stateValues.get(1));
-                S2temperature.setText(""+stateValues.get(2));
+                S2pressure.setText(String.format("%.4f", stateValues.get(0)));
+                S2volume.setText(String.format("%.4f", stateValues.get(1)));
+                S2temperature.setText(String.format("%.4f", stateValues.get(2)));
             }
         }
 
 
+    }
+    public void updateTextFieldColors(List<Boolean> userInputStatus) {
+        setGreenIfUserInput(S1pressure, userInputStatus.get(1));
+        setGreenIfUserInput(S1volume, userInputStatus.get(2));
+        setGreenIfUserInput(S1temperature, userInputStatus.get(0));
+
+        setGreenIfUserInput(S2pressure, userInputStatus.get(4));
+        setGreenIfUserInput(S2volume, userInputStatus.get(5));
+        setGreenIfUserInput(S2temperature, userInputStatus.get(3));
+    }
+
+    private void setGreenIfUserInput(TextField textField, boolean isUserInput) {
+        if (isUserInput) {
+            textField.setStyle("-fx-background-color: #98FB98;");
+        } else {
+            textField.setStyle("");
+        }
     }
 
     public void setValuesAfterCompleteSolve(Map<String, List<Double>> completeSolve){
@@ -175,17 +207,17 @@ public class ProcessHolderController implements Initializable {
                 System.out.println("Match found for state name: " + stateName);
                 System.out.println("Values for " + stateName + ": " + stateValues);
 
-                S1pressure.setText(""+stateValues.get(1));
-                S1volume.setText(""+stateValues.get(2));
-                S1temperature.setText(""+stateValues.get(0));
+                S1pressure.setText(String.format("%.4f", stateValues.get(1)));
+                S1volume.setText(String.format("%.4f", stateValues.get(2)));
+                S1temperature.setText(String.format("%.4f", stateValues.get(0)));
 
             } else if(stateName.equals(this.getSecondStateLabelString())){
                 // Do something else when the state name does not match the input
                 System.out.println("No match found for state name: " + stateName);
 
-                S2pressure.setText(""+stateValues.get(1));
-                S2volume.setText(""+stateValues.get(2));
-                S2temperature.setText(""+stateValues.get(0));
+                S2pressure.setText(String.format("%.4f", stateValues.get(1)));
+                S2volume.setText(String.format("%.4f", stateValues.get(2)));
+                S2temperature.setText(String.format("%.4f", stateValues.get(0)));
             }
         }
 

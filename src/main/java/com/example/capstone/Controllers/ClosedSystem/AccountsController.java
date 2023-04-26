@@ -3,45 +3,56 @@ package com.example.capstone.Controllers.ClosedSystem;
 import com.example.capstone.Models.Logic.Process;
 import com.example.capstone.Models.Logic.Solver;
 import com.example.capstone.Models.Logic.State;
+
 import com.example.capstone.Models.Model;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+//import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
+import org.knowm.xchart.*;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
+
+import javafx.scene.image.Image;
+import org.knowm.xchart.style.Styler;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
 public class AccountsController implements Initializable {
-    //    public Label checking_account_number;
-//    public Label transaction_limit;
-//    public Label checking_account_date;
-//    public Label checking_account_balance;
-//    public Label savings_account_number;
-//    public Label withdrawal_limit;
-//    public Label savings_account_date;
-//    public Label savings_account_balance;
-//    public TextField checking_to_savings_textField;
-//    public Button checking_to_savings_button;
-//    public TextField savings_to_checkings_textField;
-//    public Button savings_to_checkings_button;
+
     public HBox ProcessLayout;
     public BorderPane ProcessBorderPane;
     public ChoiceBox numProcessesChoice;
@@ -56,8 +67,20 @@ public class AccountsController implements Initializable {
     public TextField SaveReportNameTextField;
     public TextField netHeatTextField;
     public TextField netWorkTextField;
+    public TextField heatInTextField;
+    public TextField workInTextField;
+    public TextField heatOutTextField;
+    public TextField workOutTextField;
+    public Label engineNotEngineLabel;
+    public TextField engineEfficiencyTextField;
+    public Label calculationSummaryLabel;
 
     private List<Process> processesList;
+
+    private List<Process> processes = new ArrayList<>();
+
+
+    private Map<String, List<Double>> m;
     public Button clearButton;
 
     private List<HBox> hboxParents = new ArrayList<>();
@@ -93,31 +116,27 @@ public class AccountsController implements Initializable {
     private ProcessHolderController processHolderController;
 
     private DashboardController dashboardController;
-//    private String processChars = "";
 
-//    public void setProcessHolderController(ProcessHolderController processHolderController) {
-//        this.processHolderController = processHolderController;
-//    }
 
     private double netWork, netHeat, netHeatIn, netHeatOut, netWorkIn, netWorkOut;
 
     private List<Double> processHeats = new ArrayList<>();
     private List<Double> processWorks = new ArrayList<>();
 
+    String basicInstructions = "Hello and welcome to H.E.A.T.S! This is an interactive application designed to help you solve closed system thermodynamic problems. | " +
+            "To start, select the number of processes you would like to work with, then toggle whether or not your problem is a cycle problem or not. Now, just fill in your data and select the process types and click compute! " +
+            "After your computations are done, try checking out some of the visuals, or saving your report for later! The 4 most recent reports can be accessed on the Dashboard, and all reports can be accessed on the Saved Reports page. " +
+            "Below you will see additional information after your calculations are completed: ";
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
 
         numProcessesChoice.setItems(maxProcesses);
 
         visualTypeChoiceBox.setItems(chartOptions);
 
-
-
-
-//        loadExample();
-
+        calculationSummaryLabel.setText(basicInstructions);
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             int max;
@@ -246,124 +265,15 @@ public class AccountsController implements Initializable {
         computeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                List<Process> processes = new ArrayList<>();
-                Map<String, State> states = new HashMap<>();
-
-
-                for (int i = 0; i < processControllers.size(); i++) {
-                    ProcessHolderController controller = processControllers.get(i);
-                    Map<String, List<Double>> stateData = controller.getData();
-                    List<Double> stateLeftData = stateData.get("StateLeft");
-                    List<Double> stateRightData = stateData.get("StateRight");
-                    pressureOverTime.add(stateLeftData.get(0));
-                    pressureOverTime.add(stateRightData.get(0));
-                    volumeOverTime.add(stateLeftData.get(1));
-                    volumeOverTime.add(stateRightData.get(1));
-                    tempOverTime.add(stateLeftData.get(2));
-                    tempOverTime.add(stateRightData.get(2));
-
-                    String leftStateLabel = controller.getFirstStateLabelString();
-                    String rightStateLabel = controller.getSecondStateLabelString();
-
-                    // Create or retrieve existing states
-                    State stateLeft = states.computeIfAbsent(leftStateLabel, label -> new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), label));
-                    State stateRight = states.computeIfAbsent(rightStateLabel, label -> new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), label));
-
-                    char processType = controller.getProcessType();
-
-                    double nValue = 0; // Initialize nValue with a default value (e.g., 0)
-                    boolean isValidNValue = true;
-                    if (processType == 'x' || processType == 'y') {
-                        if (processType == 'y') {
-                            nValue = 1.005/0.718;
-                        } else {
-                            if (!controller.NValue.getText().isEmpty()) {
-                                try {
-                                    nValue = Double.parseDouble(controller.NValue.getText());
-                                } catch (NumberFormatException e) {
-                                    // Show an error message if the entered text is not a valid number
-                                    showErrorAlert("Invalid n value entered. Please enter a valid number.");
-                                    isValidNValue = false;
-                                }
-                            } else {
-                                showErrorAlert("Please enter an n value for process type " + processType + ".");
-                                isValidNValue = false;
-                            }
-                        }
-                    }
-
-                    if (isValidNValue) {
-                        Process process;
-                        if (processType == 'x' || processType == 'y') {
-                            // if the process type is polytropic or isentropic, create process with n
-                            process = new Process(stateRight, stateLeft, nValue, processType);
-                        } else {
-                            // else use the constructor without the n value
-                            process = new Process(stateRight, stateLeft, processType);
-                        }
-                        processes.add(process);
-                    }
-
-
-//                    State stateLeft = new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), controller.getFirstStateLabelString());
-//                    State stateRight = new State(stateRightData.get(2), stateRightData.get(0), stateRightData.get(1), controller.getSecondStateLabelString());
-//                    states.put(controller.getFirstStateLabelString(), stateLeft);
-//                    states.put(controller.getSecondStateLabelString(), stateRight);
-//                    System.out.println("left " + stateLeft);
-//                    System.out.println("right " + stateRight);
-//                    System.out.println(stateLeft.getPressure());
-//                    Process process = new Process(states.get(controller.getSecondStateLabelString()), states.get(controller.getFirstStateLabelString()), controller.getProcessType());
-
-//                    processes.add(process);
-                }
-
-                Collections.sort(pressureOverTime);
-                Collections.sort(tempOverTime);
-                Collections.sort(volumeOverTime);
-
-
-//                List<Process> processes2 = processesList();
-                Solver solver = new Solver(processes);
-                System.out.println(solver.CompleteSolve());
-                Map<String, List<Double>> m = solver.CompleteSolve();
-
-                for (int i = 0; i < processControllers.size(); i++) {
-                    ProcessHolderController controller = processControllers.get(i);
-                    double heat = processes.get(i).getHeat();
-                    double work=processes.get(i).getWork();
-                    netWork += work;
-                    netHeat += heat;
-                    if (heat > 0) netHeatIn += heat;
-                    if (heat < 0) netHeatOut += heat;
-                    if (work > 0) netWorkIn += work;
-                    if (work < 0) netWorkOut += work;
-
-
-                    controller.setHeatTextfield(processes.get(i).getHeat());
-                    controller.setWorkTextField(processes.get(i).getWork());
-                    processHeats.add(processes.get(i).getHeat());
-                    processWorks.add(processes.get(i).getWork());
-
-                    try {
-                        controller.setValuesAfterCompleteSolve(m);
-//                        updateTextFields(solver.CompleteSolve());
-
-                    } catch (IllegalArgumentException e) {
-                        showErrorAlert(e.getMessage());
-                    }
-//                    System.out.println(processes.get(i));
-                }
-                netHeatTextField.setText(""+netHeat);
-                netWorkTextField.setText(""+netWork);
+                compute();
             }
-
-
         });
 
         clearButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 clearPage();
+
 
             }
         });
@@ -372,8 +282,6 @@ public class AccountsController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-//                    loadExample();
-//                    computeButton.fire();
                     onSaveReports();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -397,78 +305,59 @@ public class AccountsController implements Initializable {
         yAxis.setTickUnit(500);
 
 
-//        visualScrollPane.setContent(chart);
-//        visualScrollPane.setFitToWidth(true);
-//        visualScrollPane.setFitToHeight(true);
+
 
         visualTypeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                savePvAndTvDiagrams(m);
 
-
-            if (newValue.equals("P-v")) {
-                visualScrollPaneVBox.getChildren().clear();
+                ImageView imageView;
 
                 if (newValue.equals("P-v")) {
-                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                    series.setName("P-v");
-                    for (int i = 0; i < volumeOverTime.size(); i++) {
-                        Double temp = tempOverTime.get(i);
-                        Double volume = volumeOverTime.get(i);
-                        Double pressure = 0.287 * temp / volume;
-                        series.getData().add(new XYChart.Data<>(volume, pressure));
-                    }
-                    chart.getData().add(series);
-//                    visualScrollPane.setContent(chart);
-                    visualScrollPaneVBox.getChildren().add(chart);
+                    File pvImageFile = new File("./pv_diagram.png");
+                    imageView = createImageView(pvImageFile);
+                } else if (newValue.equals("T-v")) {
+                    File tvImageFile = new File("./Tv_diagram.png");
+                    imageView = createImageView(tvImageFile);
+                } else {
+                    throw new IllegalArgumentException("Invalid diagram type: " + newValue);
                 }
-
-//                for (int i = 0; i < volumeOverTime.size(); i++) {
-//                    Double temp = tempOverTime.get(i);
-//                    Double volume = volumeOverTime.get(i);
-//                    Double pressure = pressureOverTime.get(i);
-//                    System.out.println("Data point " + (i + 1) + ": Volume = " + volume + ", Pressure = " + pressure);
-//                    series.getData().add(new XYChart.Data<>(volume, pressure));
-//                }
-//                chart.getData().add(series);
-//                visualScrollPane.setContent(chart);
-//                visualScrollPane.setFitToWidth(true);
-//                visualScrollPane.setFitToHeight(true);
-            } else if (newValue.equals("T-v")) {
                 visualScrollPaneVBox.getChildren().clear();
-                XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                series.setName("T-v");
-                for (int i = 0; i < tempOverTime.size(); i++) {
-                    Double temp = tempOverTime.get(i);
-                    Double volume = volumeOverTime.get(i);
-                    series.getData().add(new XYChart.Data<>(temp, volume));
-                }
-                chart.getData().add(series);
-                visualScrollPaneVBox.getChildren().add(chart);
-//                visualScrollPane.setContent(chart);
-//                visualScrollPane.setFitToWidth(true);
-//                visualScrollPane.setFitToHeight(true);
-            } else if (newValue.equals("T-s")) {
-                // Change the content of the scroll pane to another visualization
-                // preset based on option 3
-                // ...
-            } else if (newValue.equals("P-h")) {
-                // Change the content of the scroll pane to another visualization
-                // preset based on option 4
-                // ...
+                visualScrollPaneVBox.getChildren().add(imageView);
+
+//                visualScrollPane.setContent(imageView);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
 
 
     }
-
     public List<Process> processesList() {
-        List<Process> ls = new ArrayList<>();
+
+        processes.clear();
+
         Map<String, State> states = new HashMap<>();
         for (int i = 0; i < processControllers.size(); i++) {
             ProcessHolderController controller = processControllers.get(i);
             Map<String, List<Double>> stateData = controller.getData();
+
             //System.out.println("Controller " + i + " state data: " + stateData);
             List<Double> stateLeftData = stateData.get("StateLeft");
             List<Double> stateRightData = stateData.get("StateRight");
+
+
+            // Treat empty input fields as zero
+            for (int j = 0; j < stateLeftData.size(); j++) {
+                if (stateLeftData.get(j) == -1) {
+                    stateLeftData.set(j, 0.0);
+                }
+                if (stateRightData.get(j) == -1) {
+                    stateRightData.set(j, 0.0);
+                }
+            }
+
             pressureOverTime.add(stateLeftData.get(0));
             pressureOverTime.add(stateRightData.get(0));
             volumeOverTime.add(stateLeftData.get(1));
@@ -477,6 +366,9 @@ public class AccountsController implements Initializable {
             tempOverTime.add(stateRightData.get(2));
             String leftStateLabel = controller.getFirstStateLabelString();
             String rightStateLabel = controller.getSecondStateLabelString();
+
+
+
 
             // Create or retrieve existing states
             State stateLeft = states.computeIfAbsent(leftStateLabel, label -> new State(stateLeftData.get(2), stateLeftData.get(0), stateLeftData.get(1), label));
@@ -509,63 +401,271 @@ public class AccountsController implements Initializable {
                 Process process;
                 if (processType == 'x' || processType == 'y') {
                     // if the process type is polytropic or isentropic, create process with n
-                    process = new Process(stateRight, stateLeft, nValue, processType);
+                    process = new Process(stateLeft, stateRight, nValue, processType);
                 } else {
                     // else use the constructor without the n value
-                    process = new Process(stateRight, stateLeft, processType);
+                    process = new Process(stateLeft, stateRight, processType);
                 }
-                ls.add(process);
+                processes.add(process);
             }
 
         }
 
-        return ls;
+        return processes;
     }
 
+    public void compute(){
+
+        netWork = 0;
+        netHeat = 0;
+        netWorkIn = 0;
+        netWorkOut = 0;
+        netHeatIn = 0;
+        netHeatOut = 0;
 
 
-
-    public void compute() {
-        List<Process> processes = new ArrayList<>();
-
-        // Retrieve the input values from the text fields and create processes
-        for (int i = 0; i < hboxParents.size(); i++) {
-            ProcessHolderController controller = processControllers.get(i);
-            HBox box = hboxParents.get(i);
-            TextField S1Pressure = (TextField) box.lookup("#S1pressure");
-            TextField S1Volume = (TextField) box.lookup("#S1Volume");
-            TextField S1Temp = (TextField) box.lookup("#S1temperature");
-
-            TextField S2Pressure = (TextField) box.lookup("#S2pressure");
-            TextField S2Volume = (TextField) box.lookup("#S2volume");
-            TextField S2Temp = (TextField) box.lookup("#S2temperature");
-
-
-            State initState;
-            if (i > 0) {
-                // If it is not the first process, create the initial state of the current process with the final state values of the previous process
-                State prevStateFinal = processes.get(i - 1).getState2();
-                initState = new State(prevStateFinal.getTemp(), prevStateFinal.getPressure(), prevStateFinal.getVolume(), "State " + (i * 2 + 1));
-            } else {
-                initState = new State(Double.parseDouble(S1Temp.getText()), Double.parseDouble(S1Pressure.getText()), Double.parseDouble(S1Volume.getText()), "State " + (i * 2 + 1));
-            }
-
-            State finalState = new State(Double.parseDouble(S2Temp.getText()), Double.parseDouble(S2Pressure.getText()), Double.parseDouble(S2Volume.getText()), "State " + (i * 2 + 2));
-            Process process = new Process(initState, finalState, controller.getProcessType()); // 'x' as a placeholder for the process type
-
-            processes.add(process);
+        List<Process> processes = processesList();
+        Solver solver;
+        if (processes.size() == 1) {
+            solver = new Solver(processes.get(0));
+        } else {
+            solver = new Solver(processes);
         }
 
 
-        // Solve the processes using the Solver class
-        Solver solver = new Solver(processes);
-        System.out.println(solver.CompleteSolve());
+        // Store user inputs before solving the processes
+        //Map<String, List<Boolean>> userInputStatus = getInputStatus();
 
-        // Update the text fields with the computed values
+
+
         try {
-            updateTextFields(solver.CompleteSolve());
+
+
+            List<List<Boolean>> allUserInputStatuses = new ArrayList<>();
+            for (ProcessHolderController controller : processControllers) {
+                allUserInputStatuses.add(controller.getInputStatus());
+            }
+            m = solver.CompleteSolve();
+            System.out.println(m);
+
+
+
+//            double netWork = 0, netHeat = 0, netHeatIn = 0, netHeatOut = 0, netWorkIn = 0, netWorkOut = 0;
+            for (int i = 0; i < processes.size(); i++) {
+                ProcessHolderController controller = processControllers.get(i);
+                //allUserInputStatuses.add(controller.getInputStatus());
+
+                double heat = processes.get(i).getHeat();
+                double work = processes.get(i).getWork();
+                netWork += work;
+                netHeat += heat;
+                if (heat > 0) netHeatIn += heat;
+                if (heat < 0) netHeatOut += heat;
+                if (work > 0) netWorkIn += work;
+                if (work < 0) netWorkOut += work;
+
+
+
+                controller.setHeatTextfield(heat);
+                controller.setWorkTextField(work);
+                processHeats.add(heat);
+                processWorks.add(work);
+
+                controller.setValuesAfterCompleteSolve(m);
+            }
+            for (int i = 0; i < processControllers.size(); i++) {
+                ProcessHolderController controller = processControllers.get(i);
+                controller.updateTextFieldColors(allUserInputStatuses.get(i));
+            }
+            netHeatTextField.setText(String.format("%.3f", netHeat));
+            netWorkTextField.setText(String.format("%.3f", netWork));
+            heatInTextField.setText(String.format("%.3f", netHeatIn));
+            heatOutTextField.setText(String.format("%.3f", netHeatOut));
+            workInTextField.setText(String.format("%.3f", netWorkIn));
+            workOutTextField.setText(String.format("%.3f", netWorkOut));
+
+
+
+            System.out.println("Net work out:" + netWork);
+            System.out.println("Net heat in:" + netHeat);
+            System.out.println("Heatin:" + Math.abs(netHeatIn));
+            System.out.println("Heatout:" + Math.abs(netHeatOut));
+            System.out.println("Work in:" + Math.abs(netWorkIn));
+            System.out.println("Work out:" + Math.abs(netWorkOut));
+            double engine_eff=(1)-(Math.abs(netHeatOut)/netHeatIn);
+            if(engine_eff < 0){
+                engineNotEngineLabel.setText("Not Engine");
+                engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
+            }
+            else if(engine_eff > 0){
+                engineNotEngineLabel.setText("Engine");
+                engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
+            }
+            System.out.println(engine_eff);
+
         } catch (IllegalArgumentException e) {
             showErrorAlert(e.getMessage());
+        } catch (Exception e) {
+            showErrorAlert("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+    private ImageView createImageView(File imageFile) {
+        try {
+            Image image = new Image(new FileInputStream(imageFile));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(300);
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
+            return imageView;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void savePvAndTvDiagrams(Map<String, List<Double>> m) throws IOException, IOException {
+        // Add the initial state again to close the cycle in the graph
+        List<List<Double>> statesList = new ArrayList<>(m.values());
+        statesList.add(statesList.get(0));
+
+        double[] p_values = new double[statesList.size()];
+        double[] v_values = new double[statesList.size()];
+        double[] T_values = new double[statesList.size()];
+
+        for (int i = 0; i < statesList.size(); i++) {
+            T_values[i] = statesList.get(i).get(0);
+            p_values[i] = statesList.get(i).get(1);
+            v_values[i] = statesList.get(i).get(2);
+        }
+
+        // p-v diagram
+        XYChart pvChart = new XYChartBuilder().width(800).height(600).title("p-v Diagram").xAxisTitle("Specific Volume (m^3/kg)").yAxisTitle("Pressure (kPa)").build();
+        pvChart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+        pvChart.getStyler().setLegendPosition(Styler.LegendPosition.InsideSW);
+        pvChart.getStyler().setPlotBackgroundColor(Color.WHITE);
+        pvChart.getStyler().setPlotGridLinesColor(new Color(255, 255, 255, 127));
+        pvChart.getStyler().setChartBackgroundColor(Color.WHITE);
+        pvChart.getStyler().setChartFontColor(Color.BLACK);
+        pvChart.getStyler().setLegendBackgroundColor(Color.WHITE);
+
+
+
+        int numIntermediatePoints = 1000;
+        double k = 1.4; // Specific heat ratio (Cp/Cv) for an ideal gas (e.g., air)
+
+        //plot the lines and each equation is based on the process type
+        for (int i = 0; i < statesList.size() - 1; i++) {
+            double[] v_intermediate = new double[numIntermediatePoints + 1];
+            double[] p_intermediate = new double[numIntermediatePoints + 1];
+
+            char processType = processes.get(i).getProcess();
+            double v1 = v_values[i];
+            double v2 = v_values[i + 1];
+            double p1 = p_values[i];
+            double p2 = p_values[i + 1];
+            double T1 = T_values[i];
+            double n = processes.get(i).getN();
+
+            for (int j = 0; j <= numIntermediatePoints; j++) {
+                double t = (double) j / numIntermediatePoints;
+                double v;
+                double p;
+
+                if (processType == 'v') {
+                    v = v1;
+                    p = p1 + t * (p2 - p1);
+                } else if (processType == 't') {
+                    v = v1 + t * (v2 - v1);
+                    p = p1 * v1 / v;
+                } else if (processType == 'y') { // Isentropic process
+                    v = v1 + t * (v2 - v1);
+                    p = p1 * Math.pow(v1 / v, k);
+                } else if (processType == 'x') { // Polytropic process
+                    v = v1 + t * (v2 - v1);
+                    p = p1 * Math.pow(v1 / v, n);
+                } else {
+                    v = v1 + t * (v2 - v1);
+                    p = p1;
+                }
+
+                v_intermediate[j] = v;
+                p_intermediate[j] = p;
+            }
+
+            XYSeries series = pvChart.addSeries("Process " + (i + 1) +" "+ processType, v_intermediate, p_intermediate);
+            series.setMarker(SeriesMarkers.NONE);
+
+        }
+
+        // Save p-v diagram as an image
+        BitmapEncoder.saveBitmap(pvChart, "./pv_diagram", BitmapEncoder.BitmapFormat.PNG);
+
+        // T-v diagram
+        XYChart TvChart = new XYChartBuilder().width(800).height(600).title("T-v Diagram").xAxisTitle("Specific Volume (m^3/kg)").yAxisTitle("Temperature (K)").build();
+        TvChart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+        TvChart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
+        TvChart.getStyler().setPlotBackgroundColor(Color.WHITE);
+        TvChart.getStyler().setPlotGridLinesColor(new Color(255, 255, 255, 127));
+        TvChart.getStyler().setChartBackgroundColor(Color.WHITE);
+        TvChart.getStyler().setChartFontColor(Color.BLACK);
+        TvChart.getStyler().setLegendBackgroundColor(Color.WHITE);
+
+
+        double R=0.287;
+        //same approach of tv diagram
+        for (int i = 0; i < statesList.size() - 1; i++) {
+            double[] v_intermediate = new double[numIntermediatePoints + 1];
+            double[] T_intermediate = new double[numIntermediatePoints + 1];
+
+            char processType = processes.get(i).getProcess();
+            double v1 = v_values[i];
+            double v2 = v_values[i + 1];
+            double p1 = p_values[i];
+            double p2 = p_values[i + 1];
+            double T1 = T_values[i];
+            double T2 = T_values[i + 1];
+
+            for (int j = 0; j <= numIntermediatePoints; j++) {
+                double t = (double) j / numIntermediatePoints;
+                double v;
+                double T;
+
+                if (processType == 'v') {
+                    v = v1;
+                    double p_intermediate = p1 + t * (p2 - p1);
+                    T = p_intermediate * v / R;
+                } else if (processType == 't') {
+                    v = v1 + t * (v2 - v1);
+                    T = T1;
+                } else if (processType == 'p') {
+                    v = v1 + t * (v2 - v1);
+                    T = p1 * v / R;
+                } else if (processType == 'y') { // Isentropic process
+                    v = v1 + t * (v2 - v1);
+                    T = T1 * Math.pow(v1 / v, k - 1);
+                } else { // Polytropic process
+                    v = v1 + t * (v2 - v1);
+                    double n = processes.get(i).getN();
+                    T = T1 * Math.pow(v1 / v, n - 1);
+                }
+
+                v_intermediate[j] = v;
+                T_intermediate[j] = T;
+            }
+
+            XYSeries series = TvChart.addSeries("Process " + (i + 1), v_intermediate, T_intermediate);
+            series.setMarker(SeriesMarkers.NONE);
+        }
+
+
+
+
+        // Save T-v diagram as an image
+        try {
+            BitmapEncoder.saveBitmap(TvChart, "./Tv_diagram", BitmapEncoder.BitmapFormat.PNG);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -575,72 +675,6 @@ public class AccountsController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void updateTextFields(Map<String, List<Double>> solvedStates) {
-        int i = 0;
-        for (Map.Entry<String, List<Double>> entry : solvedStates.entrySet()) {
-            if (i < hboxParents.size()) {
-                HBox box = hboxParents.get(i);
-
-                TextField S1Pressure = (TextField) box.lookup("#S1pressure");
-                TextField S1Volume = (TextField) box.lookup("#S1Volume");
-                TextField S1Temp = (TextField) box.lookup("#S1temperature");
-
-                TextField S2Pressure = (TextField) box.lookup("#S2pressure");
-                TextField S2Volume = (TextField) box.lookup("#S2volume");
-                TextField S2Temp = (TextField) box.lookup("#S2temperature");
-
-                List<Double> initStateValues = entry.getValue();
-                String nextKey = "State" + (Integer.parseInt(entry.getKey().replaceAll("\\D+", "")) + 1);
-
-                if (solvedStates.containsKey(nextKey)) {
-                    List<Double> finalStateValues = solvedStates.get(nextKey);
-
-                    S1Pressure.setText(String.valueOf(initStateValues.get(1)));
-                    S1Volume.setText(String.valueOf(initStateValues.get(2)));
-                    S1Temp.setText(String.valueOf(initStateValues.get(0)));
-
-                    S2Pressure.setText(String.valueOf(finalStateValues.get(1)));
-                    S2Volume.setText(String.valueOf(finalStateValues.get(2)));
-                    S2Temp.setText(String.valueOf(finalStateValues.get(0)));
-                } else {
-                    S1Pressure.setText(String.valueOf(initStateValues.get(1)));
-                    S1Volume.setText(String.valueOf(initStateValues.get(2)));
-                    S1Temp.setText(String.valueOf(initStateValues.get(0)));
-                }
-
-                i++;
-            }
-        }
-    }
-
-
-
-    public int getMaxVal() {
-        return maxVal;
-    }
-
-    public void setMaxVal(int maxVal) {
-        this.maxVal = maxVal;
-    }
-
-    public void setAccountsView(BorderPane accountsView) {
-        this.accountsView = accountsView;
-    }
-
-    public BorderPane getAccountsView() {
-        return accountsView;
-    }
-
-    private void connectTextFields(List<TextField> source, List<TextField> target) {
-        for (TextField field : source) {
-            for (TextField otherField : target) {
-                if (field != otherField) {
-                    field.textProperty().bindBidirectional(otherField.textProperty());
-                }
-            }
-        }
     }
 
     private String getProcessChars(){
@@ -671,10 +705,9 @@ public class AccountsController implements Initializable {
 
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchReport(reportName);
         if (cycleFlag) {
-            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State 1");
+//            ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State 1");
             try {
-                work = state1Data.getDouble("work"); // this should be changed to get it from the connectedTextField at some point, there just isn't heat and work in there yet
-                heat = state1Data.getDouble("heat");
+
                 if (resultSet.isBeforeFirst()) { // basically if the query looking for this report name already has a value, then we are gonna update it instead
 //                    Model.getInstance().getDatabaseDriver().updateReport();
                 }
@@ -682,13 +715,13 @@ public class AccountsController implements Initializable {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
-            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", netHeat, netWork, this.maxVal, processChars);
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "Yes", this.netHeat, this.netWork, this.maxVal, processChars);
 
         } else {
             ResultSet state1Data = Model.getInstance().getDatabaseDriver().getStateDataByName("State " + maxVal + 1);
             try {
-                work = state1Data.getDouble("work");
-                heat = state1Data.getDouble("heat");
+//                work = state1Data.getDouble("work");
+//                heat = state1Data.getDouble("heat");
                 if (resultSet.isBeforeFirst()) { // basically if the query looking for this report name already has a value, then we are gonna update it instead
 //                    Model.getInstance().getDatabaseDriver().updateReport();
                 }
@@ -696,7 +729,7 @@ public class AccountsController implements Initializable {
                 e.printStackTrace();
             }
             // otherwise, if there are no results in that query, then we make a new report
-            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "No", netHeat, netWork, this.maxVal, processChars);
+            Model.getInstance().getDatabaseDriver().newReport(reportName, numStates, "No", this.netHeat, this.netWork, this.maxVal, processChars);
 
         }
 
@@ -706,25 +739,25 @@ public class AccountsController implements Initializable {
 //        }
 //        else{
         int i = 0, ind = 0;
-            for (Map.Entry<String, List<TextField>> entry : stateValuesMap.entrySet()) {
-                String stateName = entry.getKey();
-                List<TextField> textFieldList = entry.getValue();
+        for (Map.Entry<String, List<TextField>> entry : stateValuesMap.entrySet()) {
+            String stateName = entry.getKey();
+            List<TextField> textFieldList = entry.getValue();
 
-                double currentPressure = Double.parseDouble(textFieldList.get(0).getText());
-                double currentVolume = Double.parseDouble(textFieldList.get(1).getText());
-                double currentTemp = Double.parseDouble(textFieldList.get(2).getText());
+            double currentPressure = Double.parseDouble(textFieldList.get(0).getText());
+            double currentVolume = Double.parseDouble(textFieldList.get(1).getText());
+            double currentTemp = Double.parseDouble(textFieldList.get(2).getText());
 
-                if(cycleFlag){
-                    work = processWorks.get(i);
-                    heat = processHeats.get(i);
+            if(cycleFlag){
+                work = processWorks.get(i);
+                heat = processHeats.get(i);
+            }
+            else {
+                if(i >= processControllers.size()){
+                    work = processWorks.get(processControllers.size()-1);
+                    heat = processHeats.get(processControllers.size()-1);
                 }
-                else {
-                    if(i >= processControllers.size()){
-                        work = processWorks.get(processControllers.size()-1);
-                        heat = processHeats.get(processControllers.size()-1);
-                    }
-                }
-                    i++;
+            }
+            i++;
 //                if((i != 0) && (i % 2 == 0)){
 //                    ind += 1; // if cycle then this is not needed at all, each state gets each work and heat
 //                }
@@ -736,11 +769,11 @@ public class AccountsController implements Initializable {
 //                System.out.println("Current Volume: " + currentVolume);
 //                System.out.println("Current Temperature: " + currentTemp);
 
-                Model.getInstance().getDatabaseDriver().saveStateToDB(currentReportID, stateName, currentPressure, currentVolume, currentTemp, heat, work, S, H, U);
-            }
-                Model.getInstance().setLatestReports();
-                Model.getInstance().setAllReports();
+            Model.getInstance().getDatabaseDriver().saveStateToDB(currentReportID, stateName, currentPressure, currentVolume, currentTemp, heat, work, S, H, U);
         }
+        Model.getInstance().setLatestReports();
+        Model.getInstance().setAllReports();
+    }
 
 
     public void makeStateValuesMap () {
@@ -759,21 +792,6 @@ public class AccountsController implements Initializable {
 
     }
 
-
-
-    public void populateTextFields() {
-
-        for (int i = 0; i < processControllers.size(); i++) {
-            ProcessHolderController controller = processControllers.get(i);
-
-            controller.setDataByMap(this.stateDataMap);
-            System.out.println("Controller first label: "+controller.getFirstStateLabelString());
-        }
-    }
-
-    public Map<String, List<TextField>> getStateValuesMap() {
-        return this.stateValuesMap;
-    }
 
     public void setStateDataMap(Map<String, List<Double>> stateDataMap) {
         this.stateDataMap = stateDataMap;
@@ -796,6 +814,14 @@ public class AccountsController implements Initializable {
         maxVal = 0;
         numProcessesChoice.setValue(null);
         visualScrollPaneVBox.getChildren().clear();
+        netHeatTextField.clear();
+        netWorkTextField.clear();
+        heatInTextField.clear();
+        heatOutTextField.clear();
+        workInTextField.clear();
+        workOutTextField.clear();
+        engineEfficiencyTextField.clear();
+        engineNotEngineLabel.setText("");
     }
 
     public void setProcessChoice(int numProcess){
@@ -858,15 +884,6 @@ public class AccountsController implements Initializable {
     }
 
 
-    private void updateTextField(TextField textField, Double newValue, boolean userInput) {
-        textField.setText(String.valueOf(newValue));
-        if (userInput) {
-            textField.setStyle("-fx-background-color: #98FB98;"); // Pale green background for user input
-        } else {
-            textField.setStyle(""); // Clear the background style for non-user input
-        }
-    }
-
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
     }
@@ -888,15 +905,15 @@ public class AccountsController implements Initializable {
                     // Hide the corresponding VBox on the looped controller
                     controller.getState1Container().setVisible(false);
                     controller.getState1Container().setStyle("-fx-opacity: 0;"+
-                    "-fx-pref-width: 0;"+
-                    "-fx-pref-height: 0;"+
-                    "-fx-max-width: 0;"+
-                    "-fx-max-height: 0;"+
-                    "-fx-min-width: 0;"+
-                    "-fx-min-height: 0;"+
-                    "-fx-border-color: transparent;"+
-                    "-fx-border-width: 0;"+
-                    "-fx-background-color: transparent;");
+                            "-fx-pref-width: 0;"+
+                            "-fx-pref-height: 0;"+
+                            "-fx-max-width: 0;"+
+                            "-fx-max-height: 0;"+
+                            "-fx-min-width: 0;"+
+                            "-fx-min-height: 0;"+
+                            "-fx-border-color: transparent;"+
+                            "-fx-border-width: 0;"+
+                            "-fx-background-color: transparent;");
                 }
                 currentController = controller;
             }
