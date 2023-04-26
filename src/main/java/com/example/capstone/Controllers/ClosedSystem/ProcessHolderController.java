@@ -159,17 +159,17 @@ public class ProcessHolderController implements Initializable {
                 System.out.println("Match found for state name: " + stateName);
                 System.out.println("Values for " + stateName + ": " + stateValues);
 
-                S1pressure.setText(String.format("%.4f", stateValues.get(0)));
-                S1volume.setText(String.format("%.4f", stateValues.get(1)));
-                S1temperature.setText(String.format("%.4f", stateValues.get(2)));
+                S1pressure.setText(""+stateValues.get(0));
+                S1volume.setText(""+stateValues.get(1));
+                S1temperature.setText(""+stateValues.get(2));
 
             } else if(stateName.equals(this.getSecondStateLabelString())){
                 // Do something else when the state name does not match the input
                 System.out.println("No match found for state name: " + stateName);
 
-                S2pressure.setText(String.format("%.4f", stateValues.get(0)));
-                S2volume.setText(String.format("%.4f", stateValues.get(1)));
-                S2temperature.setText(String.format("%.4f", stateValues.get(2)));
+                S2pressure.setText(""+stateValues.get(0));
+                S2volume.setText(""+stateValues.get(1));
+                S2temperature.setText(""+stateValues.get(2));
             }
         }
 
@@ -207,17 +207,17 @@ public class ProcessHolderController implements Initializable {
                 System.out.println("Match found for state name: " + stateName);
                 System.out.println("Values for " + stateName + ": " + stateValues);
 
-                S1pressure.setText(String.format("%.4f", stateValues.get(1)));
-                S1volume.setText(String.format("%.4f", stateValues.get(2)));
-                S1temperature.setText(String.format("%.4f", stateValues.get(0)));
+                S1pressure.setText(""+stateValues.get(1));
+                S1volume.setText(""+stateValues.get(2));
+                S1temperature.setText(""+stateValues.get(0));
 
             } else if(stateName.equals(this.getSecondStateLabelString())){
                 // Do something else when the state name does not match the input
                 System.out.println("No match found for state name: " + stateName);
 
-                S2pressure.setText(String.format("%.4f", stateValues.get(1)));
-                S2volume.setText(String.format("%.4f", stateValues.get(2)));
-                S2temperature.setText(String.format("%.4f", stateValues.get(0)));
+                S2pressure.setText(""+stateValues.get(1));
+                S2volume.setText(""+stateValues.get(2));
+                S2temperature.setText(""+stateValues.get(0));
             }
         }
 
