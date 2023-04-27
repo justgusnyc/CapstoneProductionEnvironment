@@ -22,8 +22,14 @@
    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" styleClass="dashboard bg-image" StackPane.alignment="CENTER" VBox.vgrow="ALWAYS">
       <Text fx:id="user_name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hi, Gus" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
       <Label fx:id="login_date" styleClass="date_label" text="Today is 2023-01-22" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="27.0" />
-      <Text layoutX="811.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Value Change Summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0" />
-      <Text layoutX="6.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Previous Calculation Summary" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0" />
+      <Text layoutX="811.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Value Change Summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font></Text>
+      <Text layoutX="6.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Previous Calculation Summary" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0">
+         <font>
+            <Font name="Tahoma Bold" size="14.0" />
+         </font></Text>
       <HBox layoutX="14.0" layoutY="130.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="170.0" prefWidth="620.0" styleClass="accounts_view" AnchorPane.bottomAnchor="460.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="120.0" VBox.vgrow="ALWAYS">
          <AnchorPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
             <styleClass>
@@ -58,11 +64,14 @@
             <Label fx:id="netHeatLabel" styleClass="expense_amount" text="- 1500.00" />
          </VBox>
       </VBox>
-      <Text layoutX="39.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Latest Reports" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="375.0" />
+      <Text layoutX="39.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Latest Reports" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="375.0">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font></Text>
       <Text layoutX="682.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Theortical Summary" translateY="-6.0" AnchorPane.rightAnchor="14.872955322265625" AnchorPane.topAnchor="374.0" />
       <ListView fx:id="transaction_listview" layoutX="5.0" layoutY="404.0" maxHeight="1.7976931348623157E308" opacity="0.84" styleClass="transaction_listview" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="395.0" />
       <VBox layoutX="596.0" layoutY="395.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.84" prefHeight="416.0" prefWidth="253.0" styleClass="new_trans_container" AnchorPane.bottomAnchor="-2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="395.0" VBox.vgrow="ALWAYS">
-         <ScrollPane>
+         <ScrollPane VBox.vgrow="ALWAYS">
             <content>
                <Label blendMode="SRC_ATOP" contentDisplay="TEXT_ONLY" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1100.0" prefWidth="201.0" text="A thermodynamic system refers to any region or a body in the universe that is being studied. This system can either be an open system or a closed system. An open system is a system where mass and energy can be exchanged with the surroundings. For example, a pot of boiling water that is open to the air is an open system because heat and water vapor can escape into the surroundings. In contrast, a closed system is a system where no mass can be exchanged with the surroundings, but energy can. A sealed container with a gas inside is an example of a closed system because no gas can escape or enter the container, but heat can be transferred to or from it. Lastly, a cycling system is a type of thermodynamic system that undergoes a cyclical process where it returns to its initial state. For example, a refrigerator is a cycling system because it takes in heat from its surroundings, cools down the contents of the refrigerator, and expels heat back out to the surroundings. In summary, the key difference between open and closed systems is whether mass can be exchanged with the surroundings, while cycling systems refer to systems that undergo a cyclical process." translateY="-12.0" wrapText="true">
                   <padding>

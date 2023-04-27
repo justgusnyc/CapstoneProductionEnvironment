@@ -7,6 +7,21 @@
     -fx-padding: 10px;
 }
 
+.cell_container Button {
+  -fx-background-color: linear-gradient(to bottom, #2C5364, #203A43);
+  -fx-text-fill: #FFFFFF;
+  -fx-font-size: 1.1em;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+  -fx-transition: all 0.2s ease-in-out;
+}
+
+.cell_container Button:hover {
+  -fx-background-color: linear-gradient(to bottom, #203A43, #2C5364);
+  -fx-cursor: hand;
+  -fx-scale-x: 1.1;
+  -fx-scale-y: 1.1;
+}
+
 .report_icon_container {
     -fx-background-color: #FFFFFF;
     -fx-alignment: center;
@@ -40,4 +55,9 @@
 
 .report_icon_container Line {
     -fx-stroke: #2C5364;
+}
+
+.delete_button{
+    -fx-background-image: url("/Images/trashIcon.png");
+    -fx-background-size: cover;
 }

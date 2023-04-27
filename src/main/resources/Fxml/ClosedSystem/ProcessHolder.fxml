@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="ProcessContainer" prefWidth="600.0" stylesheets="@../../Styles/processHolder.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.ProcessHolderController">
-    <VBox fx:id="State1Container" prefHeight="200.0" prefWidth="200.0">
+<HBox fx:id="ProcessContainer" stylesheets="@../../Styles/processHolder.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.ProcessHolderController">
+    <VBox fx:id="State1Container" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
         </padding>
@@ -31,7 +31,7 @@
         <Label fx:id="S1ULabel" text="U" />
         <TextField fx:id="S1U" />
     </VBox>
-    <VBox fx:id="ProcessConfigurations" prefHeight="200.0" prefWidth="200.0">
+    <VBox fx:id="ProcessConfigurations" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
         <Label prefHeight="45.0" text="Process Type" />
         <ChoiceBox fx:id="ProcessPicker" />
         <Label prefHeight="50.0" text="N value" />
@@ -44,7 +44,7 @@
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
         </padding>
     </VBox>
-    <VBox fx:id="State2Container" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+    <VBox fx:id="State2Container" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
         </padding>
@@ -66,4 +66,7 @@
         <Label fx:id="S2ULabel" text="U" />
         <TextField fx:id="S2U" />
     </VBox>
+   <padding>
+      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+   </padding>
 </HBox>

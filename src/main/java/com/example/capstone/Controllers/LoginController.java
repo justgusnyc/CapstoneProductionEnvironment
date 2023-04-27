@@ -64,24 +64,15 @@ public class LoginController implements Initializable {
             Model.getInstance().evaluateClosedSystemCredentials(username_address_field.getText(), password_field.getText());
             if(Model.getInstance().getClosedSystemLoginSuccessFlag()){
                 Model.getInstance().getViewFactory().showClosedSystemWindow();
+                // close the login stage now
                 Model.getInstance().getViewFactory().closeStage(stage);
                 ClosedSystemMenuController closedSystemMenuController = new ClosedSystemMenuController();
                 closedSystemMenuController.goToDashboard();
                 closedSystemMenuController.goToCalculate();
-//                AccountsController accountsController = new AccountsController();
-//                try {
-//                    Thread.sleep(2000);
-//
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
-//                    // Code to run after 1 second
-//                }));
-//                timeline.play();
-//                accountsController.loadExample();
 
-                // close the login stage now
+                Model.getInstance().getViewFactory().showSplashInstructionsPage();
+
+
 
             } else{
                 username_address_field.setText("");

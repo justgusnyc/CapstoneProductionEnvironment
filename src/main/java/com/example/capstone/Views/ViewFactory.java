@@ -173,6 +173,12 @@ public class ViewFactory {
 
     }
 
+    public void showSplashInstructionsPage(){
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/SplashInstructions.fxml"));
+        createStage(loader);
+    }
+
 
     public void showClosedSystemWindow(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/ClosedSystem.fxml"));

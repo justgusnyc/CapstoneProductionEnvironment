@@ -74,6 +74,8 @@ public class AccountsController implements Initializable {
     public Label engineNotEngineLabel;
     public TextField engineEfficiencyTextField;
     public Label calculationSummaryLabel;
+    public ScrollPane informationalScrollPane;
+    public VBox engineEfficiencyVbox;
 
     private List<Process> processesList;
 
@@ -132,16 +134,23 @@ public class AccountsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        engineEfficiencyVbox.setVisible(false);
+
         numProcessesChoice.setItems(maxProcesses);
 
         visualTypeChoiceBox.setItems(chartOptions);
 
-        calculationSummaryLabel.setText(basicInstructions);
+//        calculationSummaryLabel.prefHeightProperty().bind(informationalScrollPane.prefHeightProperty());
+        calculationSummaryLabel.prefWidthProperty().bind(informationalScrollPane.prefWidthProperty());
+//        calculationSummaryLabel.setText(basicInstructions);
+
+
 
         numProcessesChoice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             int max;
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number value, Number newValue) {
+
                 if(newValue.intValue() == -1){
                     max = -1;
                 }
@@ -164,6 +173,8 @@ public class AccountsController implements Initializable {
                         FXMLLoader fxmlLoader = new FXMLLoader();
                         fxmlLoader.setLocation(getClass().getResource("/Fxml/ClosedSystem/ProcessHolder.fxml"));
                         HBox box = fxmlLoader.load();
+                        box.prefHeightProperty().bind(processesScrollPane.heightProperty());
+                        box.prefWidthProperty().bind(processesScrollPane.widthProperty());
                         hboxParents.add(box);
 
                         ProcessHolderController processHolderController = fxmlLoader.getController();
@@ -492,16 +503,24 @@ public class AccountsController implements Initializable {
             System.out.println("Heatout:" + Math.abs(netHeatOut));
             System.out.println("Work in:" + Math.abs(netWorkIn));
             System.out.println("Work out:" + Math.abs(netWorkOut));
-            double engine_eff=(1)-(Math.abs(netHeatOut)/netHeatIn);
-            if(engine_eff < 0){
-                engineNotEngineLabel.setText("Not Engine");
-                engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
+
+            if(cycleFlag){
+                engineEfficiencyVbox.setVisible(true);
+                double engine_eff=(1)-(Math.abs(netHeatOut)/netHeatIn);
+                double coefPerformanceHeatPump = netHeatIn / (netHeatIn - netHeatOut);
+                double coefPerformanceAC = netHeatOut / Math.abs(netHeatIn - netHeatOut);
+                // we need carnot and 2nd degree engine effiiency (true efficiency)
+                if(engine_eff < 0){
+                    engineNotEngineLabel.setText("Heat Pump/AC");
+                    engineEfficiencyTextField.setText("COP HP: "+String.format("%.3f", coefPerformanceHeatPump)+" | COP AC: "+String.format("%.3f", coefPerformanceAC));
+                }
+                else if(engine_eff > 0){
+                    engineNotEngineLabel.setText("Engine");
+                    engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
+                }
+                System.out.println(engine_eff);
+
             }
-            else if(engine_eff > 0){
-                engineNotEngineLabel.setText("Engine");
-                engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
-            }
-            System.out.println(engine_eff);
 
         } catch (IllegalArgumentException e) {
             showErrorAlert(e.getMessage());
