@@ -299,6 +299,11 @@
                      <Font name="Tahoma Bold" size="14.0" />
                   </font>
                </Label>
+               <Label fx:id="trueEngineEfficiency">
+                  <font>
+                     <Font name="Tahoma Bold" size="12.0" />
+                  </font>
+               </Label>
             </VBox>
             <Button fx:id="clearButton" mnemonicParsing="false" text="Clear" translateX="-6.0">
                <padding>

@@ -84,6 +84,7 @@ public class ProcessHolderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NValue.setVisible(false);
 
 //        ProcessContainer.setStyle("-fx-background-color: white;"+"-fx-border-style: solid inside;"+"-fx-border-color: green;");
 //        State1Container.setStyle("-fx-background-color: white");
@@ -95,6 +96,12 @@ public class ProcessHolderController implements Initializable {
         ProcessPicker.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newChoiceIndex) {
+                if(newChoiceIndex.intValue() == 3){
+                    NValue.setVisible(true);
+                }
+                else{
+                    NValue.setVisible(false);
+                }
                 processType = processTypes.get(newChoiceIndex.intValue());
             }
         });

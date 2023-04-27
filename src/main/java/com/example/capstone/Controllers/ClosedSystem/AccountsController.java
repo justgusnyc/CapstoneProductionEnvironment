@@ -78,6 +78,7 @@ public class AccountsController implements Initializable {
     public Label calculationSummaryLabel;
     public ScrollPane informationalScrollPane;
     public VBox engineEfficiencyVbox;
+    public Label trueEngineEfficiency;
 
     private List<Process> processesList;
 
@@ -518,8 +519,15 @@ public class AccountsController implements Initializable {
                     engineEfficiencyTextField.setText("COP HP: "+String.format("%.3f", coefPerformanceHeatPump)+" | COP AC: "+String.format("%.3f", coefPerformanceAC));
                 }
                 else if(engine_eff > 0){
+                    List<Double> tempTempOverTime = new ArrayList<>();
+                    tempTempOverTime.addAll(tempOverTime);
+                    Collections.sort(tempTempOverTime);
+                    double carnotEfficiency = 1 - (tempTempOverTime.get(0) / tempTempOverTime.get(tempTempOverTime.size()-1));
+                    double trueEfficiency = engine_eff/carnotEfficiency;
                     engineNotEngineLabel.setText("Engine");
                     engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
+                    trueEngineEfficiency.setText("True Engine Efficiency: "+String.format("%.3f", trueEfficiency));
+
                 }
             }
             setDashboardController(Model.getInstance().getViewFactory().getDashboardController());

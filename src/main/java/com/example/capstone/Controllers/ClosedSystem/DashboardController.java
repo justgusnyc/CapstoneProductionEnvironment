@@ -71,11 +71,13 @@ public class DashboardController implements Initializable {
         bindData();
         initLatestReportsList();
         if(Model.getInstance().getLatestReports() == null){
-            transaction_listview.setItems(null);
+            transaction_listview.refresh();
+
         }
         else{
             transaction_listview.setItems(Model.getInstance().getLatestReports());
             transaction_listview.setCellFactory(e -> new ReportsCellFactory());
+
 
         }
     }
