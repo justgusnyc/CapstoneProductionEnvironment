@@ -48,6 +48,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.scene.image.Image;
 import org.knowm.xchart.style.Styler;
@@ -144,7 +145,7 @@ public class AccountsController implements Initializable {
 
         visualTypeChoiceBox.setItems(chartOptions);
 
-//        calculationSummaryLabel.prefHeightProperty().bind(informationalScrollPane.prefHeightProperty());
+        calculationSummaryLabel.prefHeightProperty().bind(informationalScrollPane.prefHeightProperty());
         calculationSummaryLabel.prefWidthProperty().bind(informationalScrollPane.prefWidthProperty());
 //        calculationSummaryLabel.setText(basicInstructions);
 
@@ -440,6 +441,7 @@ public class AccountsController implements Initializable {
 
 
         List<Process> processes = processesList();
+        List<Process> processesCopy = processes.stream().map(Process::copy).collect(Collectors.toList());// for the explnation
         Solver solver;
         if (processes.size() == 1) {
             solver = new Solver(processes.get(0));
@@ -462,6 +464,10 @@ public class AccountsController implements Initializable {
             }
             m = solver.CompleteSolve();
             System.out.println(m);
+            String explaination= solver.generateCalculationDescription(processesCopy);
+
+            calculationSummaryLabel.setText(explaination);
+
 
 
 
@@ -852,6 +858,7 @@ public class AccountsController implements Initializable {
         workOutTextField.clear();
         engineEfficiencyTextField.clear();
         engineNotEngineLabel.setText("");
+        calculationSummaryLabel.setText("");
     }
 
     public void setProcessChoice(int numProcess){

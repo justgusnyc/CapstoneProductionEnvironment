@@ -576,5 +576,26 @@ public class Process extends ACProcess {
 
     }
 
+    public Process copy() {
+        return new Process(this.state1.copy(), this.state2.copy(), this.process);
+    }
+
+    public String getProcessDescription() {
+        switch (this.process) {
+            case 'v':
+                return "constant volume";
+            case 't':
+                return "constant temperature";
+            case 'p':
+                return "constant pressure";
+            case 'x':
+                return "polytropic";
+            case 'y':
+                return "isentropic";
+            default:
+                return "unknown process type";
+        }
+    }
+
 }
 

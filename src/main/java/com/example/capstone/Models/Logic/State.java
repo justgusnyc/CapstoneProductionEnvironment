@@ -1,7 +1,9 @@
 package com.example.capstone.Models.Logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class State {
 
@@ -247,6 +249,27 @@ public class State {
                 count++;
             }
         return count == this.getValues().size();
+    }
+
+    public String getValuess(){
+        String values = String.format("V: %.2f m³, P: %.2f kPa, T: %.2f K", this.v, this.P, this.T);
+        return values;
+    }
+
+    public State copy() {
+        return new State(this.T, this.P, this.v,this.toString());
+    }
+
+    public String getName() {
+        return this.stateName;
+    }
+
+    public Map<String, Double> getKnownValues() {
+        Map<String, Double> knownValues = new HashMap<>();
+        if (this.v != -1) knownValues.put("volume", this.v );
+        if (this.P != -1) knownValues.put("pressure", this.P);
+        if (this.T != -1) knownValues.put("temperature", this.T);
+        return knownValues;
     }
 
     public double getPressure() {
