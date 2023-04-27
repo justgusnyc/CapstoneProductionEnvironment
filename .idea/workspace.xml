@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="67647a5c-d74e-4c5e-847c-9631402e580e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Process.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Process.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Solver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/Solver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Models/Logic/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mazebank.db" beforeDir="false" afterPath="$PROJECT_DIR$/mazebank.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/SplashInstructions.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/SplashInstructions.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

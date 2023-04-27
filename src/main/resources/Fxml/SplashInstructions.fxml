@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-           prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <VBox prefHeight="200.0" prefWidth="100.0" spacing="1.0">
         <StackPane.margin>
-            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
         </StackPane.margin>
         <padding>
-            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
         </padding>
-        <Label prefHeight="404.0" prefWidth="604.0"
-               text="Hello and welcome to H.E.A.T.S! This is an interactive application designed to help you solve closed system thermodynamic problems. | To start, select the number of processes you would like to work with, then toggle whether or not your problem is a cycle problem or not. Now, just fill in your data and select the process types and click compute! After your computations are done, try checking out some of the visuals, or saving your report for later! The 4 most recent reports can be accessed on the Dashboard, and all reports can be accessed on the Saved Reports page. If a report is already saved, maybe try loading it and then clicking compute! | Below you will find a brief description of each process type: Isobaric process: This is a process in which the pressure of the system remains constant while the volume changes. In other words, the system undergoes a change in volume without any change in pressure. An example of an isobaric process is the expansion of a gas in a piston-cylinder system at constant atmospheric pressure. | Isochoric process: This is a process in which the volume of the system remains constant while the pressure changes. In other words, the system undergoes a change in pressure without any change in volume. An example of an isochoric process is the heating of a gas in a rigid container. | Isochoric process: This is a process in which the volume of the system remains constant while the pressure changes. In other words, the system undergoes a change in pressure without any change in volume. An example of an isochoric process is the heating of a gas in a rigid container. | Isothermal process: This is a process in which the temperature of the system remains constant while the pressure and volume change. In other words, the system undergoes a change in pressure and volume without any change in temperature. An example of an isothermal process is the compression of a gas in a piston-cylinder system while the system is in thermal contact with a constant-temperature heat reservoir. | Polytropic process: This is a process in which the pressure and volume of the system change, but the temperature is not constant. An example of a polytropic process is the compression of a gas in a piston-cylinder system while the system is in thermal contact with a variable-temperature heat reservoir. | Isentropic process: This is a process in which the entropy of the system remains constant while the pressure and volume change. In other words, the system undergoes a change in pressure and volume without any change in entropy. An example of an isentropic process is the expansion of a gas in a turbine."
-               textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+        <HBox spacing="5.0">
+            <children>
+                <ImageView fitHeight="41.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../Images/newlogoclean.png" />
+                    </image>
+                </ImageView>
+                <CheckBox mnemonicParsing="false" text="Select to no longer see this message, then save" />
+                <Button mnemonicParsing="false" text="Save" />
+            </children>
+        </HBox>
+        <Label prefHeight="404.0" prefWidth="604.0" text="HEATS is an app for solving thermodynamics problems in closed systems. Select the number of processes, enter data, and click &quot;Compute!&quot; to get results. Check graphs in &quot;Visualizations&quot; or save reports. Access recent reports on &quot;Dashboard&quot; or all reports on &quot;Saved Reports.&quot; HEATS offers five process types:Isobaric process: where the pressure remains constant while the volume or temp changes.Isochoric process: where the volume remains constant while the pressure or temp changes.Isothermal process: where the temperature remains constant while the pressure and volume change.Polytropic process: where the pressure and volume change, but the temperature is not constant.Isentropic process: where the entropy remains constant while the pressure and volume change." textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
             <font>
-                <Font name="Tahoma" size="12.0"/>
+                <Font name="Tahoma" size="20.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
             </VBox.margin>
             <padding>
-                <Insets top="2.0"/>
+                <Insets top="2.0" />
             </padding>
         </Label>
     </VBox>
