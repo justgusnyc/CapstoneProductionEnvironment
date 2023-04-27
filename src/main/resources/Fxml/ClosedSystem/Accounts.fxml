@@ -38,7 +38,7 @@
                </font></Label>
             <ChoiceBox fx:id="numProcessesChoice" blendMode="SRC_ATOP" opacity="0.74" prefWidth="150.0" stylesheets="@../../Styles/Dashboard.css">
                <styleClass>
-                  <String fx:value="alt_menu_btn" />
+                  <String fx:value="processPicker" />
                   <String fx:value="left_container" />
                </styleClass></ChoiceBox>
          </VBox>
