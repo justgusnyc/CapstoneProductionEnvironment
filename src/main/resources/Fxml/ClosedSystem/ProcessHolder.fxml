@@ -36,9 +36,9 @@
         <ChoiceBox fx:id="ProcessPicker" />
         <Label prefHeight="50.0" text="N value" />
         <TextField fx:id="NValue" />
-      <Label layoutX="21.0" layoutY="98.0" prefHeight="50.0" text="Work" />
+      <Label layoutX="21.0" layoutY="98.0" prefHeight="50.0" text="Work (kJ/kg)" />
       <TextField fx:id="workTextField" layoutX="21.0" layoutY="148.0" />
-      <Label layoutX="21.0" layoutY="141.0" prefHeight="50.0" text="Heat" />
+      <Label layoutX="21.0" layoutY="141.0" prefHeight="50.0" text="Heat (kJ/kg)" />
       <TextField fx:id="heatTextfield" layoutX="21.0" layoutY="175.0" />
         <padding>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />

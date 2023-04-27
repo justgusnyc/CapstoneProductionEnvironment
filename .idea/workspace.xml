@@ -5,22 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67647a5c-d74e-4c5e-847c-9631402e580e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Fxml/SplashInstructions.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tv_diagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/Tv_diagram.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mazebank.db" beforeDir="false" afterPath="$PROJECT_DIR$/mazebank.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pv_diagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/pv_diagram.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/AccountsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportCellController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/ClosedSystem/ReportCellController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/capstone/Views/ViewFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Accounts.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystem.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystemMenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ClosedSystemMenu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/Dashboard.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ProcessHolder.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ReportCell.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Fxml/ClosedSystem/ReportCell.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/ClosedSystemMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/ClosedSystemMenu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/ReportsCell.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/ReportsCell.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Styles/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Styles/Dashboard.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

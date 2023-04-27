@@ -15,60 +15,78 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../Styles/Dashboard.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.DashboardController">
+<StackPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dashboard" stylesheets="@../../Styles/Dashboard.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.capstone.Controllers.ClosedSystem.DashboardController">
    <ImageView cache="true" disable="true" fitHeight="750.0" fitWidth="847.0" focusTraversable="true" nodeOrientation="INHERIT" opacity="0.28" pickOnBounds="true" preserveRatio="true">
       <Image url="@../../Images/slu-logomark-blue-rgb.png" />
    </ImageView>
    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" styleClass="dashboard bg-image" StackPane.alignment="CENTER" VBox.vgrow="ALWAYS">
       <Text fx:id="user_name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hi, Gus" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
       <Label fx:id="login_date" styleClass="date_label" text="Today is 2023-01-22" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="27.0" />
-      <Text layoutX="811.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Value Change Summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0">
+      <Text layoutX="811.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Value Change Summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0">
          <font>
-            <Font name="Tahoma" size="12.0" />
+            <Font name="Tahoma Bold" size="18.0" />
          </font></Text>
-      <Text layoutX="6.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Previous Calculation Summary" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0">
+      <Text layoutX="6.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Previous Calculation Summary" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0">
          <font>
-            <Font name="Tahoma Bold" size="14.0" />
+            <Font name="Tahoma Bold" size="18.0" />
          </font></Text>
+      <VBox layoutX="735.0" layoutY="141.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="180.0" prefWidth="210.0" styleClass="summary_view" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0" VBox.vgrow="ALWAYS">
+         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" styleClass="account_summary_container" VBox.vgrow="ALWAYS">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Work">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font></Text>
+            <Label fx:id="netWorkLabel" styleClass="income_amount" text="+ 4000.00" />
+            <Line endX="160.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Heat">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font></Text>
+            <Label fx:id="netHeatLabel" styleClass="expense_amount" text="- 1500.00" />
+         </VBox>
+      </VBox>
       <HBox layoutX="14.0" layoutY="130.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="170.0" prefWidth="620.0" styleClass="accounts_view" AnchorPane.bottomAnchor="460.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="120.0" VBox.vgrow="ALWAYS">
          <AnchorPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
             <styleClass>
                <String fx:value="account" />
                <String fx:value="account_gradient" />
             </styleClass>
-            <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressure: " />
+            <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressure: ">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Text>
             <Text layoutX="21.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume:" />
             <Text layoutX="1.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" />
             <Label fx:id="pressureSummaryLabel" layoutX="107.0" layoutY="17.0" prefHeight="33.0" prefWidth="65.0" text="1200" textFill="#e8e5e5" />
             <Label fx:id="volumeSummaryLabel" layoutX="107.0" layoutY="74.0" prefHeight="33.0" prefWidth="65.0" text="0.1435" textFill="#e8e5e5" />
             <Label fx:id="tempSummaryLabel" layoutX="122.0" layoutY="136.0" prefHeight="33.0" prefWidth="65.0" text="800" textFill="#e8e5e5" />
-            <Text layoutX="268.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cycled?:" />
+            <Text layoutX="268.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cycled?:">
+               <font>
+                  <Font name="Tahoma Bold" size="12.0" />
+               </font></Text>
             <Text layoutX="268.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tabled?:" />
             <Text layoutX="268.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Process:" />
             <Label fx:id="cycleSummaryLabel" layoutX="351.0" layoutY="17.0" prefHeight="33.0" prefWidth="65.0" text="Yes" textFill="#e8e5e5" />
             <Label layoutX="351.0" layoutY="91.0" prefHeight="33.0" prefWidth="65.0" text="No" textFill="#e8e5e5" />
-            <Label fx:id="processSummaryLabel" layoutX="351.0" layoutY="145.0" prefHeight="33.0" prefWidth="65.0" text="1200" textFill="#e8e5e5" />
-            <Label fx:id="stateNameLabel" layoutX="476.0" layoutY="17.0" prefHeight="65.0" prefWidth="135.0" text="State Name" textAlignment="CENTER" textFill="#e8e5e5">
+            <Label fx:id="processSummaryLabel" layoutX="351.0" layoutY="145.0" prefHeight="33.0" prefWidth="65.0" text="Isobaric" textFill="#e8e5e5" />
+            <Label fx:id="stateNameLabel" layoutX="460.0" layoutY="18.0" prefHeight="65.0" prefWidth="135.0" text="State Name" textAlignment="CENTER" textFill="#e8e5e5">
                <font>
-                  <Font name="Bell MT Bold" size="22.0" />
+                  <Font name="Tahoma Bold" size="22.0" />
                </font>
             </Label>
          </AnchorPane>
       </HBox>
-      <VBox layoutX="735.0" layoutY="141.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="180.0" prefWidth="210.0" styleClass="summary_view" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0" VBox.vgrow="ALWAYS">
-         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" styleClass="account_summary_container" VBox.vgrow="ALWAYS">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Work" />
-            <Label fx:id="netWorkLabel" styleClass="income_amount" text="+ 4000.00" />
-            <Line endX="160.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Net Heat" />
-            <Label fx:id="netHeatLabel" styleClass="expense_amount" text="- 1500.00" />
-         </VBox>
-      </VBox>
-      <Text layoutX="39.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Latest Reports" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="375.0">
+      <Text layoutX="39.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Latest Reports" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="375.0">
          <font>
-            <Font name="Tahoma" size="12.0" />
-         </font></Text>
-      <Text layoutX="682.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Theortical Summary" translateY="-6.0" AnchorPane.rightAnchor="14.872955322265625" AnchorPane.topAnchor="374.0" />
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="682.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theortical Summary" translateY="-6.0" AnchorPane.rightAnchor="14.872955322265625" AnchorPane.topAnchor="374.0">
+         <font>
+            <Font name="Tahoma Bold" size="18.0" />
+         </font>
+      </Text>
       <ListView fx:id="transaction_listview" layoutX="5.0" layoutY="404.0" maxHeight="1.7976931348623157E308" opacity="0.84" styleClass="transaction_listview" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="395.0" />
       <VBox layoutX="596.0" layoutY="395.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.84" prefHeight="416.0" prefWidth="253.0" styleClass="new_trans_container" AnchorPane.bottomAnchor="-2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="395.0" VBox.vgrow="ALWAYS">
          <ScrollPane VBox.vgrow="ALWAYS">
@@ -77,6 +95,9 @@
                   <padding>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </padding>
+                  <font>
+                     <Font name="Tahoma" size="12.0" />
+                  </font>
                </Label>
             </content>
          </ScrollPane>
