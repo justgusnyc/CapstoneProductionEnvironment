@@ -407,7 +407,8 @@ public class AccountsController implements Initializable {
                             isValidNValue = false;
                         }
                     } else {
-                        showErrorAlert("Please enter an n value for process type " + processType + ".");
+                        showErrorAlert("Please enter an n value for process type Polytropic.");
+
                         isValidNValue = false;
                     }
                 }
@@ -494,16 +495,19 @@ public class AccountsController implements Initializable {
 
                 controller.setValuesAfterCompleteSolve(m);
             }
+
             for (int i = 0; i < processControllers.size(); i++) {
                 ProcessHolderController controller = processControllers.get(i);
                 controller.updateTextFieldColors(allUserInputStatuses.get(i));
             }
-            netHeatTextField.setText(String.format("%.3f", netHeat));
-            netWorkTextField.setText(String.format("%.3f", netWork));
-            heatInTextField.setText(String.format("%.3f", netHeatIn));
-            heatOutTextField.setText(String.format("%.3f", netHeatOut));
-            workInTextField.setText(String.format("%.3f", netWorkIn));
-            workOutTextField.setText(String.format("%.3f", netWorkOut));
+            if(netHeat != 0.0 && netWork != 0.0 && netHeatIn != 0 && netHeatOut != 0 && netWorkIn != 0 && netWorkOut != 0){
+                netHeatTextField.setText(String.format("%.3f", netHeat));
+                netWorkTextField.setText(String.format("%.3f", netWork));
+                heatInTextField.setText(String.format("%.3f", netHeatIn));
+                heatOutTextField.setText(String.format("%.3f", netHeatOut));
+                workInTextField.setText(String.format("%.3f", netWorkIn));
+                workOutTextField.setText(String.format("%.3f", netWorkOut));
+            }
 
 
 
@@ -542,7 +546,8 @@ public class AccountsController implements Initializable {
         } catch (IllegalArgumentException e) {
             showErrorAlert(e.getMessage());
         } catch (Exception e) {
-            showErrorAlert("An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
+//            showErrorAlert("An unexpected error occurred: " + e.getMessage());
         }
     }
     private ImageView createImageView(File imageFile) {

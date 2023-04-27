@@ -589,9 +589,9 @@ public class Process extends ACProcess {
             case 'p':
                 return "constant pressure";
             case 'x':
-                return "polytropic";
+                return "constant polytropic";
             case 'y':
-                return "isentropic";
+                return "constant isentropic";
             default:
                 return "unknown process type";
         }

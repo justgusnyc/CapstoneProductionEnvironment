@@ -153,8 +153,7 @@ public class Solver extends ACSolver {
                         missingValue = "temperature";
                     }
                     break;
-                case "polytropic":
-                case "isentropic":
+                case "constant polytropic":
                     String missingValues = "";
                     if (finalState.getKnownValues().containsKey("pressure")) {
                         missingValues = "temperature and volume";
@@ -171,6 +170,25 @@ public class Solver extends ACSolver {
                         canCalculate = true;
                         missingValue = missingValues;
                     }
+                    break;
+                case "constant isentropic":
+
+//                    String missingValues = "";
+                    if (finalState.getKnownValues().containsKey("pressure")) {
+                        missingValues = "temperature and volume";
+                        equation = "V2 = V1 * (P2/P1)^(-1/n)";
+                    } else if (finalState.getKnownValues().containsKey("volume")) {
+                        missingValues = "pressure and temperature";
+                        equation = "P2 = P1 * (V1/V2)^n";
+                    } else if (finalState.getKnownValues().containsKey("temperature")) {
+                        missingValues = "pressure and volume";
+                        equation = "P2 = P1 * (T2/T1)^(n/(n-1))";
+                    }
+
+//                    if (!missingValues.isEmpty()) {
+//                        canCalculate = true;
+//                        missingValue = missingValues;
+//                    }
                     break;
             }
 
