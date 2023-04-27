@@ -5,6 +5,8 @@ import com.example.capstone.Models.Logic.Solver;
 import com.example.capstone.Models.Logic.State;
 
 import com.example.capstone.Models.Model;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -124,6 +126,7 @@ public class AccountsController implements Initializable {
 
     private List<Double> processHeats = new ArrayList<>();
     private List<Double> processWorks = new ArrayList<>();
+
 
     String basicInstructions = "Hello and welcome to H.E.A.T.S! This is an interactive application designed to help you solve closed system thermodynamic problems. | " +
             "To start, select the number of processes you would like to work with, then toggle whether or not your problem is a cycle problem or not. Now, just fill in your data and select the process types and click compute! " +
@@ -518,9 +521,9 @@ public class AccountsController implements Initializable {
                     engineNotEngineLabel.setText("Engine");
                     engineEfficiencyTextField.setText(String.format("%.3f", engine_eff));
                 }
-                System.out.println(engine_eff);
-
             }
+            setDashboardController(Model.getInstance().getViewFactory().getDashboardController());
+            this.dashboardController.setDashboardSummary(setDashboardSummary());
 
         } catch (IllegalArgumentException e) {
             showErrorAlert(e.getMessage());
@@ -907,10 +910,51 @@ public class AccountsController implements Initializable {
         this.dashboardController = dashboardController;
     }
 
-    public void setDashboardSummary(){
+    public List<String> setDashboardSummary(){
+        List<String> dashboardInfo = new ArrayList<>();
+//        String [] processTypes = {"Isobaric", "Isochoric", "Isothermal", "Polytropic", "Isentropic"};
         setDashboardController(Model.getInstance().getViewFactory().getDashboardController());
-        if(this.dashboardController != null){
-//            dashboardController.se
+        String cycleYesNo = "";
+        String processType = "";
+        String currentNetHeat = ""+netHeat;
+        String currentNetWork = ""+netWork;
+
+        if(this.dashboardController != null && processControllers.size() > 0){
+            ProcessHolderController processHolderController1 = processControllers.get(processControllers.size()-1);
+            String stateName = processHolderController1.getSecondStateLabelString();
+            char processChar = processHolderController1.getProcessType();
+            switch (processChar){
+                case('p') -> processType = "Isobaric";
+                case('v') -> processType = "Isochoric";
+                case('t') -> processType = "Isothermal";
+                case('x') -> processType = "Polytropic";
+                case('y') -> processType = "Isentropic";
+                default -> System.out.println("Something wrong with setDashboardSummary");
+            }
+            List<TextField> list = processHolderController1.getStateRightTextFields();
+
+            String pressure = list.get(0).getText();
+            String volume = list.get(1).getText();
+            String temp = list.get(2).getText();
+            if(cycleFlag){
+                cycleYesNo = "Yes";
+            }
+            else{
+                cycleYesNo = "No";
+            }
+
+            dashboardInfo.add(pressure);
+            dashboardInfo.add(volume);
+            dashboardInfo.add(temp);
+            dashboardInfo.add(cycleYesNo);
+            dashboardInfo.add(processType);
+            dashboardInfo.add(stateName);
+            dashboardInfo.add(currentNetWork);
+            dashboardInfo.add(currentNetHeat);
+            return dashboardInfo;
+        }
+        else{
+            return dashboardInfo;
         }
     }
 
@@ -1036,8 +1080,6 @@ public class AccountsController implements Initializable {
 
 
     }
-
-
 
 }
 

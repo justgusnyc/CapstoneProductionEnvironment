@@ -66,7 +66,9 @@ public class ViewFactory {
             try{ // we first check is dashboard is equal to null, every time that the user goes from dashboard to somewhere else and comes back, we should be able to use this instantiation without loading it again to save computation
                 // basically if the object has already been created then we use it, makes app faster
 //                dashboardView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml")).load();
-                dashboardView = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml")).load();;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/ClosedSystem/Dashboard.fxml"));
+                dashboardView = loader.load();
+                dashboardController = loader.getController();
             } catch (Exception e){
                 e.printStackTrace();
             }

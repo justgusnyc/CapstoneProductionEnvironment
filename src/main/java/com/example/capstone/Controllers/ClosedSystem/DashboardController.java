@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -66,6 +67,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { /* what will be called when this fxml is initialized*/
         // inside of the model section we are creating a singleton of the view factory
+//        accountsController.setDashboardController(this);
         bindData();
         initLatestReportsList();
         if(Model.getInstance().getLatestReports() == null){
@@ -79,12 +81,10 @@ public class DashboardController implements Initializable {
     }
 
     public void bindData(){
+
         user_name.textProperty().bind(Bindings.concat("Hi,").concat(Model.getInstance().getClosedSystem().firstNameProperty()));
         login_date.setText("Today, "+ LocalDate.now());
-//        checking_balance.textProperty().bind(Model.getInstance().getClosedSystem().checkingAccountProperty().get().balanceProperty().asString());
-//        checking_acc_num.textProperty().bind(Model.getInstance().getClosedSystem().checkingAccountProperty().get().accountNumberProperty());
-//        savings_val.textProperty().bind(Model.getInstance().getClosedSystem().savingsAccountProperty().get().balanceProperty().asString());
-//        savings_acc_num.textProperty().bind(Model.getInstance().getClosedSystem().savingsAccountProperty().get().accountNumberProperty());
+
 
     }
 
@@ -92,6 +92,17 @@ public class DashboardController implements Initializable {
         if(Model.getInstance().getLatestReports().isEmpty()){
             Model.getInstance().setLatestReports(); // we are trying to avoid this list being appended every time we load the page, repeating many times
         }
+    }
+
+    public void setDashboardSummary(List<String> summaryValues){
+        pressureSummaryLabel.setText(summaryValues.get(0));
+        volumeSummaryLabel.setText(summaryValues.get(1));
+        tempSummaryLabel.setText(summaryValues.get(2));
+        cycleSummaryLabel.setText(summaryValues.get(3));
+        processSummaryLabel.setText(summaryValues.get(4));
+        stateNameLabel.setText(summaryValues.get(5));
+        netWorkLabel.setText(summaryValues.get(6));
+        netHeatLabel.setText(summaryValues.get(7));
     }
 
     public void setNetHeatLabelText(String netHeatLabel) {
