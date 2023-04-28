@@ -1,11 +1,9 @@
 module com.example.capstone {
-
     requires javafx.controls;
     requires javafx.fxml;
-    requires de.jensd.fx.glyphs.fontawesome; // this is for the icons that we will use
+    requires de.jensd.fx.glyphs.fontawesome;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
-    //requires xchart;
     requires org.knowm.xchart;
     requires java.desktop;
 
@@ -18,5 +16,4 @@ module com.example.capstone {
     exports com.example.capstone.Models;
     exports com.example.capstone.Views;
     exports com.example.capstone.Models.Logic;
-
 }

@@ -500,7 +500,14 @@ public class AccountsController implements Initializable {
                 ProcessHolderController controller = processControllers.get(i);
                 controller.updateTextFieldColors(allUserInputStatuses.get(i));
             }
-            if(netHeat != 0.0 && netWork != 0.0 && netHeatIn != 0 && netHeatOut != 0 && netWorkIn != 0 && netWorkOut != 0){
+            if(netHeat == 0.0 && netWork == 0.0 && netHeatIn == 0 && netHeatOut == 0 && netWorkIn == 0 && netWorkOut == 0.0){
+                netHeatTextField.setText("");
+                netWorkTextField.setText("");
+                heatInTextField.setText("");
+                heatOutTextField.setText("");
+                workInTextField.setText("");
+                workOutTextField.setText("");
+            }else{
                 netHeatTextField.setText(String.format("%.3f", netHeat));
                 netWorkTextField.setText(String.format("%.3f", netWork));
                 heatInTextField.setText(String.format("%.3f", netHeatIn));
@@ -568,7 +575,9 @@ public class AccountsController implements Initializable {
     public void savePvAndTvDiagrams(Map<String, List<Double>> m) throws IOException, IOException {
         // Add the initial state again to close the cycle in the graph
         List<List<Double>> statesList = new ArrayList<>(m.values());
-        statesList.add(statesList.get(0));
+        if(cycleFlag){
+            statesList.add(statesList.get(0));
+        }
 
         double[] p_values = new double[statesList.size()];
         double[] v_values = new double[statesList.size()];
